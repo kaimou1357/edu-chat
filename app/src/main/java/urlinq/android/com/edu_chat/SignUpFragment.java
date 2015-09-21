@@ -22,6 +22,8 @@ import java.net.URLEncoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import urlinq.android.com.edu_chat.manager.ApiManager;
+
 /**
  * Created by Kai on 9/6/2015.
  * This Fragment handles all the information associated with the different layouts between the signin form and the login form.
