@@ -13,13 +13,13 @@ test:
     - emulator -avd circleci-android22 -no-audio -no-window:
         background: true
         parallel: true
-    - (./gradlew assembleDebug):
+    - ./gradlew assembleDebug:
       timeout: 1200
-    - (./gradlew assembleDebugTest):
+    - ./gradlew assembleDebugTest:
       timeout: 1200
     - circle-android wait-for-boot
   override:
-    - (echo "Running JUnit tests!")
+    - echo "Running JUnit tests!"
     - ./gradlew connectedAndroidTest
     - cp -r app/build/outputs $CIRCLE_ARTIFACTS
     - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
