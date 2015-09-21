@@ -1,4 +1,4 @@
-package urlinq.android.com.edu_chat_lollipop;
+package urlinq.android.com.edu_chat.manager;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -55,7 +55,7 @@ public class ApiManager extends AsyncTask<String, Void, String> {
                 // called when request is retried
             }
         });
-        
+
         result = "";
         try {
             Map<String, Object> params = new LinkedHashMap<String, Object>();

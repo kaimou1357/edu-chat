@@ -1,4 +1,4 @@
-package urlinq.android.com.edu_chat_lollipop;
+package urlinq.android.com.edu_chat;
 
 /**
  * Created by Kai on 9/16/2015.
