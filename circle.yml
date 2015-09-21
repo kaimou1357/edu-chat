@@ -6,6 +6,13 @@ machine:
 dependencies:
   pre:
     - sudo apt-get update
-test:
   override:
     - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-21.1.2,android-22,extra-google-m2repository,extra-google-google_play_services,extra-android-support
+test:
+  override:
+    - emulator -avd circleci-android22 -no-audio -no-window:
+      background: true
+      parallel: true
+    - circle-android wait-for-boot
+    - ./gradlew connectedAndroidTest
+    - cp -r my-project/build/outputs $CIRCLE_ARTIFACTS
