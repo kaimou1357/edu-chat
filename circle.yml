@@ -19,7 +19,7 @@ test:
       timeout: 1200
     - circle-android wait-for-boot
   override:
-  	- (echo "Running JUnit tests!")
+    - (echo "Running JUnit tests!")
     - ./gradlew connectedAndroidTest
-    - cp -r my-project/build/outputs $CIRCLE_ARTIFACTS
-    - cp -r my-project/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
+    - cp -r app/build/outputs $CIRCLE_ARTIFACTS
+    - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
