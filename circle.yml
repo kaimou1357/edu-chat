@@ -9,13 +9,14 @@ dependencies:
   override:
     - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-21.1.2,android-22,extra-google-m2repository,extra-google-google_play_services,extra-android-support
 test:
-  pre:
-    - emulator -avd circleci-android22 -no-audio -no-window:
-        background: true
-        parallel: true
-    - (source scripts/environmentSetup.sh && waitForAVD)
+  # pre:
+    # - emulator -avd circleci-android22 -no-audio -no-window:
+        # background: true
+        # parallel: true
   override:
     - echo "Running JUnit tests!"
-    - ./gradlew connectedAndroidTest
+    - ./gradlew assembleDebug
+    - ./gradlew assembleDebugTest
+    # - ./gradlew connectedAndroidTest
     - cp -r app/build/outputs $CIRCLE_ARTIFACTS
     - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
