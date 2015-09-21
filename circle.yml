@@ -1,4 +1,7 @@
 machine:
+	timezone:
+		America/Los_Angeles
 
-  timezone:
-    America/Los_Angeles
+dependencies:
+	pre:
+		- sudo apt-get update
