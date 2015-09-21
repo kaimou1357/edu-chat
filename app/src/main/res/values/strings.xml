@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">edu_chat_lollipop</string>
+    <string name="email">School Email</string>
+    <string name="password">Password</string>
+    <string name = "action_settings">Settings</string>
+    <string name = "login_button">Login</string>
+    <string name = "first_name">First Name</string>
+    <string name = "last_name">Last Name</string>
+    <string name ="heroFragment1">An easy way to communicate academically</string>
+    <string name = "heroFragment2">Put the text you want here</string>
+    <string name = "heroFragment3">Put the rest of the text here</string>
+</resources>
