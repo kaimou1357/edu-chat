@@ -8,4 +8,4 @@ dependencies:
     - sudo apt-get update
 test:
   override:
-    - (export TERM="dumb"; if [ -e ./gradlew ]; then ./gradlew test || ./gradlew test ; else gradle test || gradle test;fi)
+    - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-21.1.2,android-22,extra-google-m2repository,extra-google-google_play_services,extra-android-support
