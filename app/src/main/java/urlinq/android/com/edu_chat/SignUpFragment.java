@@ -22,7 +22,7 @@ import java.net.URLEncoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import urlinq.android.com.edu_chat.manager.ApiManager;
+import urlinq.android.com.edu_chat.manager.ECApiManager;
 
 /**
  * Created by Kai on 9/6/2015.
@@ -68,7 +68,7 @@ public class SignUpFragment extends Fragment {
                 String[] loginInfo = new String[2];
                 loginInfo[0] = userEmail.getText().toString();
                 loginInfo[1] = userPass.getText().toString();
-                ApiManager task = new ApiManager();
+                ECApiManager task = new ECApiManager();
                 task.execute(loginInfo);
             }
         });

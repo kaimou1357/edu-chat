@@ -22,7 +22,7 @@ import cz.msebera.android.httpclient.Header;
 /**
  * Created by Kai on 9/18/2015.
  */
-public class ApiManager extends AsyncTask<String, Void, String> {
+public class ECApiManager extends AsyncTask<String, Void, String> {
 
     public static int TASK_STATUS = 0;
     private String result;

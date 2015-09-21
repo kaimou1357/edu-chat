@@ -3,7 +3,7 @@ package urlinq.android.com.edu_chat.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import urlinq.android.com.edu_chat.manager.ApiManager;
+import urlinq.android.com.edu_chat.manager.ECApiManager;
 
 /**
  * Global to store authentication tokens, parse the String returned from POST/GET requests.
@@ -17,7 +17,7 @@ public class ECUser {
     private static String userToken;
     private static String userID;
     private JSONObject jObject;
-    private ApiManager task = new ApiManager();
+    private ECApiManager task = new ECApiManager();
 
 
     public ECUser(String userHashFromServer) throws JSONException {
