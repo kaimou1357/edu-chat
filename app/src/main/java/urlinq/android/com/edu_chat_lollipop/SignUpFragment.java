@@ -66,7 +66,7 @@ public class SignUpFragment extends Fragment {
                 String[] loginInfo = new String[2];
                 loginInfo[0] = userEmail.getText().toString();
                 loginInfo[1] = userPass.getText().toString();
-                PostGetTask task = new PostGetTask();
+                ApiManager task = new ApiManager();
                 task.execute(loginInfo);
             }
         });

@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * Created by Kai on 9/18/2015.
  */
-public class PostGetTask extends AsyncTask<String, Void, String> {
+public class ApiManager extends AsyncTask<String, Void, String> {
 
     public static int TASK_STATUS = 0;
     private String result;

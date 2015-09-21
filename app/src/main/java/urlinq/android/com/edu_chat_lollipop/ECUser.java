@@ -15,7 +15,7 @@ public class ECUser {
     private static String userToken;
     private static String userID;
     private JSONObject jObject;
-    private PostGetTask task = new PostGetTask();
+    private ApiManager task = new ApiManager();
 
 
     public ECUser(String userHashFromServer) throws JSONException {
