@@ -25,7 +25,7 @@ import urlinq.android.com.edu_chat.model.ECUser;
  * Created by Kai on 9/6/2015.
  * This Fragment handles all the information associated with the different layouts between the signin form and the login form.
  */
-public class SignUpFragment extends Fragment {
+public class LoginBackground extends Fragment {
 
     private ImageButton signUpBtn;
     private ImageButton logInBtn;
@@ -43,24 +43,11 @@ public class SignUpFragment extends Fragment {
         signUpBtn = (ImageButton) v.findViewById(R.id.signUpToggle);
         logInBlue = (ImageButton) v.findViewById(R.id.logInBlue);
         flipper = (ViewFlipper) v.findViewById(R.id.viewFlipper);
-        logInBtn = (ImageButton) v.findViewById(R.id.logInToggleBtn);
+        //logInBtn = (ImageButton) v.findViewById(R.id.logInToggleBtn);
 
         userEmail = (EditText) v.findViewById(R.id.emailTextView);
         userPass = (EditText) v.findViewById(R.id.passwordTextView);
-
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //load next layout on button click.
-                flipper.showNext();
-            }
-        });
-
-        logInBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //load next layout on button click.
-                flipper.showNext();
-            }
-        });
+        
         logInBlue.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
