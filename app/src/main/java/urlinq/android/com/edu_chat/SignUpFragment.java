@@ -1,7 +1,6 @@
 package urlinq.android.com.edu_chat;
 
 import android.app.Fragment;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,20 +13,13 @@ import android.widget.ViewFlipper;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import org.json.JSONException;
+
+import java.util.Arrays;
 
 import cz.msebera.android.httpclient.Header;
-import urlinq.android.com.edu_chat.manager.ECApiManager;
-import urlinq.android.com.edu_chat.manager.HttpRequest;
+import urlinq.android.com.edu_chat.manager.ECUApiManager;
+import urlinq.android.com.edu_chat.model.ECUser;
 
 /**
  * Created by Kai on 9/6/2015.
@@ -38,9 +30,12 @@ public class SignUpFragment extends Fragment {
     private ImageButton signUpBtn;
     private ImageButton logInBtn;
     private ImageButton logInBlue;
+
+    private String userHash;
     private EditText userEmail;
     private EditText userPass;
     private View v;
+    private ECUser user;
     private ViewFlipper flipper;
 
     @Override
@@ -74,10 +69,18 @@ public class SignUpFragment extends Fragment {
                 params.put("email", userEmail.getText().toString());
                 params.put("password", userPass.getText().toString());
 
-                HttpRequest.post("https://edu.chat/api/login/", params, new AsyncHttpResponseHandler() {
+                ECUApiManager.post("https://edu.chat/api/login/", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Log.d("login", responseBody.toString());
+                        //called when response code 200
+                        userHash = new String(responseBody, 0);
+                        try {
+                            user = new ECUser(userHash);
+                        }catch(JSONException e){
+
+                        }
+
+
                     }
 
                     @Override

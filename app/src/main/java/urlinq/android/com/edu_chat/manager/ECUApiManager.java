@@ -11,7 +11,7 @@ import com.loopj.android.http.SyncHttpClient;
 /**
  * Created by Kai on 9/21/2015.
  */
-public class HttpRequest {
+public class ECUApiManager {
 
     // A SyncHttpClient is an AsyncHttpClient
     public static AsyncHttpClient syncHttpClient= new SyncHttpClient();
