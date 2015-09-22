@@ -10,19 +10,20 @@ import org.json.JSONObject;
 public class ECUser {
 
     private static ECUser currentUser;
+    private static String userToken;
+
     private String firstName;
     private String lastName;
-    private static String userToken;
-    private static String userID;
+    private String userID;
     private JSONObject jObject;
 
 
     public ECUser(String userHashFromServer) throws JSONException {
 
         this.jObject = new JSONObject(userHashFromServer);
-        this.userToken = jObject.getJSONObject("token").toString();
-        this.firstName = jObject.getJSONObject("user").getString("firstname");
-        this.lastName = jObject.getJSONObject("user").getString("lastname");
+        this.userToken = this.jObject.getJSONObject("token").toString();
+        this.firstName = this.jObject.getJSONObject("user").getString("firstname");
+        this.lastName = this.jObject.getJSONObject("user").getString("lastname");
     }
 
     public static void setCurrentUser(ECUser user) {

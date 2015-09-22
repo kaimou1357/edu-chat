@@ -2,7 +2,6 @@ package urlinq.android.com.edu_chat;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,8 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 
-import java.util.Arrays;
-
 import cz.msebera.android.httpclient.Header;
-import urlinq.android.com.edu_chat.manager.ECUApiManager;
+import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.ECUser;
 
 /**
@@ -68,14 +65,14 @@ public class SignUpFragment extends Fragment {
                 params.put("email", userEmail.getText().toString());
                 params.put("password", userPass.getText().toString());
 
-                ECUApiManager.post("https://edu.chat/api/login/", params, new AsyncHttpResponseHandler() {
+                ECApiManager.post("https://edu.chat/api/login/", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         //called when response code 200
                         userHash = new String(responseBody, 0);
                         try {
                             ECUser.setCurrentUser(new ECUser(userHash));
-                        }catch(JSONException e){
+                        } catch (JSONException e) {
 
                         }
 
