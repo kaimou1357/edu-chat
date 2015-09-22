@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ViewFlipper;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,7 +25,9 @@ import java.net.URLEncoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import cz.msebera.android.httpclient.Header;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
+import urlinq.android.com.edu_chat.manager.HttpRequest;
 
 /**
  * Created by Kai on 9/6/2015.
@@ -65,57 +70,27 @@ public class SignUpFragment extends Fragment {
         logInBlue.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                String[] loginInfo = new String[2];
-                loginInfo[0] = userEmail.getText().toString();
-                loginInfo[1] = userPass.getText().toString();
-                ECApiManager task = new ECApiManager();
-                task.execute(loginInfo);
+                RequestParams params = new RequestParams();
+                params.put("email", userEmail.getText().toString());
+                params.put("password", userPass.getText().toString());
+
+                HttpRequest.post("https://edu.chat/api/login/", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        Log.d("login", responseBody.toString());
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
+
             }
         });
 
         return v;
     }
 
-    private class LoginTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String[] parameters) {
-            try {
-                Map<String, Object> params = new LinkedHashMap<String, Object>();
-                params.put("email", parameters[0]);
-                params.put("password", parameters[1]);
-                StringBuilder postData = new StringBuilder();
-                for (Map.Entry<String, Object> param : params.entrySet()) {
-                    if (postData.length() != 0) postData.append('&');
-                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-                    postData.append('=');
-                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
-                }
-                byte[] postDataBytes = postData.toString().getBytes("UTF-8");
-                URL urlLogin = new URL("https://edu.chat/api/login/");
-                HttpURLConnection urlConnection = (HttpURLConnection) urlLogin.openConnection();
-                urlConnection.setDoOutput(true);
-                urlConnection.setRequestMethod("POST");
-//                urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-//                urlConnection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
-                urlConnection.getOutputStream().write(postDataBytes);
 
-                Reader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                String result = "";
-                /**
-                 * Debugging purposes.
-                 */
-                for (int c = in.read(); c != -1; c = in.read()) {
-                    result += String.valueOf((char) c);
-                }
-                //Log.d("login", result);
-            } catch (MalformedURLException e) {
-                Log.d("url", "Login URL doesn't work!");
-            } catch (IOException e) {
-
-
-            }
-
-    return null;
-        }
-    }
 }

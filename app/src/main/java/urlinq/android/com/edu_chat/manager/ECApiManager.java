@@ -5,11 +5,13 @@ import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,17 +34,36 @@ public class ECApiManager extends AsyncTask<String, Void, String> {
     //set 2 for refreshUserdata.
     @Override
     protected String doInBackground(String[] parameters) {
+
+
+        if(TASK_STATUS == 0){
+            postLogin(parameters);
+        }
+        return null;
+    }
+
+    private void postLogin(final String[] parameters){
+        //POST request
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("https://www.google.com", new AsyncHttpResponseHandler() {
+        client.post("https://edu.chat/api/login/", new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
                 // called before request is started
+
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                // called when response HTTP status is "200 OK"
+                 //called when response HTTP status is "200 OK"
+                RequestParams params = new RequestParams();
+                params.put("email", parameters[0]);
+                params.put("password", parameters[1]);
+                Log.d("login", response.toString());
+
+
+
+
             }
 
             @Override
@@ -55,75 +76,71 @@ public class ECApiManager extends AsyncTask<String, Void, String> {
                 // called when request is retried
             }
         });
-
-        result = "";
-        try {
-            Map<String, Object> params = new LinkedHashMap<String, Object>();
-
-
-            if (TASK_STATUS == 0) {
-                params.put("email", parameters[0]);
-                params.put("password", parameters[1]);
-                StringBuilder postData = new StringBuilder();
-                for (Map.Entry<String, Object> param : params.entrySet()) {
-                    if (postData.length() != 0) postData.append('&');
-                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-                    postData.append('=');
-                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
-                }
-                byte[] postDataBytes = postData.toString().getBytes("UTF-8");
-                URL urlLogin = new URL("https://edu.chat/api/login/");
-                HttpURLConnection urlConnection = (HttpURLConnection) urlLogin.openConnection();
-                urlConnection.setDoOutput(true);
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                urlConnection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
-                urlConnection.getOutputStream().write(postDataBytes);
-                Reader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                for (int c = in.read(); c != -1; c = in.read()) {
-                    result += String.valueOf((char) c);
-                }
-            } else if (TASK_STATUS == 2) {
-                /**
-                 * Request to update user information.
-                 */
-                params.put("token", parameters[0]);
-                params.put("id", parameters[1]);
-                StringBuilder postData = new StringBuilder();
-                for (Map.Entry<String, Object> param : params.entrySet()) {
-                    if (postData.length() != 0) postData.append('&');
-                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-                    postData.append('=');
-                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
-                }
-                byte[] postDataBytes = postData.toString().getBytes("UTF-8");
-                URL urlLogin = new URL("https://edu.chat/api/user/");
-                HttpURLConnection urlConnection = (HttpURLConnection) urlLogin.openConnection();
-                urlConnection.setDoOutput(true);
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                urlConnection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
-                urlConnection.getOutputStream().write(postDataBytes);
-                Reader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                for (int c = in.read(); c != -1; c = in.read()) {
-                    result += String.valueOf((char) c);
-                }
-            }
-            /**
-             * Debugging purposes.
-             */
-
-            //Log.d("login", result);
-        } catch (MalformedURLException e) {
-            Log.d("url", "Login URL doesn't work!");
-        } catch (IOException e) {
-
-        }
-        return result;
     }
 
-    protected void onPostExecute(String result) {
+    //        result = "";
+//        try {
+//            Map<String, Object> params = new LinkedHashMap<String, Object>();
+//
+//
+//            if (TASK_STATUS == 0) {
+//                params.put("email", parameters[0]);
+//                params.put("password", parameters[1]);
+//                StringBuilder postData = new StringBuilder();
+//                for (Map.Entry<String, Object> param : params.entrySet()) {
+//                    if (postData.length() != 0) postData.append('&');
+//                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+//                    postData.append('=');
+//                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+//                }
+//                byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+//                URL urlLogin = new URL("https://edu.chat/api/login/");
+//                HttpURLConnection urlConnection = (HttpURLConnection) urlLogin.openConnection();
+//                urlConnection.setDoOutput(true);
+//                urlConnection.setRequestMethod("POST");
+//                urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+//                urlConnection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+//                urlConnection.getOutputStream().write(postDataBytes);
+//                Reader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+//                for (int c = in.read(); c != -1; c = in.read()) {
+//                    result += String.valueOf((char) c);
+//                }
+//            } else if (TASK_STATUS == 2) {
+//                /**
+//                 * Request to update user information.
+//                 */
+//                params.put("token", parameters[0]);
+//                params.put("id", parameters[1]);
+//                StringBuilder postData = new StringBuilder();
+//                for (Map.Entry<String, Object> param : params.entrySet()) {
+//                    if (postData.length() != 0) postData.append('&');
+//                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+//                    postData.append('=');
+//                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+//                }
+//                byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+//                URL urlLogin = new URL("https://edu.chat/api/user/");
+//                HttpURLConnection urlConnection = (HttpURLConnection) urlLogin.openConnection();
+//                urlConnection.setDoOutput(true);
+//                urlConnection.setRequestMethod("POST");
+//                urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+//                urlConnection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+//                urlConnection.getOutputStream().write(postDataBytes);
+//                Reader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+//                for (int c = in.read(); c != -1; c = in.read()) {
+//                    result += String.valueOf((char) c);
+//                }
+//            }
+//            /**
+//             * Debugging purposes.
+//             */
+//
+//            //Log.d("login", result);
+//        } catch (MalformedURLException e) {
+//            Log.d("url", "Login URL doesn't work!");
+//        } catch (IOException e) {
+//
+//        }
 
-    }
 
 }
