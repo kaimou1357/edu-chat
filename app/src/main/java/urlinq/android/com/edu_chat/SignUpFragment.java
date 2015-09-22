@@ -35,7 +35,6 @@ public class SignUpFragment extends Fragment {
     private EditText userEmail;
     private EditText userPass;
     private View v;
-    private ECUser user;
     private ViewFlipper flipper;
 
     @Override
@@ -75,7 +74,7 @@ public class SignUpFragment extends Fragment {
                         //called when response code 200
                         userHash = new String(responseBody, 0);
                         try {
-                            user = new ECUser(userHash);
+                            ECUser.setCurrentUser(new ECUser(userHash));
                         }catch(JSONException e){
 
                         }
