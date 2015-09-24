@@ -19,12 +19,18 @@ public class ECUser {
     private boolean loginSuccess;
 
 
-    public ECUser(String userHash) throws JSONException {
-        this.jObject = new JSONObject(userHash);
-        this.userToken = this.jObject.getJSONObject("token").toString();
-        this.loginSuccess = Boolean.parseBoolean(jObject.getJSONObject("success").toString());
-        this.firstName = this.jObject.getJSONObject("user").getString("firstname");
-        this.lastName = this.jObject.getJSONObject("user").getString("lastname");
+    public ECUser(String userHash) {
+        try{
+            this.jObject = new JSONObject(userHash);
+            this.userToken = this.jObject.getJSONObject("token").toString();
+            this.loginSuccess = Boolean.parseBoolean(jObject.getJSONObject("success").toString());
+            this.firstName = this.jObject.getJSONObject("user").getString("firstname");
+            this.lastName = this.jObject.getJSONObject("user").getString("lastname");
+        }catch(JSONException e){
+
+        }
+
+
     }
 
     public static void setCurrentUser(ECUser user) {
