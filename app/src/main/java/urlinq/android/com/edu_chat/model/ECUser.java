@@ -16,12 +16,13 @@ public class ECUser {
     private String lastName;
     private String userID;
     private JSONObject jObject;
+    private boolean loginSuccess;
 
 
-    public ECUser(String userHashFromServer) throws JSONException {
-
-        this.jObject = new JSONObject(userHashFromServer);
+    public ECUser(String userHash) throws JSONException {
+        this.jObject = new JSONObject(userHash);
         this.userToken = this.jObject.getJSONObject("token").toString();
+        this.loginSuccess = Boolean.parseBoolean(jObject.getJSONObject("success").toString());
         this.firstName = this.jObject.getJSONObject("user").getString("firstname");
         this.lastName = this.jObject.getJSONObject("user").getString("lastname");
     }
@@ -35,7 +36,6 @@ public class ECUser {
      * Method that refreshes the state of the current user by calling the API again.
      */
     public static void refreshCurrentUser() {
-
 
     }
 
@@ -53,6 +53,10 @@ public class ECUser {
 
     public String getUserToken() {
         return this.userToken;
+    }
+
+    public boolean getLoginSuccessful(){
+        return this.loginSuccess;
     }
 
 

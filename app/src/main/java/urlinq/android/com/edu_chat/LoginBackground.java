@@ -2,6 +2,8 @@ package urlinq.android.com.edu_chat;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,11 @@ public class LoginBackground extends Fragment {
     private ViewFlipper flipper;
 
     @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.combined_login, container, false);
         signUpBtn = (ImageButton) v.findViewById(R.id.signUpToggle);
@@ -57,13 +64,7 @@ public class LoginBackground extends Fragment {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         //called when response code 200
                         userHash = new String(responseBody, 0);
-                        try {
-                            ECUser.setCurrentUser(new ECUser(userHash));
-                        } catch (JSONException e) {
-
-                        }
-
-
+                        Log.d("login", userHash.toString());
                     }
 
                     @Override

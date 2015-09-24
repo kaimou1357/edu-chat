@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public LoginFragment myFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -15,7 +17,8 @@ public class LoginActivity extends AppCompatActivity {
         //This activity will only hold the Fragment and communicate between fragments and go onto the next activity.
         if (savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.loginContainerView, new LoginFragment());
+            myFragment = new LoginFragment();
+            ft.add(R.id.loginContainerView, myFragment);
             ft.commit();
         }
 
