@@ -1,8 +1,12 @@
 language: android
 android:
     components:
+        - platform-tools
+        - tools
         - build-tools-22.0.1
         - android-22
+        - extra-google-google_play_services
         - extra
+        - sys-img-armeabi-v7a-android-22
 notifications:
   slack: urlinq:LkEt5WeDyG3u34J7YwMik6ri

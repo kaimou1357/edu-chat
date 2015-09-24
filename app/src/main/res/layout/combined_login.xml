@@ -1,75 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/viewFlipper"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/viewFlipper">
+    android:orientation="vertical">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent" android:layout_height="match_parent"
-        android:id ="@+id/logInLayout">
+    <RelativeLayout
+        android:id="@+id/logInLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <EditText
+            android:id="@+id/emailTextView"
             android:layout_width="50dip"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="90dp"
             android:ems="10"
-            android:id="@+id/emailTextView"
             android:gravity="center_horizontal"
             android:hint="@string/email"
-            android:layout_marginTop="90dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true" />
+            android:inputType="textEmailAddress" />
 
         <EditText
+            android:id="@+id/passwordTextView"
             android:layout_width="50dip"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/emailTextView"
             android:ems="10"
-            android:id="@+id/passwordTextView"
             android:gravity="center_horizontal"
             android:hint="@string/password"
-            android:layout_below="@+id/emailTextView"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true" />
+            android:inputType="textPassword" />
 
         <ImageButton
+            android:id="@+id/signUpToggle"
             android:layout_width="125dp"
             android:layout_height="45dp"
-            android:paddingTop = "20dp"
-            android:id="@+id/signUpToggle"
-            android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
-            android:background="@drawable/signuptoggle" />
+            android:layout_alignParentTop="true"
+            android:background="@drawable/signuptoggle"
+            android:paddingTop="20dp" />
 
         <ImageButton
+            android:id="@+id/logInBlue"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:id="@+id/logInBlue"
-            android:background="@drawable/loginbtn"
+            android:layout_alignEnd="@+id/linearLayout"
             android:layout_alignParentBottom="true"
-            android:layout_alignEnd="@+id/linearLayout" />
+            android:background="@drawable/loginbtn" />
 
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="125dp"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:orientation="vertical"
-            android:id="@+id/linearLayout">
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
 
             <ImageButton
+                android:id="@+id/loginBtn"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:id="@+id/loginBtn"
                 android:layout_alignBottom="@+id/signUpBlue"
-                android:background="@drawable/logintoggleactive"/>
+                android:background="@drawable/logintoggleactive" />
 
             <ImageView
+                android:id="@+id/imageView2"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:id="@+id/imageView2"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/togglediamond" />
 
@@ -77,12 +79,6 @@
         </LinearLayout>
 
     </RelativeLayout>
-
-
-
-
-
-
 
 
 </ViewFlipper>

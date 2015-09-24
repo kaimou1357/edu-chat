@@ -8,7 +8,7 @@ android {
     compileSdkVersion 22
     buildToolsVersion '22.0.1'
     defaultConfig {
-        applicationId "urlinq.android.com.edu_chat_lollipop"
+        applicationId "urlinq.android.com.edu_chat"
         minSdkVersion 19
         targetSdkVersion 22
         versionCode 1
@@ -29,6 +29,9 @@ android {
         compile 'com.loopj.android:android-async-http:1.4.9'
     }
     productFlavors {
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
