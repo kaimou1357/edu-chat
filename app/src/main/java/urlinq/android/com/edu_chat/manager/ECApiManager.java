@@ -14,7 +14,7 @@ import com.loopj.android.http.SyncHttpClient;
 public class ECApiManager {
 
     // A SyncHttpClient is an AsyncHttpClient
-    public static AsyncHttpClient syncHttpClient= new SyncHttpClient();
+    public static AsyncHttpClient syncHttpClient = new SyncHttpClient();
     public static AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
 
     public static void setCookieStore(PersistentCookieStore cookieStore) {
@@ -32,8 +32,7 @@ public class ECApiManager {
     /**
      * @return an async client when calling from the main thread, otherwise a sync client.
      */
-    private static AsyncHttpClient getClient()
-    {
+    private static AsyncHttpClient getClient() {
         // Return the synchronous HTTP client when the thread is not prepared
         if (Looper.myLooper() == null)
             return syncHttpClient;

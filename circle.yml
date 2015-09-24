@@ -16,7 +16,7 @@ test:
   override:
     - echo "Running JUnit tests!"
     - ./gradlew assembleDebug
-    # - ./gradlew assembleDebugTest
+    - ./gradlew assembleDebugTest
     # - ./gradlew connectedAndroidTest
     - cp -r app/build/outputs $CIRCLE_ARTIFACTS
-    # - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
+    - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
