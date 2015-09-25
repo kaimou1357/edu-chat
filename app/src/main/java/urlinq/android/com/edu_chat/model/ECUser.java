@@ -35,7 +35,7 @@ public class ECUser {
 
     public static void setCurrentUser(ECUser user) {
 
-        currentUser = user;
+        ECUser.currentUser = user;
     }
 
     /**
@@ -46,7 +46,7 @@ public class ECUser {
     }
 
     public static ECUser getCurrentUser() {
-        return currentUser;
+        return ECUser.currentUser;
     }
 
     public String getLastName() {
@@ -58,7 +58,7 @@ public class ECUser {
     }
 
     public String getUserToken() {
-        return this.userToken;
+        return ECUser.userToken;
     }
 
     public boolean getLoginSuccessful(){
