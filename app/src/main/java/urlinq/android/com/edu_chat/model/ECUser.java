@@ -19,36 +19,34 @@ public class ECUser {
     private boolean loginSuccess;
 
 
-    public ECUser(String userHash) {
-        // TODO: Jacob: Please rebuild without try catch. One error will domino.
-        try {
-            this.jObject = new JSONObject(userHash);
+    public ECUser(JSONObject data) {
+        try{
+            this.jObject = data;
             this.userToken = this.jObject.getJSONObject("token").toString();
             this.loginSuccess = Boolean.parseBoolean(jObject.getJSONObject("success").toString());
             this.firstName = this.jObject.getJSONObject("user").getString("firstname");
             this.lastName = this.jObject.getJSONObject("user").getString("lastname");
-        } catch (JSONException e) {
+        }catch(JSONException e){
 
         }
+
+
     }
 
     public static void setCurrentUser(ECUser user) {
 
-        ECUser.currentUser = user;
+        currentUser = user;
     }
 
     /**
      * Method that refreshes the state of the current user by calling the API again.
      */
     public static void refreshCurrentUser() {
+
     }
 
     public static ECUser getCurrentUser() {
-        return ECUser.currentUser;
-    }
-
-    public static String getUserToken() {
-        return ECUser.userToken;
+        return currentUser;
     }
 
     public String getLastName() {
@@ -58,8 +56,12 @@ public class ECUser {
     public String getFirstName() {
         return this.firstName;
     }
-    
-    public boolean getLoginSuccessful() {
+
+    public String getUserToken() {
+        return this.userToken;
+    }
+
+    public boolean getLoginSuccessful(){
         return this.loginSuccess;
     }
 
