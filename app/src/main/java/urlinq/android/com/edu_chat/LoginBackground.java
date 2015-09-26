@@ -63,7 +63,7 @@ public class LoginBackground extends Fragment {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         //called when response code 200
-                        userHash = new String(responseBody, 0);
+                        userHash = new String(responseBody);
                         Log.d("login", userHash.toString());
                     }
 
