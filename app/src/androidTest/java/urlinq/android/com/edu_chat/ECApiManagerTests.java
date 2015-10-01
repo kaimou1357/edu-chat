@@ -1,24 +1,18 @@
-package urlinq.android.com.edu_chat;
+package urlinq.android.com.edu_chat.manager;
 
-import android.os.AsyncTask;
-import android.os.Handler;
 import android.test.InstrumentationTestCase;
 import android.util.Log;
 
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-import java.lang.Throwable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import cz.msebera.android.httpclient.Header;
-import urlinq.android.com.edu_chat.manager.ECApiManager;
 
 /**
  * Created by Kai on 9/30/2015.
@@ -28,7 +22,7 @@ public class ECApiManagerTests extends InstrumentationTestCase {
     private final String passWord = "adventure";
     String userHash;
 
-    public void testPOST() throws Throwable{
+    public void testPOST() throws Throwable {
         //final AsyncHttpClient httpClient = new AsyncHttpClient();
         final CountDownLatch signal = new CountDownLatch(1);
         runTestOnUiThread(new Runnable() {
@@ -53,6 +47,7 @@ public class ECApiManagerTests extends InstrumentationTestCase {
                     @Override
                     public void onFinish() {
                         signal.countDown();
+                        Log.d("login", "finished");
                     }
                 });
             }
@@ -75,11 +70,11 @@ public class ECApiManagerTests extends InstrumentationTestCase {
 
     }
 
-    public void testGet() throws Throwable{
+    public void testGet() throws Throwable {
 
     }
 
-    public void testSetCookieStore() throws Throwable{
+    public void testSetCookieStore() throws Throwable {
 
     }
 

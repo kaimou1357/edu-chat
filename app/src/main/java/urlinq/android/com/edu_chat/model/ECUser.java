@@ -22,15 +22,16 @@ public class ECUser {
 
     public ECUser(JSONObject data) throws JSONException {
         this.jObject = data;
-        try{
+        try {
             this.loginSuccess = Boolean.parseBoolean(jObject.getString("success"));
             this.userToken = this.jObject.getString("token");
             this.firstName = this.jObject.getJSONObject("user").getString("firstname");
             this.lastName = this.jObject.getJSONObject("user").getString("lastname");
-        }catch(JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
     public static void setCurrentUser(ECUser user) {
 
         ECUser.currentUser = user;
@@ -42,6 +43,7 @@ public class ECUser {
     public static void refreshCurrentUser() {
         //To be implemented.
     }
+
     public static ECUser getCurrentUser() {
         return ECUser.currentUser;
     }
@@ -58,10 +60,9 @@ public class ECUser {
         return ECUser.userToken;
     }
 
-    public boolean getLoginSuccessful(){
+    public boolean getLoginSuccessful() {
         return this.loginSuccess;
     }
-
 
 
 }

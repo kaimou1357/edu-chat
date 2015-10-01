@@ -17,6 +17,7 @@ public class ECUserTests {
 
     @Before
     public void jsonTest() throws JSONException {
+        System.out.println("Before");
         obj = new JSONObject(successfulLogin);
         //obj = new JSONObject(successfulLogin);
         ECUser.setCurrentUser(new ECUser(obj));
@@ -44,11 +45,13 @@ public class ECUserTests {
     /**
      * Test if object is actually a json object or array
      */
-    public void testJSONObjOrArray(){
+    public void testJSONObjOrArray() {
         assertEquals(true, obj instanceof JSONObject);
     }
+
     /**
      * Checks if token is correct.
+     *
      * @throws JSONException
      */
     @org.junit.Test
@@ -65,7 +68,7 @@ public class ECUserTests {
         assertEquals(expectedFirst, person1.getFirstName());
     }
 
-    public void testLastName(){
+    public void testLastName() {
         String expectedLast = "Mou";
         assertEquals(expectedLast, person1.getLastName());
     }
