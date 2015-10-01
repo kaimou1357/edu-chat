@@ -1,16 +1,16 @@
 package urlinq.android.com.edu_chat.manager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import android.test.ActivityUnitTestCase;
 import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -20,14 +20,16 @@ import cz.msebera.android.httpclient.Header;
 /**
  * Created by Jacob on 9/27/15.
  */
-public class ECApiManagerTest extends ActivityUnitTestCase{
+public class ECApiManagerTest extends ActivityUnitTestCase<ECApiManager> {
     private final String userEmail = "km2743@nyu.edu";
     private final String passWord = "adventure";
     String userHash;
 
-    public ECApiManagerTest(Class activityClass) {
-        super(activityClass);
+
+    public ECApiManagerTest() {
+        super(ECApiManager.class);
     }
+
 
     @Before
     public void setUp() throws Exception {
@@ -49,8 +51,10 @@ public class ECApiManagerTest extends ActivityUnitTestCase{
     }
 
     @Test
-    public void testPOST() throws Throwable{
+    public void testPOST() throws Throwable {
         //final AsyncHttpClient httpClient = new AsyncHttpClient();
+        Log.d("test", "test");
+        System.out.println("HI");
         final CountDownLatch signal = new CountDownLatch(1);
         runTestOnUiThread(new Runnable() {
             @Override
@@ -62,7 +66,9 @@ public class ECApiManagerTest extends ActivityUnitTestCase{
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         //called when response code 200
+                        Log.d("login", "success");
                         userHash = new String(responseBody);
+
                     }
 
                     @Override
@@ -83,6 +89,7 @@ public class ECApiManagerTest extends ActivityUnitTestCase{
             signal.await(5, TimeUnit.SECONDS); // wait for callback
         } catch (InterruptedException e) {
             e.printStackTrace();
+            fail();
         }
 
         try {
@@ -92,6 +99,7 @@ public class ECApiManagerTest extends ActivityUnitTestCase{
 
         } catch (JSONException e) {
             e.printStackTrace();
+            fail();
         }
 
     }
