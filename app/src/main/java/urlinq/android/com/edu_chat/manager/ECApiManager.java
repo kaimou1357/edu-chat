@@ -1,6 +1,5 @@
 package urlinq.android.com.edu_chat.manager;
 
-import android.app.Activity;
 import android.os.Looper;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -13,7 +12,7 @@ import com.loopj.android.http.SyncHttpClient;
 /**
  * Created by Kai on 9/21/2015.
  */
-public class ECApiManager extends Activity {
+public class ECApiManager {
 
 
     // A SyncHttpClient is an AsyncHttpClient
