@@ -37,10 +37,6 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.*;
 
-import urlinq.android.com.edu_chat.LoginActivity;
-import urlinq.android.com.edu_chat.LoginBackground;
-import urlinq.android.com.edu_chat.LoginFragment;
-import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.ECUser;
 
