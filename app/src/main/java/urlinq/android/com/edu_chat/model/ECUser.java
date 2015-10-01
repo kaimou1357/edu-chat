@@ -3,6 +3,7 @@ package urlinq.android.com.edu_chat.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 /**
  * Global to store authentication tokens, parse the String returned from POST/GET requests.
  * Created by Kai on 9/18/2015.
