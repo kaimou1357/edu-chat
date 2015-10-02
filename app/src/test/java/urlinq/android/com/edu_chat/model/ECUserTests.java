@@ -19,7 +19,6 @@ public class ECUserTests {
     @Before
     public void jsonTest() throws JSONException {
         obj = new JSONObject(successfulLogin);
-        //obj = new JSONObject(successfulLogin);
         ECUser.setCurrentUser(new ECUser(obj));
         person1 = ECUser.getCurrentUser();
     }
