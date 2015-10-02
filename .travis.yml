@@ -21,4 +21,7 @@ script:
   - android list target
   - ./gradlew connectedAndroidTest
 notifications:
+  email:
+    recipients:
+      - kaimou1357@gmail.com
   slack: urlinq:LkEt5WeDyG3u34J7YwMik6ri
