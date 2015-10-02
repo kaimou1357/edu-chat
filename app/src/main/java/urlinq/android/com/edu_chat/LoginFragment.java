@@ -36,6 +36,8 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //initialize viewpager object.
         View v = inflater.inflate(R.layout.login_main, container, false);
+
+
         /**
          * Problems with Bitmap memory allocation in SDK 22
          */

@@ -1,6 +1,6 @@
 package urlinq.android.com.edu_chat;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -44,6 +45,7 @@ public class LoginBackground extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.combined_login, container, false);
+
         signUpBtn = (ImageButton) v.findViewById(R.id.signUpToggle);
         logInBlue = (ImageButton) v.findViewById(R.id.logInBlue);
         flipper = (ViewFlipper) v.findViewById(R.id.viewFlipper);
@@ -78,6 +80,8 @@ public class LoginBackground extends Fragment {
 
         return v;
     }
+
+
 
 
 }
