@@ -17,7 +17,6 @@ public class ECUserTests {
 
     @Before
     public void jsonTest() throws JSONException {
-        System.out.println("Before");
         obj = new JSONObject(successfulLogin);
         //obj = new JSONObject(successfulLogin);
         ECUser.setCurrentUser(new ECUser(obj));
@@ -70,6 +69,11 @@ public class ECUserTests {
 
     public void testLastName() {
         String expectedLast = "Mou";
+        assertEquals(expectedLast, person1.getLastName());
+    }
+
+    public void testShouldFail(){
+        String expectedLast = "Pang";
         assertEquals(expectedLast, person1.getLastName());
     }
 
