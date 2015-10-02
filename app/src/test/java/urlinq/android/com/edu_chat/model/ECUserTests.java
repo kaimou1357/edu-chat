@@ -3,6 +3,7 @@ package urlinq.android.com.edu_chat.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -66,12 +67,12 @@ public class ECUserTests {
         String expectedFirst = "Kai";
         assertEquals(expectedFirst, person1.getFirstName());
     }
-
+    @Test
     public void testLastName() {
         String expectedLast = "Mou";
         assertEquals(expectedLast, person1.getLastName());
     }
-
+    @Test
     public void testShouldFail(){
         String expectedLast = "Pang";
         assertEquals(expectedLast, person1.getLastName());
