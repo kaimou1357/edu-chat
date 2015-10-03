@@ -8,6 +8,8 @@ import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 
+import cz.msebera.android.httpclient.protocol.HttpContext;
+
 
 /**
  * Created by Kai on 9/21/2015.
@@ -23,6 +25,7 @@ public class ECApiManager {
         getClient().setCookieStore(cookieStore);
     }
 
+
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         getClient().get(url, params, responseHandler);
     }
@@ -30,6 +33,12 @@ public class ECApiManager {
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         getClient().post(url, params, responseHandler);
     }
+
+    public static HttpContext getHttpContext(){
+        return getClient().getHttpContext();
+    }
+
+
 
     /**
      * @return an async client when calling from the main thread, otherwise a sync client.

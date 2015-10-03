@@ -4,8 +4,10 @@ import android.test.InstrumentationTestCase;
 import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 
+import org.apache.http.client.protocol.ClientContext;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,6 +15,10 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.client.CookieStore;
+import cz.msebera.android.httpclient.cookie.Cookie;
+import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
+import cz.msebera.android.httpclient.protocol.HttpContext;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 
 /**
@@ -21,9 +27,12 @@ import urlinq.android.com.edu_chat.manager.ECApiManager;
 public class ECApiManagerTests extends InstrumentationTestCase {
     private final String userEmail = "km2743@nyu.edu";
     private final String passWord = "adventure";
+
+    private final String loginAPI = "https://edu.chat/api/login/";
+    private final String loadUserAPI = "https://edu.chat/message/loadout/";
     String userHash;
     String getResponse;
-    String userToken;
+    String userToken = "de5a3fc98da47da3083ed719dbde5932";
 
     public void testPOST() throws Throwable {
         final CountDownLatch signal = new CountDownLatch(1);
@@ -33,7 +42,7 @@ public class ECApiManagerTests extends InstrumentationTestCase {
                 RequestParams params = new RequestParams();
                 params.put("email", userEmail);
                 params.put("password", passWord);
-                ECApiManager.post("https://edu.chat/api/login/", params, new AsyncHttpResponseHandler() {
+                ECApiManager.post(loginAPI, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         //called when response code 200
@@ -64,6 +73,7 @@ public class ECApiManagerTests extends InstrumentationTestCase {
             //System.out.println(userHash);
             JSONObject obj = new JSONObject(userHash);
             userToken = obj.getString("token");
+            Log.d("token", userToken);
             assertEquals("true", obj.getString("success"));
 
         } catch (JSONException e) {
@@ -88,7 +98,7 @@ public class ECApiManagerTests extends InstrumentationTestCase {
             public void run() {
                 RequestParams params = new RequestParams();
                 params.put("token", userToken);
-                ECApiManager.get("https://edu.chat/message/loadout", params, new AsyncHttpResponseHandler() {
+                ECApiManager.get(loadUserAPI, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         //called when response code 200
@@ -121,6 +131,7 @@ public class ECApiManagerTests extends InstrumentationTestCase {
             // Please change to true once API server side login is figured out.
             assertEquals("false", obj.getString("success"));
 
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -128,7 +139,12 @@ public class ECApiManagerTests extends InstrumentationTestCase {
     }
 
     public void testSetCookieStore() throws Throwable {
+        PersistentCookieStore myCookieStore = new PersistentCookieStore(getInstrumentation().getContext());
+        ECApiManager.setCookieStore(myCookieStore);
+        BasicClientCookie newCookie = new BasicClientCookie("id", "17882");
+        myCookieStore.addCookie(newCookie);
 
+        assertNotNull(myCookieStore);
     }
 
 }
