@@ -30,11 +30,15 @@ public class ECApiManagerTests extends InstrumentationTestCase {
 
     private final String loginAPI = "https://edu.chat/api/login/";
     private final String loadUserAPI = "https://edu.chat/message/loadout/";
-    String userHash;
+    static String postUserHash;
+    static String getUserHash;
+    String userToken;
     String getResponse;
-    String userToken = "de5a3fc98da47da3083ed719dbde5932";
+    String postResponse;
 
-    public void testPOST() throws Throwable {
+
+
+    public void testPOSTnGET() throws Throwable {
         final CountDownLatch signal = new CountDownLatch(1);
         runTestOnUiThread(new Runnable() {
             @Override
@@ -46,7 +50,7 @@ public class ECApiManagerTests extends InstrumentationTestCase {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         //called when response code 200
-                        userHash = new String(responseBody);
+                        postUserHash = new String(responseBody);
                     }
 
                     @Override
@@ -54,6 +58,7 @@ public class ECApiManagerTests extends InstrumentationTestCase {
 
                         Log.d("login", "call failed");
                     }
+
                     @Override
                     public void onFinish() {
                         signal.countDown();
@@ -63,6 +68,7 @@ public class ECApiManagerTests extends InstrumentationTestCase {
             }
         });
 
+
         try {
             signal.await(5, TimeUnit.SECONDS); // wait for callback
         } catch (InterruptedException e) {
@@ -70,30 +76,19 @@ public class ECApiManagerTests extends InstrumentationTestCase {
         }
 
         try {
-            //System.out.println(userHash);
-            JSONObject obj = new JSONObject(userHash);
+            JSONObject obj = new JSONObject(postUserHash);
             userToken = obj.getString("token");
-            Log.d("token", userToken);
             assertEquals("true", obj.getString("success"));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        /**
+         * Now try retrieving user data with a GET Request with the token retrieved from the POST request.
+         */
+        final CountDownLatch getSignal = new CountDownLatch(1);
 
-    }
-
-    /**
-     * Test get request with API using the LOADOUT API
-     * Loadout API (GET)
-     - https://edu.chat/message/loadout
-     -Token
-     -Returns chat channels and direct conversations, & notifications
-     -Also returns list of departments user is in
-     * @throws Throwable
-     */
-    public void testGet() throws Throwable {
-        final CountDownLatch signal = new CountDownLatch(1);
-        runTestOnUiThread(new Runnable() {
+        runTestOnUiThread(new Runnable(){
             @Override
             public void run() {
                 RequestParams params = new RequestParams();
@@ -102,34 +97,32 @@ public class ECApiManagerTests extends InstrumentationTestCase {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         //called when response code 200
-                        getResponse = new String(responseBody);
+                        getUserHash = new String(responseBody);
+
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
-                        Log.d("login", "call failed");
                     }
 
                     @Override
                     public void onFinish() {
-                        signal.countDown();
-                        Log.d("login", "finished");
+                        getSignal.countDown();
                     }
                 });
             }
+
         });
 
         try {
-            signal.await(5, TimeUnit.SECONDS); // wait for callback
+            getSignal.await(5, TimeUnit.SECONDS); // wait for callback
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         try {
-            JSONObject obj = new JSONObject(getResponse);
-            // Please change to true once API server side login is figured out.
-            assertEquals("false", obj.getString("success"));
+            JSONObject getObj = new JSONObject(getUserHash);
+            assertEquals("true", getObj.getString("success"));
 
 
         } catch (JSONException e) {
