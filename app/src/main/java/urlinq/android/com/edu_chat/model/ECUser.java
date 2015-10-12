@@ -1,7 +1,14 @@
 package urlinq.android.com.edu_chat.model;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
+import urlinq.android.com.edu_chat.manager.ECApiManager;
 
 
 /**
@@ -12,6 +19,8 @@ public class ECUser {
 
     private static ECUser currentUser;
     private static String userToken;
+    private final static  String loginAPI = "https://edu.chat/api/login/";
+    private final static String loadUserAPI = "https://edu.chat/message/loadout/";
 
     private String firstName;
     private String lastName;
@@ -30,6 +39,7 @@ public class ECUser {
                 this.lastName = this.jObject.getJSONObject("user").getString("lastname");
             }
 
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -44,7 +54,26 @@ public class ECUser {
      * Method that refreshes the state of the current user by calling the API again.
      */
     public static void refreshCurrentUser() {
-        //To be implemented.
+        RequestParams params = new RequestParams();
+        params.put("token", userToken);
+        ECApiManager.get(loadUserAPI, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String userHash = new String(responseBody);
+                try{
+                    JSONObject obj = new JSONObject(userHash);
+                    ECUser.setCurrentUser(new ECUser(obj));
+
+                }catch(JSONException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
 
     public static ECUser getCurrentUser() {
