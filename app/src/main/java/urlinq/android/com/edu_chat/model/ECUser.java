@@ -23,10 +23,13 @@ public class ECUser {
     public ECUser(JSONObject data) throws JSONException {
         this.jObject = data;
         try {
-            this.loginSuccess = Boolean.parseBoolean(jObject.getString("success"));
-            this.userToken = this.jObject.getString("token");
-            this.firstName = this.jObject.getJSONObject("user").getString("firstname");
-            this.lastName = this.jObject.getJSONObject("user").getString("lastname");
+            this.loginSuccess = Boolean.parseBoolean(this.jObject.getString("success"));
+            if(this.loginSuccess){
+                this.userToken = this.jObject.getString("token");
+                this.firstName = this.jObject.getJSONObject("user").getString("firstname");
+                this.lastName = this.jObject.getJSONObject("user").getString("lastname");
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
