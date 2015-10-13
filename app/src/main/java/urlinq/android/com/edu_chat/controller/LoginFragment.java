@@ -1,18 +1,13 @@
-package urlinq.android.com.edu_chat;
+package urlinq.android.com.edu_chat.controller;
 
 
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+
+import urlinq.android.com.edu_chat.R;
 
 /**
  * Created by Kai on 9/4/2015.

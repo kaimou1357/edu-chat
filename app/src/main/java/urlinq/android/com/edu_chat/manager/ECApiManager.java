@@ -34,10 +34,9 @@ public class ECApiManager {
         getClient().post(url, params, responseHandler);
     }
 
-    public static HttpContext getHttpContext(){
+    public static HttpContext getHttpContext() {
         return getClient().getHttpContext();
     }
-
 
 
     /**
