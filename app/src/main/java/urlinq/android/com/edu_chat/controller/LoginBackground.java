@@ -15,6 +15,7 @@ import com.loopj.android.http.RequestParams;
 
 import butterknife.Bind;
 import cz.msebera.android.httpclient.Header;
+import urlinq.android.com.edu_chat.Constants;
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 
@@ -58,7 +59,7 @@ public class LoginBackground extends Fragment {
 				params.put("email", userEmail.getText().toString());
 				params.put("password", userPass.getText().toString());
 
-				ECApiManager.post("https://edu.chat/api/login/", params, new AsyncHttpResponseHandler() {
+				ECApiManager.post(Constants.loginAPI, params, new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess (int statusCode, Header[] headers, byte[] responseBody) {
 						//called when response code 200

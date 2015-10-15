@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
+import urlinq.android.com.edu_chat.Constants;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 
 
@@ -16,13 +17,12 @@ import urlinq.android.com.edu_chat.manager.ECApiManager;
  */
 public class ECUser {
 
-    private final static String loginAPI = "https://edu.chat/api/login/";
-    private final static String loadUserAPI = "https://edu.chat/message/loadout/";
+
     private static ECUser currentUser;
     private static String userToken;
     private String firstName;
     private String lastName;
-    private String userID;
+    private static String userID;
     private JSONObject jObject;
     private boolean loginSuccess;
 
@@ -35,6 +35,7 @@ public class ECUser {
                 this.userToken = this.jObject.getString("token");
                 this.firstName = this.jObject.getJSONObject("user").getString("firstname");
                 this.lastName = this.jObject.getJSONObject("user").getString("lastname");
+                this.userID = this.jObject.getJSONObject("user").getString("id");
             }
 
 
@@ -49,10 +50,13 @@ public class ECUser {
     public static void refreshCurrentUser() {
         RequestParams params = new RequestParams();
         params.put("token", userToken);
+        //Gotta put in user ID too.
+        params.put("user_id", userID);
+
 
         // TODO: This should only call https://edu.chat/api/user, @JACOB
 
-        ECApiManager.get(loadUserAPI, params, new AsyncHttpResponseHandler() {
+        ECApiManager.get(Constants.refreshUserAPI, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String userHash = new String(responseBody);

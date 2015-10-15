@@ -4,6 +4,11 @@ package urlinq.android.com.edu_chat;
  * Created by Kai on 9/16/2015.
  */
 public class Constants {
+
+     public static final String loginAPI = "https://edu.chat/api/login/";
+    public static final String refreshUserAPI = "https://edu.chat/api/user";
+
+
     /**
      * Signup form.
      * <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
