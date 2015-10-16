@@ -52,10 +52,7 @@ public class ECUser {
         params.put("token", userToken);
         //Gotta put in user ID too.
         params.put("user_id", userID);
-
-
         // TODO: This should only call https://edu.chat/api/user, @JACOB
-
         ECApiManager.get(Constants.refreshUserAPI, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -82,10 +79,7 @@ public class ECUser {
         return ECUser.currentUser;
     }
 
-    public static void setCurrentUser(ECUser user) {
-
-        ECUser.currentUser = user;
-    }
+    public static void setCurrentUser(ECUser user) {ECUser.currentUser = user;}
 
     public static String getUserToken() {
         return ECUser.userToken;

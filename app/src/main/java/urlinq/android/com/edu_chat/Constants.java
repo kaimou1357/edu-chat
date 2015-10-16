@@ -5,7 +5,7 @@ package urlinq.android.com.edu_chat;
  */
 public class Constants {
 
-     public static final String loginAPI = "https://edu.chat/api/login/";
+    public static final String loginAPI = "https://edu.chat/api/login/";
     public static final String refreshUserAPI = "https://edu.chat/api/user";
 
 
