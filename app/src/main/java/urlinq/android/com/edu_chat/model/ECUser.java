@@ -1,6 +1,7 @@
 package urlinq.android.com.edu_chat.model;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
@@ -53,23 +54,18 @@ public class ECUser {
         //Gotta put in user ID too.
         params.put("user_id", userID);
         // TODO: This should only call https://edu.chat/api/user, @JACOB
-        ECApiManager.get(Constants.refreshUserAPI, params, new AsyncHttpResponseHandler() {
+        ECApiManager.get(Constants.refreshUserAPI, params, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String userHash = new String(responseBody);
+            public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
+
                 try {
-                    JSONObject obj = new JSONObject(userHash);
-                    ECUser.setCurrentUser(new ECUser(obj));
+                    ECUser.setCurrentUser(new ECUser(responseBody));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-            }
         });
     }
 

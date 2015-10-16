@@ -4,6 +4,7 @@ import android.test.InstrumentationTestCase;
 import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 
@@ -30,8 +31,9 @@ public class ECApiManagerTests extends InstrumentationTestCase {
 
     private final String loginAPI = "https://edu.chat/api/login/";
     private final String refreshUserAPI = "https://edu.chat/api/user";
-    static String postUserHash;
-    static String getUserHash;
+    final JSONObject[] userHashes = new JSONObject[2];
+    static JSONObject postUserHash;
+    static JSONObject getUserHash;
     String userToken;
     String userID;
     String getResponse;
@@ -47,17 +49,11 @@ public class ECApiManagerTests extends InstrumentationTestCase {
                 RequestParams params = new RequestParams();
                 params.put("email", userEmail);
                 params.put("password", passWord);
-                ECApiManager.post(Constants.loginAPI, params, new AsyncHttpResponseHandler() {
+                ECApiManager.post(Constants.loginAPI, params, new JsonHttpResponseHandler() {
                     @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                         //called when response code 200
-                        postUserHash = new String(responseBody);
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-                        Log.d("login", "call failed");
+                        userHashes[0] = responseBody;
                     }
 
                     @Override
@@ -77,10 +73,10 @@ public class ECApiManagerTests extends InstrumentationTestCase {
         }
 
         try {
-            JSONObject obj = new JSONObject(postUserHash);
-            userToken = obj.getString("token");
-            userID = obj.getJSONObject("user").getString("id");
-            assertEquals("true", obj.getString("success"));
+
+            userToken = userHashes[0].getString("token");
+            userID =userHashes[0].getJSONObject("user").getString("id");
+            assertEquals("true", userHashes[0].getString("success"));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -96,17 +92,13 @@ public class ECApiManagerTests extends InstrumentationTestCase {
                 RequestParams params = new RequestParams();
                 params.put("token", userToken);
                 params.put("user_id", userID);
-                ECApiManager.get(Constants.refreshUserAPI, params, new AsyncHttpResponseHandler() {
+                ECApiManager.get(Constants.refreshUserAPI, params, new JsonHttpResponseHandler() {
                     @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                         //called when response code 200
-                        getUserHash = new String(responseBody);
+                        getUserHash = responseBody;
                     }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-                    }
 
                     @Override
                     public void onFinish() {
@@ -123,9 +115,9 @@ public class ECApiManagerTests extends InstrumentationTestCase {
             e.printStackTrace();
         }
         try {
-            JSONObject getObj = new JSONObject(getUserHash);
+
             //change this back to true later. Don't leave this false.
-            assertEquals("false", getObj.getString("success"));
+            assertEquals("false", getUserHash.getString("success"));
 
 
         } catch (JSONException e) {

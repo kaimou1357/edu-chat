@@ -20,7 +20,7 @@ public class LoginFragment extends Fragment {
 //    int lastIndexOfViewPagerChildren = numberOfViewPagerChildren;
 //    //private ViewPager mViewPager;
 //    //private PagerAdapter mCustomPagerAdapter;
-    @Bind (R.id.progressBar) ProgressBar bar;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //initialize viewpager object.
         View v = inflater.inflate(R.layout.login_main, container, false);
-        ButterKnife.bind(this, v);
+
 
         /**
          * Problems with Bitmap memory allocation in SDK 22
@@ -72,12 +72,6 @@ public class LoginFragment extends Fragment {
         return v;
     }
 
-    public void startProgressBar(){
-        bar.setVisibility(View.VISIBLE);
-    }
-    public void stopProgressBar(){
-        bar.setVisibility(View.GONE);
-    }
 
     /**
      * Adapter created for the ViewPager to flip through all the fragments.
