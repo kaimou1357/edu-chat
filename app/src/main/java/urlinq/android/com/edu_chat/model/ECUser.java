@@ -1,6 +1,5 @@
 package urlinq.android.com.edu_chat.model;
 
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 

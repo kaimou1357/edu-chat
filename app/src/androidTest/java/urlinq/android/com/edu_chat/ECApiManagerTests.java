@@ -1,14 +1,11 @@
 package urlinq.android.com.edu_chat;
 
 import android.test.InstrumentationTestCase;
-import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 
-import org.apache.http.client.protocol.ClientContext;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,10 +13,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.client.CookieStore;
-import cz.msebera.android.httpclient.cookie.Cookie;
 import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
-import cz.msebera.android.httpclient.protocol.HttpContext;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 
 /**
@@ -31,35 +25,35 @@ public class ECApiManagerTests extends InstrumentationTestCase {
 
     private final String loginAPI = "https://edu.chat/api/login/";
     private final String refreshUserAPI = "https://edu.chat/api/user";
-    final JSONObject[] userHashes = new JSONObject[2];
-    static JSONObject postUserHash;
-    static JSONObject getUserHash;
+
     String userToken;
     String userID;
-    String getResponse;
-    String postResponse;
-
+    static String getResponse;
+    static String postResponse;
 
 
     public void testPOSTnGET() throws Throwable {
         final CountDownLatch signal = new CountDownLatch(1);
+        final CountDownLatch getSignal = new CountDownLatch(1);
         runTestOnUiThread(new Runnable() {
             @Override
             public void run() {
                 RequestParams params = new RequestParams();
                 params.put("email", userEmail);
                 params.put("password", passWord);
-                ECApiManager.post(Constants.loginAPI, params, new JsonHttpResponseHandler() {
+                ECApiManager.post(Constants.loginAPI, params, new AsyncHttpResponseHandler() {
                     @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
-                        //called when response code 200
-                        userHashes[0] = responseBody;
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        postResponse = new String(responseBody);
                     }
 
                     @Override
-                    public void onFinish() {
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                    @Override
+                    public void onFinish(){
                         signal.countDown();
-                        Log.d("login", "finished");
                     }
                 });
             }
@@ -73,10 +67,10 @@ public class ECApiManagerTests extends InstrumentationTestCase {
         }
 
         try {
-
-            userToken = userHashes[0].getString("token");
-            userID =userHashes[0].getJSONObject("user").getString("id");
-            assertEquals("true", userHashes[0].getString("success"));
+            JSONObject obj = new JSONObject(postResponse);
+            userToken = obj.getString("token");
+            userID = obj.getJSONObject("user").getString("id");
+            assertEquals("true", obj.getString("success"));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -84,24 +78,24 @@ public class ECApiManagerTests extends InstrumentationTestCase {
         /**
          * Now try retrieving user data with a GET Request with the token retrieved from the POST request.
          */
-        final CountDownLatch getSignal = new CountDownLatch(1);
-
-        runTestOnUiThread(new Runnable(){
+        runTestOnUiThread(new Runnable() {
             @Override
             public void run() {
                 RequestParams params = new RequestParams();
                 params.put("token", userToken);
-                params.put("user_id", userID);
-                ECApiManager.get(Constants.refreshUserAPI, params, new JsonHttpResponseHandler() {
+                params.put("id", userID);
+                ECApiManager.get(Constants.refreshUserAPI, params, new AsyncHttpResponseHandler() {
                     @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
-                        //called when response code 200
-                        getUserHash = responseBody;
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        getResponse = new String(responseBody);
                     }
 
-
                     @Override
-                    public void onFinish() {
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                    @Override
+                    public void onFinish(){
                         getSignal.countDown();
                     }
                 });
@@ -115,9 +109,9 @@ public class ECApiManagerTests extends InstrumentationTestCase {
             e.printStackTrace();
         }
         try {
-
+            JSONObject obj1 = new JSONObject(getResponse);
             //change this back to true later. Don't leave this false.
-            assertEquals("false", getUserHash.getString("success"));
+            assertEquals("true", obj1.getString("success"));
 
 
         } catch (JSONException e) {
@@ -135,6 +129,4 @@ public class ECApiManagerTests extends InstrumentationTestCase {
         assertNotNull(myCookieStore);
 
     }
-
 }
-
