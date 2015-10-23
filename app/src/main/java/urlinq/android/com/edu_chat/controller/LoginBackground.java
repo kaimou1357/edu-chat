@@ -72,11 +72,11 @@ public class LoginBackground extends Fragment {
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 				userHash = new String(responseBody);
 				Log.d("login", userHash);
-				try{
+				try {
 					JSONObject obj = new JSONObject(userHash);
 					ECUser.setCurrentUser(new ECUser(obj));
 
-				}catch(JSONException e){
+				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 
@@ -86,19 +86,9 @@ public class LoginBackground extends Fragment {
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
 			}
-			@Override
-			public void onFinish(){
-				//latch.countDown();
-			}
+
 
 		});
-
-//		try {
-//			latch.await(1, TimeUnit.SECONDS); // wait for callback
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-
 
 		if (ECUser.getCurrentUser() == null) {
 			((OnLoginListener) getActivity()).loginSuccessful(false);

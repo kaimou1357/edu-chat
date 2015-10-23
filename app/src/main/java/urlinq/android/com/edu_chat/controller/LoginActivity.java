@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +20,7 @@ public class LoginActivity extends Activity implements LoginBackground.OnLoginLi
 
     private LoginFragment myFragment;
     private LoginBackground loginForm;
-    private ProgressBarFragment progressFragment;
+
 
 
     @Override
@@ -33,7 +34,6 @@ public class LoginActivity extends Activity implements LoginBackground.OnLoginLi
         if (savedInstanceState == null) {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             loginForm = new LoginBackground();
-            progressFragment = new ProgressBarFragment();
             myFragment = new LoginFragment();
             ft.add(R.id.loginContainerView, myFragment);
             //Below the fragment is added to a small framelayout embedded within the main login screen.
@@ -43,21 +43,13 @@ public class LoginActivity extends Activity implements LoginBackground.OnLoginLi
 
     }
 
-    /**
-     * Add a new fragment.
-     * @param frag
-     */
-    private void replaceFragment(Fragment frag){
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.loginContainerView, frag);
-        ft.addToBackStack(null);
-        ft.commit();
-    }
 
     @Override
     public void loginSuccessful(boolean success){
         if(success){
-            replaceFragment(new ProgressBarFragment());
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+
         }
         else{
             Toast.makeText(this, "Login Failed", Toast.LENGTH_LONG).show();

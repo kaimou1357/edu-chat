@@ -18,6 +18,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="urlinq.android.com.edu_chat.controller.MainActivity"
+            android:parentActivityName="urlinq.android.com.edu_chat.controller.LoginActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="urlinq.android.com.edu_chat.controller.LoginActivity" />
+        </activity>
     </application>
 
 </manifest>
