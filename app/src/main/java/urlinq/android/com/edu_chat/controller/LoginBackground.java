@@ -11,11 +11,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ViewFlipper;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,13 +37,9 @@ import urlinq.android.com.edu_chat.model.ECUser;
 public class LoginBackground extends Fragment {
 	private View v;
 	static String userHash;
-	private boolean loggedIn;
-	private ECUser user;
-	private LoginFragment logFrag;
-	private Handler mHandler = new Handler();
-	@Bind(R.id.signUpToggle)  ImageButton signUpBtn;
+	//@Bind(R.id.signUpToggle)  ImageButton signUpBtn;
 	@Bind(R.id.logInBlue) ImageButton logInBlue;
-	@Bind(R.id.viewFlipper)  ViewFlipper flipper;
+	//@Bind(R.id.viewFlipper)  ViewFlipper flipper;
 	@Bind(R.id.emailTextView) EditText userEmail;
 	@Bind(R.id.passwordTextView) EditText userPass;
 
@@ -63,23 +63,42 @@ public class LoginBackground extends Fragment {
 	 * Attempt to login separated into another method.
 	 */
 	private void attemptLogin(){
+		//final CountDownLatch latch = new CountDownLatch(1);
 		RequestParams params = new RequestParams();
 		params.put("email", userEmail.getText().toString());
 		params.put("password", userPass.getText().toString());
-		ECApiManager.post(Constants.loginAPI, params, new JsonHttpResponseHandler() {
+		ECApiManager.post(Constants.loginAPI, params, new AsyncHttpResponseHandler() {
 			@Override
-			public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
-				//called when response code 200
+			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+				userHash = new String(responseBody);
+				Log.d("login", userHash);
 				try{
-					ECUser.setCurrentUser(new ECUser(responseBody));
-					Log.d("login", responseBody.toString());
+					JSONObject obj = new JSONObject(userHash);
+					ECUser.setCurrentUser(new ECUser(obj));
+
 				}catch(JSONException e){
 					e.printStackTrace();
 				}
 
 			}
 
+			@Override
+			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+			}
+			@Override
+			public void onFinish(){
+				//latch.countDown();
+			}
+
 		});
+
+//		try {
+//			latch.await(1, TimeUnit.SECONDS); // wait for callback
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+
 
 		if (ECUser.getCurrentUser() == null) {
 			((OnLoginListener) getActivity()).loginSuccessful(false);
