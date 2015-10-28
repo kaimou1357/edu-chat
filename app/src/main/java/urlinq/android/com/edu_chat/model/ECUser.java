@@ -14,7 +14,7 @@ import urlinq.android.com.edu_chat.manager.ECApiManager;
  * Global to store authentication tokens, parse the String returned from POST/GET requests.
  * Created by Kai on 9/18/2015.
  */
-public class ECUser {
+public class ECUser extends ECObject{
 
 	//static
 	private static ECUser currentUser;

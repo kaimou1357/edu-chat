@@ -3,7 +3,7 @@ package urlinq.android.com.edu_chat.model;
 /**
  * Created by Kai on 10/23/2015.
  */
-public class ECMessage {
+public class ECMessage extends ECObject {
     public static final int TYPE_MESSAGE = 0;
     public static final int TYPE_LOG = 1;
     public static final int TYPE_ACTION = 2;
