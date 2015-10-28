@@ -5,7 +5,7 @@ android {
         unitTests.returnDefaultValues = true
     }
 
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion '22.0.1'
     defaultConfig {
         applicationId "urlinq.android.com.edu_chat"
@@ -38,9 +38,9 @@ android {
 dependencies {
     testCompile 'junit:junit:4.12'
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:design:22.2.0'
-    compile 'com.android.support:appcompat-v7:22.1.0'
-    compile 'com.android.support:recyclerview-v7:22.0.1'
+    compile 'com.android.support:design:23.1.0'
+    compile 'com.android.support:appcompat-v7:23.1.0'
+    compile 'com.android.support:recyclerview-v7:23.1.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     testCompile 'org.json:json:20150729'

@@ -1,5 +1,6 @@
 package urlinq.android.com.edu_chat.model;
 
+import android.app.Activity;
 import android.content.Context;
 
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +19,7 @@ import urlinq.android.com.edu_chat.R;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
     private List<Message> mMessages;
 
-    public MessageAdapter(Context context, List<Message> messages){
+    public MessageAdapter(Activity context, List<Message> messages){
         mMessages = messages;
 
     }

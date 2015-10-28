@@ -22,17 +22,17 @@ import urlinq.android.com.edu_chat.manager.ECApiManager;
 public class ECApiManagerTests extends InstrumentationTestCase {
     private final String userEmail = "km2743@nyu.edu";
     private final String passWord = "adventure";
-
     private final String loginAPI = "https://edu.chat/api/login/";
     private final String refreshUserAPI = "https://edu.chat/api/user";
-
     String userToken;
     String userID;
     static String getResponse;
     static String postResponse;
 
 
+
     public void testPOSTnGET() throws Throwable {
+
         final CountDownLatch signal = new CountDownLatch(1);
         final CountDownLatch getSignal = new CountDownLatch(1);
         runTestOnUiThread(new Runnable() {
@@ -62,9 +62,7 @@ public class ECApiManagerTests extends InstrumentationTestCase {
 
         try {
             signal.await(5, TimeUnit.SECONDS); // wait for callback
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        } catch (InterruptedException e) {e.printStackTrace();}
 
         try {
             JSONObject obj = new JSONObject(postResponse);
@@ -94,8 +92,9 @@ public class ECApiManagerTests extends InstrumentationTestCase {
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
                     }
+
                     @Override
-                    public void onFinish(){
+                    public void onFinish() {
                         getSignal.countDown();
                     }
                 });

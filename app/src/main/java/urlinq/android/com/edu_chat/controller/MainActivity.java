@@ -1,6 +1,7 @@
 package urlinq.android.com.edu_chat.controller;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import urlinq.android.com.edu_chat.R;
@@ -14,6 +15,13 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_chat_container);
+        if (savedInstanceState == null) {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ChatFragment chatFrag = new ChatFragment();
+            ft.add(R.id.mainMenuContainer, chatFrag);
+            //Below the fragment is added to a small framelayout embedded within the main login screen.
+            ft.commit();
+        }
 
     }
 

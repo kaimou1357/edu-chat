@@ -20,9 +20,6 @@ public class LoginActivity extends Activity implements LoginBackground.OnLoginLi
 
     private LoginFragment myFragment;
     private LoginBackground loginForm;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +46,6 @@ public class LoginActivity extends Activity implements LoginBackground.OnLoginLi
         if(success){
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-
         }
         else{
             Toast.makeText(this, "Login Failed", Toast.LENGTH_LONG).show();
