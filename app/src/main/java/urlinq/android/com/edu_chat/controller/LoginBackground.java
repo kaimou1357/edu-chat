@@ -89,6 +89,9 @@ public class LoginBackground extends Fragment {
 
 
 		});
+		/**
+		 * Currently bugged right now. Needs to press twice to login. Might have something to do with signal callback.
+		 */
 
 		if (ECUser.getCurrentUser() == null) {
 			((OnLoginListener) getActivity()).loginSuccessful(false);
@@ -99,8 +102,6 @@ public class LoginBackground extends Fragment {
 		else{
 			((OnLoginListener) getActivity()).loginSuccessful(true);
 		}
-
-
 
 	}
 

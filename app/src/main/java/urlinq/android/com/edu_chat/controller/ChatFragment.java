@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -26,7 +27,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import urlinq.android.com.edu_chat.R;
-import urlinq.android.com.edu_chat.model.Message;
+import urlinq.android.com.edu_chat.model.ECMessage;
 import urlinq.android.com.edu_chat.model.MessageAdapter;
 
 /**
@@ -43,10 +44,14 @@ public class ChatFragment extends Fragment {
     private Handler mTypingHandler = new Handler();
     private boolean mTyping = false;
     private String mUsername;
-    private List<Message> mMessages = new ArrayList<Message>();
-    private RecyclerView.Adapter mAdapter = new MessageAdapter(getActivity(), mMessages);;
+    private List<ECMessage> mMessages = new ArrayList<ECMessage>();
+    private RecyclerView.Adapter mAdapter;
 
-
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        mAdapter = new MessageAdapter(getActivity(), mMessages);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.chat_fragment, container, false);
@@ -127,7 +132,7 @@ public class ChatFragment extends Fragment {
      * @param message
      */
     private void addMessage(String username, String message) {
-        mMessages.add(new Message.Builder(Message.TYPE_MESSAGE)
+        mMessages.add(new ECMessage.Builder(ECMessage.TYPE_MESSAGE)
                 .username(username).message(message).build());
         mAdapter.notifyItemInserted(mMessages.size() - 1);
         scrollToBottom();

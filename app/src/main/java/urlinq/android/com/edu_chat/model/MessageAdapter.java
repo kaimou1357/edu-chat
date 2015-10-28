@@ -3,6 +3,7 @@ package urlinq.android.com.edu_chat.model;
 import android.app.Activity;
 import android.content.Context;
 
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,9 @@ import urlinq.android.com.edu_chat.R;
  * Created by Kai on 10/26/2015.
  */
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
-    private List<Message> mMessages;
+    private List<ECMessage> mMessages;
 
-    public MessageAdapter(Activity context, List<Message> messages){
+    public MessageAdapter(Activity context, List<ECMessage> messages){
         mMessages = messages;
 
     }
@@ -27,13 +28,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         int layout = -1;
         switch(viewType) {
-            case Message.TYPE_MESSAGE:
+            case ECMessage.TYPE_MESSAGE:
                 layout = R.layout.item_message;
                 break;
-            case Message.TYPE_LOG:
+            case ECMessage.TYPE_LOG:
                 layout = R.layout.item_log;
                 break;
-            case Message.TYPE_ACTION:
+            case ECMessage.TYPE_ACTION:
                 layout = R.layout.item_action;
                 break;
         }
@@ -44,7 +45,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     }
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position){
-        Message message = mMessages.get(position);
+        ECMessage message = mMessages.get(position);
         viewHolder.setMessage(message.getMessage());
         viewHolder.setUsername(message.getUsername());
 
