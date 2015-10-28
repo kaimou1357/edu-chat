@@ -3,7 +3,7 @@ package urlinq.android.com.edu_chat.model;
 /**
  * Created by Kai on 10/23/2015.
  */
-public class Message {
+public class ECMessage {
     public static final int TYPE_MESSAGE = 0;
     public static final int TYPE_LOG = 1;
     public static final int TYPE_ACTION = 2;
@@ -12,7 +12,7 @@ public class Message {
     private String mMessage;
     private String mUsername;
 
-    private Message() {}
+    private ECMessage() {}
 
     public int getType() {
         return mType;
@@ -46,8 +46,8 @@ public class Message {
             return this;
         }
 
-        public Message build() {
-            Message message = new Message();
+        public ECMessage build() {
+            ECMessage message = new ECMessage();
             message.mType = mType;
             message.mUsername = mUsername;
             message.mMessage = mMessage;
