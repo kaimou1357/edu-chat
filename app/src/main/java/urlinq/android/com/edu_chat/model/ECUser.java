@@ -46,7 +46,7 @@ public class ECUser extends ECObject {
 
 	public ECUser(JSONObject data) throws JSONException {
 		// TODO: Replace null with the actual object identifier
-		super(null, fileURL);
+		super(null, null);
 		try {
 			this.loginSuccess = Boolean.parseBoolean(data.getString("success"));
 			if (this.loginSuccess) {
@@ -124,8 +124,9 @@ public class ECUser extends ECObject {
 		return this.loginSuccess;
 	}
 
-	public Bitmap getProfilePicture(){return null;}
-
+	public Bitmap getProfilePicture() {
+		return null;
+	}
 
 
 }

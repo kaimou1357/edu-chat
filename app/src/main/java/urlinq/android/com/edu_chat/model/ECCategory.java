@@ -17,7 +17,7 @@ public class ECCategory extends ECObject {
 
 	public ECCategory() {
 		// TODO: Replace null with Object identifier
-		super(null, fileURL);
+		super(null, null);
 	}
 
 	public ECCategory buildWithJSON(JSONObject response, ECCategoryType groupType) {
