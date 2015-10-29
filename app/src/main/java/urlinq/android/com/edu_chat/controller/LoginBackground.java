@@ -68,42 +68,44 @@ public class LoginBackground extends Fragment {
 		params.put("email", userEmail.getText().toString());
 		params.put("password", userPass.getText().toString());
 		ECApiManager.post(Constants.loginAPI, params, new AsyncHttpResponseHandler() {
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-				userHash = new String(responseBody);
-				Log.d("login", userHash);
-				try {
-					JSONObject obj = new JSONObject(userHash);
-					ECUser.setCurrentUser(new ECUser(obj));
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                userHash = new String(responseBody);
+                Log.d("login", userHash);
+                try {
+                    JSONObject obj = new JSONObject(userHash);
+                    ECUser.setCurrentUser(new ECUser(obj));
 
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-			}
+            }
 
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
-			}
+            }
+            @Override
+            public void onFinish() {
+                launchMainActivity();
+            }
 
 
-		});
-		/**
-		 * Currently bugged right now. Needs to press twice to login. Might have something to do with signal callback.
-		 */
+        });
+    }
+    private void launchMainActivity(){
+        if (ECUser.getCurrentUser() == null) {
 
-		if (ECUser.getCurrentUser() == null) {
-			((OnLoginListener) getActivity()).loginSuccessful(false);
-		}
-		else if (ECUser.getCurrentUser().getLoginSuccessful()){
-			((OnLoginListener) getActivity()).loginSuccessful(true);
-		}
-		else{
-			((OnLoginListener) getActivity()).loginSuccessful(true);
-		}
-
-	}
+            ((OnLoginListener) getActivity()).loginSuccessful(false);
+        }
+        else if (ECUser.getCurrentUser().getLoginSuccessful()){
+            ((OnLoginListener) getActivity()).loginSuccessful(true);
+        }
+        else{
+            ((OnLoginListener) getActivity()).loginSuccessful(true);
+        }
+    }
 
 
 	public interface OnLoginListener{

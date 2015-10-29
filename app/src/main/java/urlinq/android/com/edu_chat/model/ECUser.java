@@ -1,5 +1,6 @@
 package urlinq.android.com.edu_chat.model;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -24,6 +25,7 @@ public class ECUser extends ECObject{
 	//dynamic
 	private String firstName;
 	private String lastName;
+	private String fullName;
 	private boolean loginSuccess;
 
 
@@ -52,7 +54,6 @@ public class ECUser extends ECObject{
 		params.put("token", ECUser.getUserToken());
 		//Gotta put in user ID too.
 		params.put("id", ECUser.getUserID());
-		// TODO: This should only call https://edu.chat/api/user, @JACOB
 		ECApiManager.get(Constants.refreshUserAPI, params, new AsyncHttpResponseHandler() {
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -106,6 +107,9 @@ public class ECUser extends ECObject{
 	public boolean getLoginSuccessful() {
 		return this.loginSuccess;
 	}
+
+	public Bitmap getProfilePicture(){return null;}
+
 
 
 }

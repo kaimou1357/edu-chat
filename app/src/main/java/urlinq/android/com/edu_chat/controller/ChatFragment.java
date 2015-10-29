@@ -36,21 +36,28 @@ import urlinq.android.com.edu_chat.model.MessageAdapter;
 public class ChatFragment extends Fragment {
     private static final int REQUEST_LOGIN = 0;
     private static final int TYPING_TIMER_LENGTH = 600;
-    //Don't forget to uncomment out when your internet is back
 
     @Bind(R.id.messages) RecyclerView mMessagesView;
     @Bind(R.id.message_input) EditText mInputMessageView;
     @Bind(R.id.send_button) ImageButton sendButton;
     private Handler mTypingHandler = new Handler();
     private boolean mTyping = false;
+    //Don't forget to set the username to something before we begin.
     private String mUsername;
     private List<ECMessage> mMessages = new ArrayList<ECMessage>();
     private RecyclerView.Adapter mAdapter;
 
     @Override
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+        mAdapter = new MessageAdapter(activity, mMessages);
+
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        mAdapter = new MessageAdapter(getActivity(), mMessages);
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -61,6 +68,7 @@ public class ChatFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
+
         mMessagesView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mMessagesView.setAdapter(mAdapter);
 

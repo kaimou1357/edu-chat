@@ -20,7 +20,7 @@ import urlinq.android.com.edu_chat.R;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
     private List<ECMessage> mMessages;
 
-    public MessageAdapter(Activity context, List<ECMessage> messages){
+    public MessageAdapter(Context context, List<ECMessage> messages){
         mMessages = messages;
 
     }
@@ -81,5 +81,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             if(mMessageView == null) return;
             mMessageView.setText(message);
         }
+
     }
 }
