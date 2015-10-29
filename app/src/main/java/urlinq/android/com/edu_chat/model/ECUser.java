@@ -9,12 +9,14 @@ import org.json.JSONObject;
 import urlinq.android.com.edu_chat.Constants;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 
+import java.util.Date;
+
 
 /**
  * Global to store authentication tokens, parse the String returned from POST/GET requests.
  * Created by Kai on 9/18/2015.
  */
-public class ECUser extends ECObject{
+public class ECUser extends ECObject {
 
 	//static
 	private static ECUser currentUser;
@@ -26,16 +28,30 @@ public class ECUser extends ECObject{
 	private String lastName;
 	private boolean loginSuccess;
 
+	private ECUserType userType;
+
+	// TODO: Field for profile picture
+
+	// TODO: Use this variable
+	private ECMessage mostRecentMessage;
+
+	// TODO: Use this variable
+	private Date lastActivity;
+
+	// TODO: Use this variable
+	private String department;
+
 
 	public ECUser(JSONObject data) throws JSONException {
-		JSONObject jObject = data;
+		// TODO: Replace null with the actual object identifier
+		super(null, fileURL);
 		try {
-			this.loginSuccess = Boolean.parseBoolean(jObject.getString("success"));
+			this.loginSuccess = Boolean.parseBoolean(data.getString("success"));
 			if (this.loginSuccess) {
-				ECUser.userToken = jObject.getString("token");
-				this.firstName = jObject.getJSONObject("user").getString("firstname");
-				this.lastName = jObject.getJSONObject("user").getString("lastname");
-				ECUser.userID = jObject.getJSONObject("user").getString("id");
+				ECUser.userToken = data.getString("token");
+				this.firstName = data.getJSONObject("user").getString("firstname");
+				this.lastName = data.getJSONObject("user").getString("lastname");
+				ECUser.userID = data.getJSONObject("user").getString("id");
 			}
 
 

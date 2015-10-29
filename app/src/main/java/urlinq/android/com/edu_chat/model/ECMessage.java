@@ -12,7 +12,9 @@ public class ECMessage extends ECObject {
     private String mMessage;
     private String mUsername;
 
-    private ECMessage() {}
+    private ECMessage() {
+		super(objectIdentifier, fileURL);
+	}
 
     public int getType() {
         return mType;
