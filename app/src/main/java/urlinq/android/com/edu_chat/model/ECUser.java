@@ -22,7 +22,6 @@ public class ECUser extends ECObject {
 	//static
 	private static ECUser currentUser;
 	private static String userToken;
-	private static String userID;
 
 	//dynamic
 	private String firstName;
@@ -45,18 +44,15 @@ public class ECUser extends ECObject {
 
 
 	public ECUser(JSONObject data) throws JSONException {
-		// TODO: Replace null with the actual object identifier
-		super(null, null);
+		// TODO: This should not be a try catch. I'll explain.
+		super(data.getJSONObject("user").getString("id"), null);
 		try {
 			this.loginSuccess = Boolean.parseBoolean(data.getString("success"));
 			if (this.loginSuccess) {
 				ECUser.userToken = data.getString("token");
 				this.firstName = data.getJSONObject("user").getString("firstname");
 				this.lastName = data.getJSONObject("user").getString("lastname");
-				ECUser.userID = data.getJSONObject("user").getString("id");
 			}
-
-
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -107,7 +103,7 @@ public class ECUser extends ECObject {
 	}
 
 	public static String getUserID() {
-		return ECUser.userID;
+		return ECUser.currentUser.getObjectIdentifier();
 	}
 
 	// Dynamic
