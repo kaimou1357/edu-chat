@@ -2,28 +2,19 @@ package urlinq.android.com.edu_chat.controller;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ViewFlipper;
-
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import cz.msebera.android.httpclient.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 import urlinq.android.com.edu_chat.Constants;
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
@@ -44,12 +35,12 @@ public class LoginBackground extends Fragment {
 	@Bind(R.id.passwordTextView) EditText userPass;
 
 	@Override
-	public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		v = inflater.inflate(R.layout.combined_login, container, false);
 		//get reference to other fragment
 		ButterKnife.bind(this, v);
 		logInBlue.setOnClickListener(new View.OnClickListener() {
-			public void onClick (View v) {
+			public void onClick(View v) {
 				//This will delay the spinner circle a bit so it's  not too fast.
 				attemptLogin();
 			}
@@ -62,56 +53,52 @@ public class LoginBackground extends Fragment {
 	/**
 	 * Attempt to login separated into another method.
 	 */
-	private void attemptLogin(){
+	private void attemptLogin() {
 		//final CountDownLatch latch = new CountDownLatch(1);
 		RequestParams params = new RequestParams();
 		params.put("email", userEmail.getText().toString());
 		params.put("password", userPass.getText().toString());
 		ECApiManager.post(Constants.loginAPI, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                userHash = new String(responseBody);
-                Log.d("login", userHash);
-                try {
-                    JSONObject obj = new JSONObject(userHash);
-                    ECUser.setCurrentUser(new ECUser(obj));
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+				userHash = new String(responseBody);
+				Log.d("login", userHash);
+				try {
+					JSONObject obj = new JSONObject(userHash);
+					ECUser.setCurrentUser(new ECUser(obj));
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 
-            }
+			}
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+			@Override
+			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
-            }
-            @Override
-            public void onFinish() {
-                launchMainActivity();
-            }
+			}
 
-
-        });
-    }
-    private void launchMainActivity(){
-        if (ECUser.getCurrentUser() == null) {
-
-            ((OnLoginListener) getActivity()).loginSuccessful(false);
-        }
-        else if (ECUser.getCurrentUser().getLoginSuccessful()){
-            ((OnLoginListener) getActivity()).loginSuccessful(true);
-        }
-        else{
-            ((OnLoginListener) getActivity()).loginSuccessful(true);
-        }
-    }
+			@Override
+			public void onFinish() {
+				launchMainActivity();
+			}
 
 
-	public interface OnLoginListener{
-		public void loginSuccessful(boolean success);
+		});
 	}
 
+	private void launchMainActivity() {
+		if (ECUser.getCurrentUser() == null) {
+			((OnLoginListener) getActivity()).loginSuccessful(false);
+		} else {
+			((OnLoginListener) getActivity()).loginSuccessful(true);
+		}
+	}
+
+
+	public interface OnLoginListener {
+		public void loginSuccessful(boolean success);
+	}
 
 
 }

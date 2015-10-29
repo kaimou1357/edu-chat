@@ -24,38 +24,29 @@ public class ECUser extends ECObject {
 	private static String userToken;
 
 	//dynamic
-	private String firstName;
-	private String lastName;
-	private String fullName;
-	private boolean loginSuccess;
-
-	private ECUserType userType;
+	private final String firstName;
+	private final String lastName;
+	private final ECUserType userType;
 
 	// TODO: Field for profile picture
 
 	// TODO: Use this variable
-	private ECMessage mostRecentMessage;
+	private final ECMessage mostRecentMessage;
 
 	// TODO: Use this variable
-	private Date lastActivity;
+	private final Date lastActivity;
 
 	// TODO: Use this variable
-	private String department;
-
+	private final String department;
 
 	public ECUser(JSONObject data) throws JSONException {
-		// TODO: This should not be a try catch. I'll explain.
 		super(data.getJSONObject("user").getString("id"), null);
-		try {
-			this.loginSuccess = Boolean.parseBoolean(data.getString("success"));
-			if (this.loginSuccess) {
-				ECUser.userToken = data.getString("token");
-				this.firstName = data.getJSONObject("user").getString("firstname");
-				this.lastName = data.getJSONObject("user").getString("lastname");
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		this.firstName = data.getJSONObject("user").getString("firstname");
+		this.lastName = data.getJSONObject("user").getString("lastname");
+		this.userType = null;
+		mostRecentMessage = null;
+		lastActivity = null;
+		department = null;
 	}
 
 	/**
@@ -114,10 +105,6 @@ public class ECUser extends ECObject {
 
 	public String getFirstName() {
 		return this.firstName;
-	}
-
-	public boolean getLoginSuccessful() {
-		return this.loginSuccess;
 	}
 
 	public Bitmap getProfilePicture() {
