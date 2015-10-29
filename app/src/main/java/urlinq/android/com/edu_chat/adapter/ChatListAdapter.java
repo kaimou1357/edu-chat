@@ -1,4 +1,4 @@
-package urlinq.android.com.edu_chat.model;
+package urlinq.android.com.edu_chat.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import urlinq.android.com.edu_chat.R;
+import urlinq.android.com.edu_chat.model.ECUser;
 
 /**
  * Created by Kai on 10/28/2015.

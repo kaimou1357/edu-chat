@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import urlinq.android.com.edu_chat.R;
-import urlinq.android.com.edu_chat.model.ChatListAdapter;
+import urlinq.android.com.edu_chat.adapter.ChatListAdapter;
 import urlinq.android.com.edu_chat.model.ECUser;
 
 import java.util.ArrayList;

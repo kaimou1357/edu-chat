@@ -2,14 +2,11 @@ package urlinq.android.com.edu_chat.controller;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -28,7 +25,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.model.ECMessage;
-import urlinq.android.com.edu_chat.model.MessageAdapter;
+import urlinq.android.com.edu_chat.adapter.MessageAdapter;
 
 /**
  * Created by Kai on 10/26/2015.

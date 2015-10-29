@@ -1,9 +1,7 @@
-package urlinq.android.com.edu_chat.model;
+package urlinq.android.com.edu_chat.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 
-import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import urlinq.android.com.edu_chat.R;
+import urlinq.android.com.edu_chat.model.ECMessage;
 
 /**
  * Created by Kai on 10/26/2015.
