@@ -43,6 +43,7 @@ public class ECUser extends ECObject {
 		super(data.getJSONObject("user").getString("id"), null);
 		this.firstName = data.getJSONObject("user").getString("firstname");
 		this.lastName = data.getJSONObject("user").getString("lastname");
+		this.userToken = data.getString("token");
 		this.userType = null;
 		mostRecentMessage = null;
 		lastActivity = null;
@@ -55,7 +56,6 @@ public class ECUser extends ECObject {
 	public static void refreshCurrentUser() {
 		RequestParams params = new RequestParams();
 		params.put("token", ECUser.getUserToken());
-		//Gotta put in user ID too.
 		params.put("id", ECUser.getUserID());
 		ECApiManager.get(Constants.refreshUserAPI, params, new AsyncHttpResponseHandler() {
 			@Override

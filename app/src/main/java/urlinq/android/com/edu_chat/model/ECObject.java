@@ -20,10 +20,11 @@ public class ECObject {
 		this.fileURL = fileURL;
 	}
 
-	public ECObject buildWithJSON(JSONObject response) {
-		// TODO: Make this
-		return new ECObject(null, null);
-	}
+//	public ECObject buildWithJSON(JSONObject response) {
+//		// TODO: Make this
+//
+//		return new ECObject(null, null);
+//	}
 
 	public String getFileURL() {
 		return fileURL;

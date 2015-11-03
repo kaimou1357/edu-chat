@@ -1,24 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id = "@+id/mainMenuContainer">
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="85dp"
-        android:layout_height="85dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="45dp"
-        android:layout_marginRight = "30dp"
-        android:id = "@+id/addChat"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/userProfilePicture"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/userFullName"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/userSchool"
+        android:layout_below="@+id/userFullName"
+        android:layout_centerHorizontal="true" />
+
+
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="CLASSES"
+        android:id="@+id/classesText"
+        android:layout_below="@id/userSchool"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="GROUPS"
+        android:id="@+id/groupText"
+        android:layout_alignTop="@+id/classList"
+        android:layout_alignBottom="@+id/groupList" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="DEPARTMENTS"
+        android:id="@+id/departmentText"
+        android:layout_alignTop="@id/groupList"
+        android:layout_alignBottom="@+id/departmentList"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="PEOPLE"
+        android:id="@+id/peopleText"
+        android:layout_alignTop="@+id/departmentList"
+        android:layout_alignBottom="@+id/peopleList" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="LABS"
+        android:id="@+id/labText"
+        android:layout_alignTop="@+id/peopleList"
+        android:layout_alignBottom="@+id/labList"
+        android:layout_alignParentStart="true" />
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id = "@+id/userList">
-
+        android:layout_height="wrap_content"
+        android:id = "@+id/classList"
+        android:layout_alignTop="@id/classesText"
+        android:layout_alignBottom="@id/groupText">
     </android.support.v7.widget.RecyclerView>
 
 
-</RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/groupList"
+        android:layout_alignTop="@id/groupText"
+        android:layout_alignBottom="@id/departmentText">
+    </android.support.v7.widget.RecyclerView>
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/departmentList"
+        android:layout_alignTop="@id/departmentText"
+        android:layout_alignBottom="@id/peopleText">
+    </android.support.v7.widget.RecyclerView>
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/peopleList"
+        android:layout_toEndOf="@+id/userProfilePicture"
+        android:layout_alignTop="@id/peopleText"
+        android:layout_alignBottom="@id/labText">
+    </android.support.v7.widget.RecyclerView>
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/labList"
+        android:layout_alignTop="@id/labText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true">
+    </android.support.v7.widget.RecyclerView>
+
+
+
+
+
+
+
+
+
+
+</LinearLayout>

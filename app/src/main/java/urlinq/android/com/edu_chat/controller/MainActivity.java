@@ -4,11 +4,27 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.TextView;
+
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cz.msebera.android.httpclient.Header;
+import urlinq.android.com.edu_chat.Constants;
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.adapter.ChatListAdapter;
+import urlinq.android.com.edu_chat.manager.ECApiManager;
+import urlinq.android.com.edu_chat.model.ECCategory;
+import urlinq.android.com.edu_chat.model.ECCategoryType;
+import urlinq.android.com.edu_chat.model.ECObject;
 import urlinq.android.com.edu_chat.model.ECUser;
+import urlinq.android.com.edu_chat.model.ECUserType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +35,17 @@ import java.util.List;
  */
 public class MainActivity extends Activity {
 	private List<ECUser> ecUserList = new ArrayList<>();
+	private List<ECCategory> ecCategoryGroupList = new ArrayList<>();
 	private ChatListAdapter mAdapter;
-	@Bind(R.id.userList) RecyclerView userList;
+	private ECUser currentUser;
+	private ECCategory groups;
+	private ECObject classes;
+	private ECObject departments;
+	private ECObject people;
+	@Bind(R.id.classList) RecyclerView userList;
+	@Bind(R.id.groupList) RecyclerView groupList;
+	@Bind(R.id.userFullName) TextView userFullName;
+	@Bind(R.id.userSchool)TextView userSchoolName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,28 +56,62 @@ public class MainActivity extends Activity {
 
 		userList.setLayoutManager(new LinearLayoutManager(this));
 		userList.setAdapter(mAdapter);
+		loadCurrentUser();
 		refreshUserChatList();
-
-//   Saving code later for testing.
-//        if (savedInstanceState == null) {
-//            FragmentTransaction ft = getFragmentManager().beginTransaction();
-//            ChatFragment chatFrag = new ChatFragment();
-//            ft.add(R.id.mainMenuContainer, chatFrag);
-//            //Below the fragment is added to a small framelayout embedded within the main login screen.
-//            ft.commit();
-//        }
-
 	}
+
 
 	/**
 	 * This method will populate ecUserList with the users loaded in from the login call.
 	 */
 	private void refreshUserChatList() {
+		RequestParams params = new RequestParams();
+		params.put("token", ECUser.getUserToken());
+		ECApiManager.get(Constants.loadoutAPI, params, new AsyncHttpResponseHandler() {
+			JSONObject obj;
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+				String response = new String(responseBody);
+				try {
+					obj = new JSONObject(response);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
 
-		//quick test to make sure adapter is working.
-		ecUserList.add(ECUser.getCurrentUser());
-		mAdapter.notifyItemInserted(ecUserList.size() - 1);
+			@Override
+			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
+			}
+
+			@Override
+			public void onFinish() {
+				makeObjects(obj);
+			}
+		});
+	}
+
+	/**
+	 * Takes the output from the loadout API call and makes them into objects.
+	 */
+	private void makeObjects(JSONObject response){
+		//Create each ECCategory object. Fill into RecyclerView later.
+		try{
+			//Add for classes, departments, people, groups.
+			groups = ECCategory.buildWithJSON(response.getJSONArray("groups"), ECCategoryType.ECGroupCategoryType);
+
+		}catch(JSONException e){
+			e.printStackTrace();
+		}
+
+
+	}
+	/**
+	 * This method will load the profile picture and the student full name and school.
+	 */
+	private void loadCurrentUser(){
+		currentUser = ECUser.getCurrentUser();
+		userFullName.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
 
 	}
 
