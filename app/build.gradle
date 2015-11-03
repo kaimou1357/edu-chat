@@ -5,7 +5,7 @@ android {
         unitTests.returnDefaultValues = true
     }
 
-    compileSdkVersion 22
+    compileSdkVersion 21
     buildToolsVersion '22.0.1'
     defaultConfig {
         applicationId "urlinq.android.com.edu_chat"

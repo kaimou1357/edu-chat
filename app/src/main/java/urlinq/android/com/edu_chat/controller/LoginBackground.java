@@ -1,7 +1,7 @@
 package urlinq.android.com.edu_chat.controller;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +25,7 @@ import urlinq.android.com.edu_chat.model.ECUser;
  * Created by Kai on 9/6/2015.
  * This Fragment handles all the information associated with the different layouts between the signin form and the login form.
  */
-public class LoginBackground extends Fragment {
+public class LoginBackground extends Fragment{
 	private View v;
 	static String userHash;
 	//@Bind(R.id.signUpToggle)  ImageButton signUpBtn;

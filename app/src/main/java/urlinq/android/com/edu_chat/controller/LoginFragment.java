@@ -1,15 +1,11 @@
 package urlinq.android.com.edu_chat.controller;
 
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import urlinq.android.com.edu_chat.R;
 
 /**
@@ -22,24 +18,24 @@ public class LoginFragment extends Fragment {
 //    //private PagerAdapter mCustomPagerAdapter;
 
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
 
-    @Override
-    /**
-     * Load the login_main.xml layout.
-     * In addition, load the ViewPager.
-     */
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //initialize viewpager object.
-        View v = inflater.inflate(R.layout.login_main, container, false);
+	@Override
+	/**
+	 * Load the login_main.xml layout.
+	 * In addition, load the ViewPager.
+	 */
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		//initialize viewpager object.
+		View v = inflater.inflate(R.layout.login_main, container, false);
 
 
-        /**
-         * Problems with Bitmap memory allocation in SDK 22
-         */
+		/**
+		 * Problems with Bitmap memory allocation in SDK 22
+		 */
 //        mViewPager = (ViewPager) v.findViewById(R.id.loginPager);
 //        mViewPager.setAdapter(new LoginAdapter(getActivity().getSupportFragmentManager()));
 //
@@ -69,13 +65,13 @@ public class LoginFragment extends Fragment {
 //            }
 //        });
 
-        return v;
-    }
+		return v;
+	}
 
 
-    /**
-     * Adapter created for the ViewPager to flip through all the fragments.
-     */
+	/**
+	 * Adapter created for the ViewPager to flip through all the fragments.
+	 */
 //    class LoginAdapter extends FragmentStatePagerAdapter {
 //        public LoginAdapter(FragmentManager fm) {
 //            super(fm);

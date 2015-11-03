@@ -1,21 +1,17 @@
 package urlinq.android.com.edu_chat.controller;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.TextView;
-
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import cz.msebera.android.httpclient.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 import urlinq.android.com.edu_chat.Constants;
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.adapter.ChatListAdapter;
@@ -24,7 +20,6 @@ import urlinq.android.com.edu_chat.model.ECCategory;
 import urlinq.android.com.edu_chat.model.ECCategoryType;
 import urlinq.android.com.edu_chat.model.ECObject;
 import urlinq.android.com.edu_chat.model.ECUser;
-import urlinq.android.com.edu_chat.model.ECUserType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +28,7 @@ import java.util.List;
  * This activity will act as a container for the recycler views for the individual chats and classes.
  * Created by Kai on 10/16/2015.
  */
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 	private List<ECUser> ecUserList = new ArrayList<>();
 	private List<ECCategory> ecCategoryGroupList = new ArrayList<>();
 	private ChatListAdapter mAdapter;
@@ -45,7 +40,7 @@ public class MainActivity extends Activity {
 	@Bind(R.id.classList) RecyclerView userList;
 	@Bind(R.id.groupList) RecyclerView groupList;
 	@Bind(R.id.userFullName) TextView userFullName;
-	@Bind(R.id.userSchool)TextView userSchoolName;
+	@Bind(R.id.userSchool) TextView userSchoolName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +64,7 @@ public class MainActivity extends Activity {
 		params.put("token", ECUser.getUserToken());
 		ECApiManager.get(Constants.loadoutAPI, params, new AsyncHttpResponseHandler() {
 			JSONObject obj;
+
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 				String response = new String(responseBody);
@@ -94,22 +90,23 @@ public class MainActivity extends Activity {
 	/**
 	 * Takes the output from the loadout API call and makes them into objects.
 	 */
-	private void makeObjects(JSONObject response){
+	private void makeObjects(JSONObject response) {
 		//Create each ECCategory object. Fill into RecyclerView later.
-		try{
+		try {
 			//Add for classes, departments, people, groups.
 			groups = ECCategory.buildWithJSON(response.getJSONArray("groups"), ECCategoryType.ECGroupCategoryType);
 
-		}catch(JSONException e){
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
 
 	}
+
 	/**
 	 * This method will load the profile picture and the student full name and school.
 	 */
-	private void loadCurrentUser(){
+	private void loadCurrentUser() {
 		currentUser = ECUser.getCurrentUser();
 		userFullName.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
 
