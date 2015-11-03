@@ -1,66 +1,55 @@
 package urlinq.android.com.edu_chat.model;
 
+import java.util.Date;
+import org.json.JSONObject;
+import org.json.JSONException;
+
 /**
  * Created by Kai on 10/23/2015.
  */
 public class ECMessage extends ECObject {
-	public static final int TYPE_MESSAGE = 0;
-	public static final int TYPE_LOG = 1;
-	public static final int TYPE_ACTION = 2;
 
-	private int mType;
-	private String mMessage;
-	private String mUsername;
+	private String messageTitle;
+	private ECUser author;
+	private Date messageDate;
+	private ECMessageType messageType;
 
-	private ECMessage() {
-		// TODO: don't pass in null
+
+	public ECMessage(JSONObject messageJSON) {
+
+		// TODO: don't pass in null IMPLEMENT THE CONSTRUCTOR with JSON argument.
 		super(null, null);
 	}
 
-	public int getType() {
-		return mType;
+	public String getMessageTitle() {
+		return messageTitle;
 	}
 
-	;
-
-	public String getMessage() {
-		return mMessage;
+	public void setMessageTitle(String messageTitle) {
+		this.messageTitle = messageTitle;
 	}
 
-	;
-
-	public String getUsername() {
-		return mUsername;
+	public ECUser getAuthor() {
+		return author;
 	}
 
-	;
+	public void setAuthor(ECUser author) {
+		this.author = author;
+	}
 
+	public Date getMessageDate() {
+		return messageDate;
+	}
 
-	public static class Builder {
-		private final int mType;
-		private String mUsername;
-		private String mMessage;
+	public void setMessageDate(Date messageDate) {
+		this.messageDate = messageDate;
+	}
 
-		public Builder(int type) {
-			mType = type;
-		}
+	public ECMessageType getMessageType() {
+		return messageType;
+	}
 
-		public Builder username(String username) {
-			mUsername = username;
-			return this;
-		}
-
-		public Builder message(String message) {
-			mMessage = message;
-			return this;
-		}
-
-		public ECMessage build() {
-			ECMessage message = new ECMessage();
-			message.mType = mType;
-			message.mUsername = mUsername;
-			message.mMessage = mMessage;
-			return message;
-		}
+	public void setMessageType(ECMessageType messageType) {
+		this.messageType = messageType;
 	}
 }

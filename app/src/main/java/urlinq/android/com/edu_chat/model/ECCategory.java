@@ -3,6 +3,7 @@ package urlinq.android.com.edu_chat.model;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.util.ArrayList;
 
 /**
  * Created by Jacob on 10/27/15.
@@ -14,7 +15,6 @@ public class ECCategory extends ECObject {
 	private String professorLastName;
 	private String professorID;
 	private String departmentTag;
-	private String groupName;
 	private ECMessage mostRecentMessage;
 
 	public void setName(String name) {
@@ -44,32 +44,56 @@ public class ECCategory extends ECObject {
 	private static String identifier;
 	private static String fileURL;
 
-	public ECCategory() {
+	public ECCategory(String id, String fileURL) {
 		// TODO: Replace null with Object identifier
 		super(identifier, fileURL);
 	}
 
-	public static ECCategory buildWithJSON(JSONArray response, ECCategoryType groupType) {
+	public static ArrayList<ECCategory> buildManyWithJSON(JSONArray response, ECCategoryType groupType) {
 		// TODO: Make this... It'll be pretty long. Set everything from the supers too
 		switch (groupType) {
 			case ECDepartmentCategoryType:
 			{
+				ArrayList<ECCategory> departments = new ArrayList<ECCategory>();
+				try{
+					for(int i = 0; i<response.length(); i++){
+						JSONObject obj = response.getJSONObject(i);
+						String identifier = obj.getString("id");
+						//TODO Keep implementing this.
+
+					}
+
+				}catch(JSONException e){
+					e.printStackTrace();
+				}
 			}
 				break;
 			case ECClassCategoryType:
 				break;
 			case ECGroupCategoryType:
 			{
-				ECCategory group = new ECCategory();
+				ArrayList<ECCategory> groups = new ArrayList<ECCategory>();
 				try{
-					identifier = response.getJSONObject(13).toString();
-					fileURL = response.getJSONObject(12).getString("file_url");
-					group.setName(response.getJSONObject(0).toString());
 
-				}catch(JSONException e){}
+					//Add each group into an ArrayList and then return the entire arraylist of category objects.
+					for(int i = 0; i<response.length(); i++){
+						JSONObject obj = response.getJSONObject(i);
 
-				return group;
+						String identifier = obj.getString("id");
+						String fileURL = obj.getJSONObject("picture_file").getString("file_url");
+						ECCategory category = new ECCategory(identifier, fileURL);
 
+						String recentMsg = obj.getJSONObject("most_recent_message_info").getJSONObject("message_data").getString("text");
+						String recentUser = obj.getJSONObject("most_recent_message_info").getString("firstname") + " " + obj.getJSONObject("most_recent_message_info").getString("lastname");
+
+						ECMessage recentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
+
+						category.setMostRecentMessage(recentMessage);
+						category.setName(obj.getString("name"));
+						groups.add(category);
+					}
+				}catch(JSONException e){e.printStackTrace();}
+				return groups;
 			}
 
 		}
