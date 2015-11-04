@@ -45,8 +45,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position){
         ECMessage message = mMessages.get(position);
-        viewHolder.setMessage(message.getMessage());
-        viewHolder.setUsername(message.getUsername());
+        viewHolder.setMessage(message.getMessageTitle());
+        viewHolder.setUsername(message.getAuthor());
 
     }
     @Override

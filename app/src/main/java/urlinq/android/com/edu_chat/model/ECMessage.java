@@ -13,7 +13,13 @@ import org.json.JSONException;
  * Created by Kai on 10/23/2015.
  */
 public class ECMessage extends ECObject {
-
+    public static final int TYPE_MESSAGE = 0;
+    public static final int TYPE_LOG = 1;
+    public static final int TYPE_ACTION = 2;
+    /**
+     * Leave the ints as they are in order to use it with RecyclerView Adapter.
+     */
+    private int mType;
 	private String messageTitle;
 	private String author;
 	private Date messageDate;
@@ -21,9 +27,10 @@ public class ECMessage extends ECObject {
 	private String oIdentifier;
 	private String fileURL;
 
-	public ECMessage(JSONObject recentMessage) throws JSONException {
+	public ECMessage(JSONObject recentMessage, int mType) throws JSONException {
 		super(recentMessage.getJSONObject("message_data").getString("id"), recentMessage.getJSONObject("most_recent_message_creator_info").getJSONObject("picture_file").getString("file_url"));
 
+        this.mType = mType;
         author = recentMessage.getJSONObject("most_recent_message_creator_info").getString("firstname") + recentMessage.getJSONObject("most_recent_message_creator_info").getString("lastname");
         String date = recentMessage.getJSONObject("message_data").getString("sent_at");
         DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
@@ -43,9 +50,12 @@ public class ECMessage extends ECObject {
             messageType = ECMessageType.ALMessageTextType;
         }
 
+    }
 
 
-	}
+    public int getType(){
+        return mType;
+    }
 
 
 	public String getMessageTitle() {

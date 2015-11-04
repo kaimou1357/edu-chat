@@ -137,10 +137,11 @@ public class ChatFragment extends Fragment {
      * @param message
      */
     private void addMessage(String username, String message) {
-        mMessages.add(new ECMessage.Builder(ECMessage.TYPE_MESSAGE)
-                .username(username).message(message).build());
-        mAdapter.notifyItemInserted(mMessages.size() - 1);
-        scrollToBottom();
+        //Get the message and insert it as a parameter. Then build a message with the JSON.
+//        mMessages.add(new ECMessage.Builder(ECMessage.TYPE_MESSAGE)
+//                .username(username).message(message).build());
+//        mAdapter.notifyItemInserted(mMessages.size() - 1);
+//        scrollToBottom();
     }
 
     /**
