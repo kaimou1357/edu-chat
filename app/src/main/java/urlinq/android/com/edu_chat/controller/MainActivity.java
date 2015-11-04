@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 	private List<ECCategory> ecCategoryGroupList = new ArrayList<>();
 	private ChatListAdapter mAdapter;
 	private ECUser currentUser;
-	private ECCategory groups;
 	private ECObject classes;
 	private ECObject departments;
 	private ECObject people;
@@ -94,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 		//Create each ECCategory object. Fill into RecyclerView later.
 		try {
 			//Add for classes, departments, people, groups.
-			groups = ECCategory.buildWithJSON(response.getJSONArray("groups"), ECCategoryType.ECGroupCategoryType);
+			ecCategoryGroupList = ECCategory.buildManyWithJSON(response.getJSONArray("groups"), ECCategoryType.ECGroupCategoryType);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
