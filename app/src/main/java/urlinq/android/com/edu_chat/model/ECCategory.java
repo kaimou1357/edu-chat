@@ -58,10 +58,18 @@ public class ECCategory extends ECObject {
 				try{
 					for(int i = 0; i<response.length(); i++){
 						JSONObject obj = response.getJSONObject(i);
-						String identifier = obj.getString("id");
-						//TODO Keep implementing this.
 
-					}
+                        String identifier = obj.getString("id");
+                        String fileURL = obj.getJSONObject("picture_file").getString("file_url");
+                        ECCategory department = new ECCategory(identifier, fileURL);
+
+                        ECMessage recentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
+
+                        department.setMostRecentMessage(recentMessage);
+                        department.setName(obj.getString("department_name"));
+                        departments.add(department);
+
+                    }
 
 				}catch(JSONException e){
 					e.printStackTrace();
@@ -82,9 +90,6 @@ public class ECCategory extends ECObject {
 						String identifier = obj.getString("id");
 						String fileURL = obj.getJSONObject("picture_file").getString("file_url");
 						ECCategory category = new ECCategory(identifier, fileURL);
-
-						String recentMsg = obj.getJSONObject("most_recent_message_info").getJSONObject("message_data").getString("text");
-						String recentUser = obj.getJSONObject("most_recent_message_info").getString("firstname") + " " + obj.getJSONObject("most_recent_message_info").getString("lastname");
 
 						ECMessage recentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
 
