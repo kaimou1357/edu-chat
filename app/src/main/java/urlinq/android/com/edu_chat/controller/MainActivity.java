@@ -29,13 +29,16 @@ import java.util.List;
  * Created by Kai on 10/16/2015.
  */
 public class MainActivity extends AppCompatActivity {
-	private List<ECUser> ecUserList = new ArrayList<>();
-	private List<ECCategory> ecCategoryGroupList = new ArrayList<>();
+	private List<ECUser> ECCategoryUserList = new ArrayList<>();
+	private List<ECCategory> ECCategoryGroupList = new ArrayList<>();
+    private List<ECCategory> ECCategoryClassList = new ArrayList<>();
+    private List<ECCategory> ECCategoryDepartmentList = new ArrayList<>();
+    private List<ECCategory> ECCategoryPeopleList = new ArrayList<>();
+
+
 	private ChatListAdapter mAdapter;
 	private ECUser currentUser;
-	private ECObject classes;
-	private ECObject departments;
-	private ECObject people;
+
 	@Bind(R.id.classList) RecyclerView userList;
 	@Bind(R.id.groupList) RecyclerView groupList;
 	@Bind(R.id.userFullName) TextView userFullName;
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_activity_container);
 		ButterKnife.bind(this);
-		mAdapter = new ChatListAdapter(this, ecUserList);
+		mAdapter = new ChatListAdapter(this, ECCategoryUserList);
 
 		userList.setLayoutManager(new LinearLayoutManager(this));
 		userList.setAdapter(mAdapter);
@@ -93,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 		//Create each ECCategory object. Fill into RecyclerView later.
 		try {
 			//Add for classes, departments, people, groups.
-			ecCategoryGroupList = ECCategory.buildManyWithJSON(response.getJSONArray("groups"), ECCategoryType.ECGroupCategoryType);
+			ECCategoryGroupList = ECCategory.buildManyWithJSON(response.getJSONArray("groups"), ECCategoryType.ECGroupCategoryType);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
