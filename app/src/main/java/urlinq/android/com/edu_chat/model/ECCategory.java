@@ -17,36 +17,9 @@ public class ECCategory extends ECObject {
 	private String departmentTag;
 	private ECMessage mostRecentMessage;
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setProfessorFirstName(String professorFirstName) {
-		this.professorFirstName = professorFirstName;
-	}
-
-	public void setProfessorLastName(String professorLastName) {
-		this.professorLastName = professorLastName;
-	}
-
-	public void setProfessorID(String professorID) {
-		this.professorID = professorID;
-	}
-
-	public void setDepartmentTag(String departmentTag) {
-		this.departmentTag = departmentTag;
-	}
-
-	public void setMostRecentMessage(ECMessage mostRecentMessage) {
-		this.mostRecentMessage = mostRecentMessage;
-	}
-
-	private static String identifier;
-	private static String fileURL;
-
 	public ECCategory(String id, String fileURL) {
 		// TODO: Replace null with Object identifier
-		super(identifier, fileURL);
+		super(id, fileURL);
 	}
 
 	public static ArrayList<ECCategory> buildManyWithJSON(JSONArray response, ECCategoryType groupType) {
@@ -104,4 +77,28 @@ public class ECCategory extends ECObject {
 		}
 		return null;
 	}
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setProfessorFirstName(String professorFirstName) {
+        this.professorFirstName = professorFirstName;
+    }
+
+    public void setProfessorLastName(String professorLastName) {
+        this.professorLastName = professorLastName;
+    }
+
+    public void setProfessorID(String professorID) {
+        this.professorID = professorID;
+    }
+
+    public void setDepartmentTag(String departmentTag) {
+        this.departmentTag = departmentTag;
+    }
+
+    public void setMostRecentMessage(ECMessage mostRecentMessage) {
+        this.mostRecentMessage = mostRecentMessage;
+    }
 }
