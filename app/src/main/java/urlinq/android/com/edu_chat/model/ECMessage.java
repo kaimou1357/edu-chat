@@ -43,7 +43,7 @@ public class ECMessage extends ECObject {
 
         author = recentMessage.getJSONObject("most_recent_message_creator_info").getString("firstname") + recentMessage.getJSONObject("most_recent_message_creator_info").getString("lastname");
         String date = recentMessage.getJSONObject("message_data").getString("sent_at");
-        DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+        SimpleDateFormat format = new SimpleDateFormat("MM dd, yyyy", Locale.ENGLISH);
         messageDate = format.parse(date);
         messageTitle = recentMessage.getJSONObject("message_data").getString("text");
 
@@ -67,9 +67,9 @@ public class ECMessage extends ECObject {
         return author;
     }
 
-    public Date getMessageDate() {
-        return messageDate;
-    }
+//    public Date getMessageDate() {
+//        return messageDate;
+//    }
 
     public ECMessageType getMessageType() {
         return messageType;

@@ -12,16 +12,17 @@ import android.widget.TextView;
 import java.util.List;
 
 import urlinq.android.com.edu_chat.R;
+import urlinq.android.com.edu_chat.model.ECCategory;
 import urlinq.android.com.edu_chat.model.ECUser;
 
 /**
  * Created by Kai on 10/28/2015.
  */
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatViewHolder> {
-    private List<ECUser> userList;
+    private List<ECCategory> categoryList;
 
-    public ChatListAdapter(Context context, List<ECUser> userList){
-        this.userList = userList;
+    public ChatListAdapter(Context context, List<ECCategory> categoryList){
+        this.categoryList = categoryList;
     }
     @Override
     public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewCase){
@@ -33,14 +34,18 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
 
     @Override
     public void onBindViewHolder(ChatViewHolder viewHolder, int position){
-        ECUser currUser = userList.get(position);
-        viewHolder.setUserName(currUser.getFirstName() + " " + currUser.getLastName());
+        ECCategory currCategory = categoryList.get(position);
+        viewHolder.setMessages(currCategory.toString());
+
+        //Set category toString() method for testing later.
+
         //Worry about profile pictures later.
         //viewHolder.setImg(currUser.getProfilePicture());
 
     }
     @Override
-    public int getItemCount(){return userList.size();}
+    public int getItemCount(){return categoryList.size();}
+
 
 
 
@@ -58,6 +63,10 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
         public void setUserName(String userName){
             if(userName == null) return;
             userText.setText(userName);
+        }
+
+        public void setMessages(String messageTest){
+            userText.setText(messageTest);
         }
         public void setImg(Bitmap b){
             if(b == null) return;

@@ -36,7 +36,6 @@ public class ECCategory extends ECObject {
     public ECCategory(String id, String fileURL) {
         super(id, fileURL);
     }
-
     public static ArrayList<ECCategory> buildManyWithJSON(JSONArray response, ECCategoryType groupType) {
         // TODO: Make this... It'll be pretty long. Set everything from the supers too
         switch (groupType) {
@@ -80,18 +79,18 @@ public class ECCategory extends ECObject {
                         String fileURL = obj.getJSONObject("picture_file").getString("file_url");
                         ECCategory classroom = new ECCategory(identifier, fileURL);
 
-                        ECMessage recentMessage;
+                        ECMessage recentMessage = null;
                         try{
+
                             recentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
                         }catch(ParseException e){
                             e.printStackTrace();
                         }
 
-
-
-
-
-
+                        classroom.setMostRecentMessage(recentMessage);
+                        classroom.setName(obj.getString("class_name"));
+                        Log.v(String.format("EDU.CHAT &s", ECCategory.class.getSimpleName()), classroom.toString());
+                        classes.add(classroom);
                     }
                 }catch(JSONException e){
 
@@ -156,5 +155,28 @@ public class ECCategory extends ECObject {
 
     public void setMostRecentMessage(ECMessage mostRecentMessage) {
         this.mostRecentMessage = mostRecentMessage;
+    }
+    public String getName() {
+        return name;
+    }
+
+    public String getProfessorFirstName() {
+        return professorFirstName;
+    }
+
+    public String getProfessorLastName() {
+        return professorLastName;
+    }
+
+    public String getProfessorID() {
+        return professorID;
+    }
+
+    public String getDepartmentTag() {
+        return departmentTag;
+    }
+
+    public ECMessage getMostRecentMessage() {
+        return mostRecentMessage;
     }
 }

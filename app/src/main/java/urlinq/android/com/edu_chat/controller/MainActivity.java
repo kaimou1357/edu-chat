@@ -28,11 +28,11 @@ import java.util.List;
  * Created by Kai on 10/16/2015.
  */
 public class MainActivity extends AppCompatActivity {
-	private List<ECUser> ECCategoryUserList = new ArrayList<>();
-	private List<ECCategory> ECCategoryGroupList = new ArrayList<>();
-    private List<ECCategory> ECCategoryClassList = new ArrayList<>();
-    private List<ECCategory> ECCategoryDepartmentList = new ArrayList<>();
-    private List<ECCategory> ECCategoryPeopleList = new ArrayList<>();
+	private List<ECCategory> ECCategoryGroupList = new ArrayList<ECCategory>();
+    private List<ECCategory> ECCategoryClassList = new ArrayList<ECCategory>();
+    private List<ECCategory> ECCategoryDepartmentList = new ArrayList<ECCategory>();
+    private List<ECUser> peopleList = new ArrayList<ECUser>();
+    private List<ECUser> mostRecentList = new ArrayList<ECUser>();
 
 
 	private ChatListAdapter mAdapter;
@@ -42,25 +42,26 @@ public class MainActivity extends AppCompatActivity {
 	@Bind(R.id.groupList) RecyclerView groupList;
 	@Bind(R.id.userFullName) TextView userFullName;
 	@Bind(R.id.userSchool) TextView userSchoolName;
+    @Bind(R.id.labList)RecyclerView labList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_activity_container);
 		ButterKnife.bind(this);
-		mAdapter = new ChatListAdapter(this, ECCategoryUserList);
+		mAdapter = new ChatListAdapter(this, ECCategoryGroupList);
 
-		userList.setLayoutManager(new LinearLayoutManager(this));
-		userList.setAdapter(mAdapter);
+		labList.setLayoutManager(new LinearLayoutManager(this));
+		labList.setAdapter(mAdapter);
 		loadCurrentUser();
-		refreshUserChatList();
+		getChatLoadOut();
 	}
 
 
 	/**
 	 * This method will populate ecUserList with the users loaded in from the login call.
 	 */
-	private void refreshUserChatList() {
+	private void getChatLoadOut() {
 		RequestParams params = new RequestParams();
 		params.put("token", ECUser.getUserToken());
 		ECApiManager.get(Constants.loadoutAPI, params, new AsyncHttpResponseHandler() {
@@ -96,8 +97,10 @@ public class MainActivity extends AppCompatActivity {
 		try {
 			//Add for classes, departments, people, groups.
 			ECCategoryGroupList = ECCategory.buildManyWithJSON(response.getJSONArray("groups"), ECCategoryType.ECGroupCategoryType);
-
-		} catch (JSONException e) {
+            //Uncomment these lines out later...
+//            ECCategoryClassList = ECCategory.buildManyWithJSON(response.getJSONArray("classes"), ECCategoryType.ECClassCategoryType);
+//            ECCategoryDepartmentList = ECCategory.buildManyWithJSON(response.getJSONArray("departments"), ECCategoryType.ECDepartmentCategoryType);
+        } catch (JSONException e) {
 			e.printStackTrace();
 		}
 
