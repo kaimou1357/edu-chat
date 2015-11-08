@@ -6,5 +6,8 @@ package urlinq.android.com.edu_chat.model;
 public enum ECCategoryType {
 	ECDepartmentCategoryType,
 	ECClassCategoryType,
-	ECGroupCategoryType
+	ECGroupCategoryType,
+    ECRecentCategoryType,
+    ECPeopleCategoryType
+
 }

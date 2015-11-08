@@ -70,6 +70,35 @@ public class ECCategory extends ECObject {
             }
             break;
             case ECClassCategoryType:
+            {
+                ArrayList<ECCategory> classes = new ArrayList<ECCategory>();
+                try{
+                    for(int i = 0; i<response.length(); i++){
+                        JSONObject obj = response.getJSONObject(i);
+
+                        String identifier = obj.getString("id");
+                        String fileURL = obj.getJSONObject("picture_file").getString("file_url");
+                        ECCategory classroom = new ECCategory(identifier, fileURL);
+
+                        ECMessage recentMessage;
+                        try{
+                            recentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
+                        }catch(ParseException e){
+                            e.printStackTrace();
+                        }
+
+
+
+
+
+
+                    }
+                }catch(JSONException e){
+
+                }
+
+
+            }
                 break;
             case ECGroupCategoryType: {
                 ArrayList<ECCategory> groups = new ArrayList<ECCategory>();
