@@ -15,7 +15,7 @@ import com.loopj.android.http.RequestParams;
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-import urlinq.android.com.edu_chat.Constants;
+import urlinq.android.com.edu_chat.model.Constants;
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.ECUser;
