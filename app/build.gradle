@@ -43,5 +43,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.2.1'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    compile 'org.solovyev.android.views:linear-layout-manager:0.5@aar'
     testCompile 'org.json:json:20150729'
 }

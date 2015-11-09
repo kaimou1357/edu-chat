@@ -64,6 +64,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
             if(userName == null) return;
             userText.setText(userName);
         }
+        //Test method to set a message.
 
         public void setMessages(String messageTest){
             userText.setText(messageTest);

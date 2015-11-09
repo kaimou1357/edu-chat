@@ -42,9 +42,7 @@ public class ECMessage extends ECObject {
 
 
         author = recentMessage.getJSONObject("most_recent_message_creator_info").getString("firstname") + recentMessage.getJSONObject("most_recent_message_creator_info").getString("lastname");
-        String date = recentMessage.getJSONObject("message_data").getString("sent_at");
-        SimpleDateFormat format = new SimpleDateFormat("MM dd, yyyy", Locale.ENGLISH);
-        messageDate = format.parse(date);
+
         messageTitle = recentMessage.getJSONObject("message_data").getString("text");
 
         String messageT = recentMessage.getJSONObject("message_data").getString("type");
@@ -56,6 +54,8 @@ public class ECMessage extends ECObject {
         } else {
             messageType = ECMessageType.ALNotSupportedType;
         }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        messageDate = format.parse(recentMessage.getJSONObject("message_data").getString("sent_at").replace("T", " "));
         Log.v(String.format("EDU.CHAT %s", getClass().getSimpleName()), this.toString());
     }
 

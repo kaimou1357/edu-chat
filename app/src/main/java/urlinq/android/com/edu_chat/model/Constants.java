@@ -10,6 +10,9 @@ public class Constants {
     public static final String loadoutAPI = "https://edu.chat/message/loadout";
 
 
+
+
+
     /**
      * Signup form.
      * <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

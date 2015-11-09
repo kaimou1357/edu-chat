@@ -88,6 +88,7 @@ public class ECCategory extends ECObject {
                         }
 
                         classroom.setMostRecentMessage(recentMessage);
+                        //TODO Add professor names too don't forget.
                         classroom.setName(obj.getString("class_name"));
                         Log.v(String.format("EDU.CHAT &s", ECCategory.class.getSimpleName()), classroom.toString());
                         classes.add(classroom);
@@ -102,7 +103,6 @@ public class ECCategory extends ECObject {
             case ECGroupCategoryType: {
                 ArrayList<ECCategory> groups = new ArrayList<ECCategory>();
                 try {
-
                     //Add each group into an ArrayList and then return the entire arraylist of category objects.
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject obj = response.getJSONObject(i);

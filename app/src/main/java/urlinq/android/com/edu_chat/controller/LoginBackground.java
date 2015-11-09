@@ -56,8 +56,12 @@ public class LoginBackground extends Fragment{
 	private void attemptLogin() {
 		//final CountDownLatch latch = new CountDownLatch(1);
 		RequestParams params = new RequestParams();
-		params.put("email", userEmail.getText().toString());
-		params.put("password", userPass.getText().toString());
+
+        //Change back later.
+//		params.put("email", userEmail.getText().toString());
+//		params.put("password", userPass.getText().toString());
+        params.put("email", "km2743@nyu.edu");
+        params.put("password", "adventure");
 		ECApiManager.post(Constants.loginAPI, params, new AsyncHttpResponseHandler() {
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
