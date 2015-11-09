@@ -48,11 +48,11 @@ public class ECMessage extends ECObject {
         String messageT = recentMessage.getJSONObject("message_data").getString("type");
         //Just adding these two types for now.
         if (messageT.equals("file")) {
-            messageType = ECMessageType.ALMessageFileType;
+            messageType = ECMessageType.ECMessageFileType;
         } else if (messageT.equals("text")) {
-            messageType = ECMessageType.ALMessageTextType;
+            messageType = ECMessageType.ECMessageTextType;
         } else {
-            messageType = ECMessageType.ALNotSupportedType;
+            messageType = ECMessageType.ECNotSupportedType;
         }
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         messageDate = format.parse(recentMessage.getJSONObject("message_data").getString("sent_at").replace("T", " "));

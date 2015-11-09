@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         if(ECCategoryClassList !=null){
             classAdapter = new ChatListAdapter(this, ECCategoryClassList);
             classList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
-            classList.setAdapter(groupAdapter);
+            classList.setAdapter(classAdapter);
         }
         if(ECCategoryDepartmentList !=null){
             departmentAdapter = new ChatListAdapter(this, ECCategoryDepartmentList);

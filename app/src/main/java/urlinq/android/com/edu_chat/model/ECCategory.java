@@ -78,6 +78,8 @@ public class ECCategory extends ECObject {
                         String identifier = obj.getString("id");
                         String fileURL = obj.getJSONObject("picture_file").getString("file_url");
                         ECCategory classroom = new ECCategory(identifier, fileURL);
+                        classroom.setProfessorFirstName(obj.getString("class_professor_firstname"));
+                        classroom.setProfessorLastName(obj.getString("class_professor_lastname"));
 
                         ECMessage recentMessage = null;
                         try{
@@ -88,18 +90,15 @@ public class ECCategory extends ECObject {
                         }
 
                         classroom.setMostRecentMessage(recentMessage);
-                        //TODO Add professor names too don't forget.
                         classroom.setName(obj.getString("class_name"));
-                        Log.v(String.format("EDU.CHAT &s", ECCategory.class.getSimpleName()), classroom.toString());
+                        Log.v(String.format("EDU.CHAT %s", ECCategory.class.getSimpleName()), classroom.toString());
                         classes.add(classroom);
                     }
                 }catch(JSONException e){
 
                 }
-
-
+                return classes;
             }
-                break;
             case ECGroupCategoryType: {
                 ArrayList<ECCategory> groups = new ArrayList<ECCategory>();
                 try {
