@@ -1,13 +1,13 @@
-package urlinq.android.com.edu_chat.controller;
+package urlinq.android.com.edu_chat.controller.login;
 
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import urlinq.android.com.edu_chat.R;
+import urlinq.android.com.edu_chat.controller.MainActivity;
 
 public class LoginActivity extends AppCompatActivity implements LoginBackground.OnLoginListener {
 

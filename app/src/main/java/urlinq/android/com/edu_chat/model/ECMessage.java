@@ -5,11 +5,11 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
+
+import urlinq.android.com.edu_chat.model.enums.ECMessageType;
 
 /**
  * Created by Kai on 10/23/2015.

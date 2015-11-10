@@ -9,6 +9,8 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import urlinq.android.com.edu_chat.model.enums.ECCategoryType;
+
 /**
  * Created by Jacob on 10/27/15.
  */

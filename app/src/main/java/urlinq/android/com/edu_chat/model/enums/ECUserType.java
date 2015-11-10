@@ -1,4 +1,4 @@
-package urlinq.android.com.edu_chat.model;
+package urlinq.android.com.edu_chat.model.enums;
 
 /**
  * Created by Jacob on 10/29/15.

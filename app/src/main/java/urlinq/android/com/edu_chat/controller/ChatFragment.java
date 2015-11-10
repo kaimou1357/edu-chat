@@ -25,7 +25,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.model.ECMessage;
-import urlinq.android.com.edu_chat.adapter.MessageAdapter;
+import urlinq.android.com.edu_chat.model.adapter.MessageAdapter;
 
 /**
  * Created by Kai on 10/26/2015.

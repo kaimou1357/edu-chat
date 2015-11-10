@@ -2,10 +2,8 @@ package urlinq.android.com.edu_chat.controller;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -16,14 +14,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import urlinq.android.com.edu_chat.model.Constants;
 import urlinq.android.com.edu_chat.R;
-import urlinq.android.com.edu_chat.adapter.ChatListAdapter;
+import urlinq.android.com.edu_chat.model.adapter.ChatListAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.ECCategory;
-import urlinq.android.com.edu_chat.model.ECCategoryType;
+import urlinq.android.com.edu_chat.model.enums.ECCategoryType;
 import urlinq.android.com.edu_chat.model.ECUser;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

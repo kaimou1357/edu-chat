@@ -13,6 +13,7 @@ import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
+import urlinq.android.com.edu_chat.model.enums.ECUserType;
 
 
 /**
