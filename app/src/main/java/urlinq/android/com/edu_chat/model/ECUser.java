@@ -34,17 +34,11 @@ public class ECUser extends ECObject {
     private final String firstName;
     private final String lastName;
     private final ECUserType userType;
-
+    private final ECMessage mostRecentMessage;
+    private final Date lastActivity;
+    private final String department;
     // TODO: Field for profile picture
 
-    // TODO: Use this variable
-    private final ECMessage mostRecentMessage;
-
-    // TODO: Use this variable
-    private final Date lastActivity;
-
-    // TODO: Use this variable
-    private final String department;
 
     @Override
     public String toString() {
@@ -60,24 +54,25 @@ public class ECUser extends ECObject {
 
     /**
      * This constructor will be for the current user using the application.
+     *
      * @param data
      * @throws JSONException
      */
     public ECUser(JSONObject data) throws JSONException {
         super(data.getJSONObject("user").getString("id"), data.getJSONObject("user").getJSONObject("picture_file").getString("file_url"));
+        ECUser.userToken = data.getString("token");
         this.firstName = data.getJSONObject("user").getString("firstname");
         this.lastName = data.getJSONObject("user").getString("lastname");
-        this.userToken = data.getString("token");
-
         this.userType = null;
-        mostRecentMessage = null;
-        lastActivity = null;
-        department = null;
+        this.mostRecentMessage = null;
+        this.lastActivity = null;
+        this.department = null;
         Log.v(String.format("EDU.CHAT %s", getClass().getSimpleName()), this.toString());
     }
 
     /**
      * Constructor for the static Build with JSON method.
+     *
      * @param identifier
      * @param fileURL
      * @param firstName
@@ -87,7 +82,7 @@ public class ECUser extends ECObject {
      * @param lastActivity
      * @param department
      */
-    public ECUser(String identifier, String fileURL, String firstName, String lastName, ECUserType userType, ECMessage mostRecentMessage, Date lastActivity, String department){
+    public ECUser(String identifier, String fileURL, String firstName, String lastName, ECUserType userType, ECMessage mostRecentMessage, Date lastActivity, String department) {
         super(identifier, fileURL);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -123,42 +118,44 @@ public class ECUser extends ECObject {
             }
         });
     }
+
     /**
      * This method will build an ArrayList of ECUsers to process in the Main RecyclerView List.
+     *
      * @param response people object from the loadout response.
      */
-    public static ArrayList<ECUser> buildManyWithJSON(JSONArray response){
+    public static ArrayList<ECUser> buildManyWithJSON(JSONArray response) {
 
-            ArrayList<ECUser> personList = new ArrayList<ECUser>();
-            try {
-                for (int i = 0; i < response.length(); i++) {
-                    JSONObject obj = response.getJSONObject(i);
-                    String identifier = obj.getString("id");
-                    String fileURL = obj.getJSONObject("picture_file").getString("file_url");
-                    String firstName = obj.getString("firstname");
-                    String lastName = obj.getString("lastname");
-                    ECUserType userType = null;
-                    String department = obj.getString("department");
+        ArrayList<ECUser> personList = new ArrayList<>();
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject obj = response.getJSONObject(i);
+                String identifier = obj.getString("id");
+                String fileURL = obj.getJSONObject("picture_file").getString("file_url");
+                String firstName = obj.getString("firstname");
+                String lastName = obj.getString("lastname");
+                ECUserType userType = null;
+                String department = obj.getString("department");
 
-                    if(obj.getString("type").equals("user")){
-                        userType = ECUserType.ECUserTypeStudent;
-                    }
-
-                    ECMessage recentMessage = null;
-                    Date lastActivity = null;
-                    try{
-                        recentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        lastActivity = format.parse(obj.getString("last_email").replace("T", " "));
-                    }catch(ParseException e){
-                        e.printStackTrace();
-                    }
-                    ECUser user = new ECUser(identifier, fileURL, firstName, lastName, userType, recentMessage,lastActivity, department );
-                    personList.add(user);
+                if (obj.getString("type").equals("user")) {
+                    userType = ECUserType.ECUserTypeStudent;
                 }
-            }catch(JSONException e){
-                e.printStackTrace();
+
+                ECMessage recentMessage = null;
+                Date lastActivity = null;
+                try {
+                    recentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    lastActivity = format.parse(obj.getString("last_email").replace("T", " "));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                ECUser user = new ECUser(identifier, fileURL, firstName, lastName, userType, recentMessage, lastActivity, department);
+                personList.add(user);
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return personList;
     }
 
@@ -172,6 +169,10 @@ public class ECUser extends ECObject {
         ECUser.currentUser = user;
     }
 
+    public static void setUserToken(String userToken) {
+        ECUser.userToken = userToken;
+    }
+
     public static String getUserToken() {
         return ECUser.userToken;
     }
@@ -180,26 +181,23 @@ public class ECUser extends ECObject {
         return ECUser.currentUser.getObjectIdentifier();
     }
 
+
     // Dynamic
 
-    public static void setUserToken(String userToken) {
-        ECUser.userToken = userToken;
-    }
-
     public ECMessage getMostRecentMessage() {
-        return mostRecentMessage;
+        return this.mostRecentMessage;
     }
 
     public Date getLastActivity() {
-        return lastActivity;
+        return this.lastActivity;
     }
 
     public String getDepartment() {
-        return department;
+        return this.department;
     }
 
     public ECUserType getUserType() {
-        return userType;
+        return this.userType;
     }
 
     public String getLastName() {

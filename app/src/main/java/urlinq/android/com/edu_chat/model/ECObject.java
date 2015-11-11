@@ -13,7 +13,7 @@ public class ECObject {
 
     public ECObject(String objectIdentifier, String fileURL) {
         if (objectIdentifier == null || fileURL == null) {
-            Log.w(String.format("EDU.CHAT %s", getClass().getSimpleName()), "ECObject create with null property");
+            Log.e(String.format("EDU.CHAT %s", getClass().getSimpleName()), "ECObject create with null property");
         }
         this.objectIdentifier = objectIdentifier;
         this.fileURL = fileURL;

@@ -15,7 +15,8 @@ import urlinq.android.com.edu_chat.model.enums.ECCategoryType;
  * Created by Jacob on 10/27/15.
  */
 public class ECCategory extends ECObject {
-
+    
+    // TODO: These must be final
     private String name;
     private String professorFirstName;
     private String professorLastName;
@@ -71,11 +72,10 @@ public class ECCategory extends ECObject {
                 }
             }
             break;
-            case ECClassCategoryType:
-            {
+            case ECClassCategoryType: {
                 ArrayList<ECCategory> classes = new ArrayList<ECCategory>();
-                try{
-                    for(int i = 0; i<response.length(); i++){
+                try {
+                    for (int i = 0; i < response.length(); i++) {
                         JSONObject obj = response.getJSONObject(i);
 
                         String identifier = obj.getString("id");
@@ -85,10 +85,10 @@ public class ECCategory extends ECObject {
                         classroom.setProfessorLastName(obj.getString("class_professor_lastname"));
 
                         ECMessage recentMessage = null;
-                        try{
+                        try {
 
                             recentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
-                        }catch(ParseException e){
+                        } catch (ParseException e) {
                             e.printStackTrace();
                         }
 
@@ -97,7 +97,7 @@ public class ECCategory extends ECObject {
                         Log.v(String.format("EDU.CHAT %s", ECCategory.class.getSimpleName()), classroom.toString());
                         classes.add(classroom);
                     }
-                }catch(JSONException e){
+                } catch (JSONException e) {
 
                 }
                 return classes;
@@ -158,6 +158,7 @@ public class ECCategory extends ECObject {
     public void setMostRecentMessage(ECMessage mostRecentMessage) {
         this.mostRecentMessage = mostRecentMessage;
     }
+
     public String getName() {
         return name;
     }
