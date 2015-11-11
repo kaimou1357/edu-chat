@@ -25,6 +25,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".controller.login.LoginActivity" />
         </activity>
+        <activity
+            android:name="urlinq.android.com.edu_chat.controller.ChatActivity"
+            android:parentActivityName=".controller.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".controller.ChatActivity" />
+        </activity>
     </application>
 
 </manifest>

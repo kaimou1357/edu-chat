@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -30,7 +31,7 @@ import urlinq.android.com.edu_chat.model.adapter.MessageAdapter;
 /**
  * Created by Kai on 10/26/2015.
  */
-public class ChatFragment extends Fragment {
+public class ChatActivity extends AppCompatActivity {
     private static final int REQUEST_LOGIN = 0;
     private static final int TYPING_TIMER_LENGTH = 600;
 
@@ -44,29 +45,15 @@ public class ChatFragment extends Fragment {
     private List<ECMessage> mMessages = new ArrayList<ECMessage>();
     private RecyclerView.Adapter mAdapter;
 
-    @Override
-    public void onAttach(Activity activity){
-        super.onAttach(activity);
-        mAdapter = new MessageAdapter(activity, mMessages);
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.chat_fragment);
+        ButterKnife.bind(this);
+        mAdapter = new MessageAdapter(this, mMessages);
 
-    }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View v = inflater.inflate(R.layout.chat_fragment, container, false);
-        ButterKnife.bind(this, v);
-        return v;
-    }
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState){
-        super.onViewCreated(view, savedInstanceState);
-
-        mMessagesView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mMessagesView.setLayoutManager(new LinearLayoutManager(this));
         mMessagesView.setAdapter(mAdapter);
 
         mInputMessageView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -109,8 +96,8 @@ public class ChatFragment extends Fragment {
             }
         });
 
-
     }
+
 
     /**
      * Private method to send message. Make sure to make the HTTP/Socket calls here.

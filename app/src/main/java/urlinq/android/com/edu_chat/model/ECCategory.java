@@ -38,6 +38,7 @@ public class ECCategory extends ECObject {
     public ECCategory(String id, String fileURL) {
         super(id, fileURL);
     }
+
     public static ArrayList<ECCategory> buildManyWithJSON(JSONArray response, ECCategoryType groupType) {
         // TODO: Make this... It'll be pretty long. Set everything from the supers too
         switch (groupType) {

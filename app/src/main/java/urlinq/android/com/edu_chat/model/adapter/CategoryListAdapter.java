@@ -1,7 +1,10 @@
 package urlinq.android.com.edu_chat.model.adapter;
 
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,27 +15,31 @@ import android.widget.TextView;
 import java.util.List;
 
 import urlinq.android.com.edu_chat.R;
+import urlinq.android.com.edu_chat.controller.ChatActivity;
 import urlinq.android.com.edu_chat.model.ECCategory;
 
 /**
  * Created by Kai on 10/28/2015.
  */
-public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatViewHolder> {
+public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder> {
     private List<ECCategory> categoryList;
+    private Context mainActivity;
 
-    public ChatListAdapter(Context context, List<ECCategory> categoryList){
+    public CategoryListAdapter(Context context, List<ECCategory> categoryList){
         this.categoryList = categoryList;
+        this.mainActivity = context;
     }
     @Override
-    public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewCase){
+    public CategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewCase){
+        //Shouldn't be item scroll chat. Change later to the appropriate layout.
         int layout = R.layout.item_scroll_chat;
         View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-        return new ChatViewHolder(v);
+        return new CategoryViewHolder(v);
 
     }
 
     @Override
-    public void onBindViewHolder(ChatViewHolder viewHolder, int position){
+    public void onBindViewHolder(CategoryViewHolder viewHolder, int position){
         ECCategory currCategory = categoryList.get(position);
         viewHolder.setMessages(currCategory.toString());
 
@@ -47,14 +54,16 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
 
 
 
+    public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-    public class ChatViewHolder extends RecyclerView.ViewHolder{
         private ImageView img;
         private TextView userText;
 
 
-        public ChatViewHolder(View view){
+        public CategoryViewHolder(View view){
             super(view);
+            //set the onclick listener in the constructor.
+            view.setOnClickListener(this);
             img = (ImageView)view.findViewById(R.id.imageView);
             userText = (TextView) view.findViewById(R.id.userTextView);
         }
@@ -72,6 +81,16 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
             if(b == null) return;
             img.setImageBitmap(b);
         }
+        @Override
+        public void onClick(View v){
+            //Bundle the arguments/information here before passing it to the chatfragment.
+            Intent i = new Intent(mainActivity, ChatActivity.class);
+            //Put bundle information here
+            Bundle bundle = new Bundle();
+            bundle.putString("test", "hello");
+            mainActivity.startActivity(i);
+        }
+
 
     }
 }

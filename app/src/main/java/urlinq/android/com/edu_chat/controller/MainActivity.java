@@ -1,6 +1,8 @@
 package urlinq.android.com.edu_chat.controller;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,11 +14,14 @@ import com.loopj.android.http.RequestParams;
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.solovyev.android.views.llm.LinearLayoutManager;
+
 import urlinq.android.com.edu_chat.model.Constants;
 import urlinq.android.com.edu_chat.R;
-import urlinq.android.com.edu_chat.model.adapter.ChatListAdapter;
+import urlinq.android.com.edu_chat.model.adapter.CategoryListAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.ECCategory;
+import urlinq.android.com.edu_chat.model.adapter.PeopleListAdapter;
 import urlinq.android.com.edu_chat.model.enums.ECCategoryType;
 import urlinq.android.com.edu_chat.model.ECUser;
 
@@ -31,16 +36,16 @@ public class MainActivity extends AppCompatActivity {
 	private List<ECCategory> ECCategoryGroupList = new ArrayList<>();
     private List<ECCategory> ECCategoryClassList = new ArrayList<ECCategory>();
     private List<ECCategory> ECCategoryDepartmentList = new ArrayList<ECCategory>();
-    private List<ECUser> peopleList = new ArrayList<ECUser>();
-    private List<ECUser> mostRecentList = new ArrayList<ECUser>();
+    private List<ECUser> recentList = new ArrayList<ECUser>();
 
     private JSONObject loadOut;
 
 
-	private ChatListAdapter labAdapter;
-    private ChatListAdapter classAdapter;
-    private ChatListAdapter departmentAdapter;
-    private ChatListAdapter groupAdapter;
+	private CategoryListAdapter labAdapter;
+    private CategoryListAdapter classAdapter;
+    private CategoryListAdapter departmentAdapter;
+    private CategoryListAdapter groupAdapter;
+    private PeopleListAdapter peopleAdapter;
 
     private ECUser currentUser;
 
@@ -48,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 	@Bind(R.id.groupList) RecyclerView groupList;
     @Bind(R.id.departmentList) RecyclerView departmentList;
     @Bind(R.id.labList) RecyclerView labList;
+    @Bind(R.id.peopleList)RecyclerView peopleList;
 	@Bind(R.id.userFullName) TextView userFullName;
 	@Bind(R.id.userSchool) TextView userSchoolName;
 
@@ -104,6 +110,9 @@ public class MainActivity extends AppCompatActivity {
 			ECCategoryGroupList = ECCategory.buildManyWithJSON(response.getJSONArray("groups"), ECCategoryType.ECGroupCategoryType);
             ECCategoryClassList = ECCategory.buildManyWithJSON(response.getJSONArray("classes"), ECCategoryType.ECClassCategoryType);
             ECCategoryDepartmentList = ECCategory.buildManyWithJSON(response.getJSONArray("departments"), ECCategoryType.ECDepartmentCategoryType);
+
+            recentList = ECUser.buildManyWithJSON(response.getJSONArray("recent"));
+
         } catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -122,22 +131,28 @@ public class MainActivity extends AppCompatActivity {
     private void populateRecyclerView(){
 
         if(ECCategoryGroupList != null){
-            groupAdapter = new ChatListAdapter(this, ECCategoryGroupList);
+            groupAdapter = new CategoryListAdapter(this, ECCategoryGroupList);
             groupList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
             groupList.setAdapter(groupAdapter);
         }
 
         if(ECCategoryClassList !=null){
-            classAdapter = new ChatListAdapter(this, ECCategoryClassList);
+            classAdapter = new CategoryListAdapter(this, ECCategoryClassList);
             classList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
             classList.setAdapter(classAdapter);
         }
         if(ECCategoryDepartmentList !=null){
-            departmentAdapter = new ChatListAdapter(this, ECCategoryDepartmentList);
+            departmentAdapter = new CategoryListAdapter(this, ECCategoryDepartmentList);
             departmentList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
             departmentList.setAdapter(departmentAdapter);
         }
+        if(recentList!=null){
+            peopleAdapter = new PeopleListAdapter(this, recentList);
+            peopleList.setLayoutManager(new LinearLayoutManager(this));
+            peopleList.setAdapter(peopleAdapter);
+        }
 
     }
+
 
 }
