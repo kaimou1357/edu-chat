@@ -1,5 +1,7 @@
 package urlinq.android.com.edu_chat.controller.login;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,9 +17,9 @@ import com.loopj.android.http.RequestParams;
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-import urlinq.android.com.edu_chat.model.Constants;
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
+import urlinq.android.com.edu_chat.model.Constants;
 import urlinq.android.com.edu_chat.model.ECUser;
 
 
@@ -28,6 +30,7 @@ import urlinq.android.com.edu_chat.model.ECUser;
 public class LoginBackground extends Fragment {
 	private View v;
 	static String userHash;
+	private SharedPreferences prefs;
 	//@Bind(R.id.signUpToggle)  ImageButton signUpBtn;
 	@Bind(R.id.logInBlue) ImageButton logInBlue;
 	//@Bind(R.id.viewFlipper)  ViewFlipper flipper;
@@ -39,6 +42,12 @@ public class LoginBackground extends Fragment {
 		v = inflater.inflate(R.layout.combined_login, container, false);
 		//get reference to other fragment
 		ButterKnife.bind(this, v);
+		// TODO: Don't do what I am doing lol.
+		prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+		if (prefs.getBoolean("saveLogin", false)) {
+			userEmail.setText(prefs.getString("email", ""));
+			userPass.setText(prefs.getString("pass", ""));
+		}
 		logInBlue.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				//This will delay the spinner circle a bit so it's  not too fast.
@@ -57,14 +66,19 @@ public class LoginBackground extends Fragment {
 		//final CountDownLatch latch = new CountDownLatch(1);
 		RequestParams params = new RequestParams();
 
-        //Change back later.
+		//Change back later.
 		params.put("email", userEmail.getText().toString());
 		params.put("password", userPass.getText().toString());
-//        params.put("email", "km2743@nyu.edu");
-//        params.put("password", "adventure");
 		ECApiManager.post(Constants.loginAPI, params, new AsyncHttpResponseHandler() {
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+				SharedPreferences.Editor editPrefs = prefs.edit();
+				editPrefs.putBoolean("saveLogin", true);
+				editPrefs.putString("email", userEmail.getText().toString());
+				// TODO: Fix this once alex lets us hash! This is bad!!
+				editPrefs.putString("pass", userPass.getText().toString());
+				editPrefs.apply();
+
 				userHash = new String(responseBody);
 				Log.d("login", userHash);
 				try {
