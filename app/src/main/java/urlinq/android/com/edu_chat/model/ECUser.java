@@ -5,23 +5,14 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.BinaryHttpResponseHandler;
-import com.loopj.android.http.FileAsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import urlinq.android.com.edu_chat.controller.MainActivity;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.enums.ECUserType;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.MalformedInputException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,7 +57,6 @@ public class ECUser extends ECObject {
 	}
 
 
-
 	/**
 	 * This constructor will be for the current user using the application.
 	 *
@@ -76,18 +66,21 @@ public class ECUser extends ECObject {
 	public ECUser(JSONObject data) throws JSONException, ParseException {
 		super(data.getString("id"), data.getJSONObject("picture_file").getString("file_url"), null);
 
+
 		this.firstName = data.getString("firstname");
 
 		this.lastName = data.getString("lastname");
 		//UserType needs to be fixed later. Keep it at student for now.
 
 		this.userType = ECUserType.ECUserTypeStudent;
-		try{
-			this.mostRecentMessage = ECMessage.ECMessageBuilder(data.getJSONObject("most_recent_message_info"));
-		}catch(JSONException e){
-			this.mostRecentMessage = null;
+		
+		ECMessage mostRecentMessage1;
+		try {
+			mostRecentMessage1 = ECMessage.ECMessageBuilder(data.getJSONObject("most_recent_message_info"));
+		} catch (JSONException e) {
+			mostRecentMessage1 = null;
 		}
-
+		this.mostRecentMessage = mostRecentMessage1;
 
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		this.lastActivity = format.parse(data.getString("last_activity").replace("T", " "));
@@ -99,6 +92,7 @@ public class ECUser extends ECObject {
 		Log.v(String.format("EDU.CHAT %s", getClass().getSimpleName()), this.toString());
 		Log.d("File URL Confirm", fileURL);
 	}
+
 	/**
 	 * Method that refreshes the state of the current user by calling the API again.
 	 */
@@ -143,41 +137,42 @@ public class ECUser extends ECObject {
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}catch(ParseException e){
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		return personList;
 	}
 
-	private void getProfilePicture(String fileURL){
+	private void getProfilePicture(String fileURL) {
 
 		ECApiManager.get(fileURL, null, new BinaryHttpResponseHandler() {
 			Bitmap image;
+
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-				image = BitmapFactory.decodeByteArray(responseBody, 0 , responseBody.length);
+				image = BitmapFactory.decodeByteArray(responseBody, 0, responseBody.length);
 			}
+
 			@Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
 			}
+
 			@Override
-			public void onFinish(){
+			public void onFinish() {
 				setProfilePicture(image);
 			}
 		});
 
 	}
 
-	private void setProfilePicture(Bitmap img){
+	private void setProfilePicture(Bitmap img) {
 		this.profilePicture = img;
 	}
 
 
-
-
 	// Static
-	public static void setCurrentUser(ECUser user){
+	public static void setCurrentUser(ECUser user) {
 		ECUser.currentUser = user;
 
 	}
@@ -253,9 +248,9 @@ public class ECUser extends ECObject {
 		return this.firstName;
 	}
 
-	public Bitmap getProfilePicture() {return this.profilePicture;
+	public Bitmap getProfilePicture() {
+		return this.profilePicture;
 	}
-
 
 
 }
