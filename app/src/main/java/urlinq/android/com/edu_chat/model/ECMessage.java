@@ -29,37 +29,14 @@ public class ECMessage extends ECObject {
 				'}' + super.toString();
 	}
 
-	public ECMessage(String id, String fileURL, String messageTitle, String author, Date messageDate, ECMessageType messageType) {
-		super(id, fileURL, null);
-		this.messageTitle = messageTitle;
-		this.author = author;
-		this.messageDate = messageDate;
-		this.messageType = messageType;
-		Log.v(String.format("EDU.CHAT %s", getClass().getSimpleName()), this.toString());
-
-
-	}
-
-	public static ECMessage ECMessageBuilder(JSONObject recentMessage) throws JSONException, ParseException {
-		String username = recentMessage.getJSONObject("most_recent_message_creator_info").getString("firstname") + recentMessage.getJSONObject("most_recent_message_creator_info").getString("lastname");
-
-		String message = recentMessage.getJSONObject("message_data").getString("text");
-		String id = recentMessage.getJSONObject("message_data").getString("id");
-		String fileURL = recentMessage.getJSONObject("most_recent_message_creator_info").getJSONObject("picture_file").getString("file_url");
-
-		String messageT = recentMessage.getJSONObject("message_data").getString("type");
-		ECMessageType messageType = null; //Just adding these two types for now.
-		if (messageT.equals("file")) {
-			messageType = ECMessageType.ECMessageFileType;
-		} else if (messageT.equals("text")) {
-			messageType = ECMessageType.ECMessageTextType;
-		} else {
-			messageType = ECMessageType.ECNotSupportedType;
-		}
-		Date messageDate = null;
+	public ECMessage (JSONObject recentMessage) throws JSONException, ParseException {
+		super(recentMessage.getJSONObject("message_data").getString("id"), null, null);
+		this.author = recentMessage.getJSONObject("most_recent_message_creator_info").getString("firstname") + " " + recentMessage.getJSONObject("most_recent_message_creator_info").getString("lastname");
+		this.messageTitle= recentMessage.getJSONObject("message_data").getString("text");
+		this.messageType = ECMessageType.ECMessageTextType;
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		messageDate = format.parse(recentMessage.getJSONObject("message_data").getString("sent_at").replace("T", " "));
-		return new ECMessage(id, fileURL, messageT, username, messageDate, messageType);
+		this.messageDate = format.parse(recentMessage.getJSONObject("message_data").getString("sent_at").replace("T", " "));
+		Log.v(String.format("EDU.CHAT %s", getClass().getSimpleName()), this.toString());
 
 	}
 
