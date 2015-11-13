@@ -1,5 +1,6 @@
 package urlinq.android.com.edu_chat.model;
 
+import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,7 +15,6 @@ import java.util.List;
  */
 public class ECCategory extends ECObject {
 
-	// TODO: These must be final
 	private final String name;
 	private final String professorFirstName;
 	private final String professorLastName;
@@ -43,51 +43,56 @@ public class ECCategory extends ECObject {
 		this.professorID = professorID;
 		this.departmentTag = departmentTag;
 		this.mostRecentMessage = mostRecentMessage;
+		if (getColor() == null) {
+			Log.e(getClass().getSimpleName(),
+					String.format("CREATED A CATEGORY THAT HAS NO COLOR!!! Category = %s",
+							toString()));
+		}
 	}
 
 
 	public static List<ECObject> buildManyWithJSON(JSONArray response, ECCategoryType groupType) {
-		// TODO: Make this... It'll be pretty long. Set everything from the supers too
+		ArrayList<ECObject> objects = new ArrayList<>();
 		switch (groupType) {
 			case ECDepartmentCategoryType: {
-				ArrayList<ECObject> departments = new ArrayList<>();
 				try {
 					for (int i = 0; i < response.length(); i++) {
 						JSONObject obj = response.getJSONObject(i);
-						departments.add(buildOneECCategory(obj, ECCategoryType.ECDepartmentCategoryType));
+						objects.add(buildOneECCategory(obj, ECCategoryType.ECDepartmentCategoryType));
 					}
 				} catch (JSONException e) {
+					Log.e(ECCategory.class.getSimpleName(), e.getClass().getSimpleName());
 				}
-				return departments;
+				return objects;
 			}
 			case ECClassCategoryType: {
-				ArrayList<ECObject> classes = new ArrayList<>();
 				try {
 					for (int i = 0; i < response.length(); i++) {
 						JSONObject obj = response.getJSONObject(i);
-						classes.add(buildOneECCategory(obj, ECCategoryType.ECClassCategoryType));
+						objects.add(buildOneECCategory(obj, ECCategoryType.ECClassCategoryType));
 					}
 				} catch (JSONException e) {
+					Log.e(ECCategory.class.getSimpleName(), e.getClass().getSimpleName());
 				}
-				return classes;
+				return objects;
 			}
 			case ECGroupCategoryType: {
-				ArrayList<ECObject> groups = new ArrayList<>();
 				try {
-					//Add each group into an ArrayList and then return the entire arraylist of category objects.
 					for (int i = 0; i < response.length(); i++) {
 						JSONObject obj = response.getJSONObject(i);
-						groups.add(buildOneECCategory(obj, ECCategoryType.ECGroupCategoryType));
+						objects.add(buildOneECCategory(obj, ECCategoryType.ECGroupCategoryType));
 					}
 				} catch (JSONException e) {
-					e.printStackTrace();
+					Log.e(ECCategory.class.getSimpleName(), e.getClass().getSimpleName());
 				}
-				return groups;
+				return objects;
 			}
 
 		}
 		return null;
 	}
+
+	// TODO: Build one is stupid. Build one is a constructor !! Fix this.
 
 	/**
 	 * Helper function to help build one ECCategory in order to use with the ArrayList building later.

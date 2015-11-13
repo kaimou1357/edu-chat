@@ -48,6 +48,8 @@ public class ECUser extends ECObject {
 				'}' + super.toString();
 	}
 
+	// TODO: Just one constructor with JSONObject. No need for two.
+
 	/**
 	 * This constructor will be for the current user using the application.
 	 *
