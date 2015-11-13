@@ -43,18 +43,11 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 	public void onBindViewHolder(CategoryViewHolder viewHolder, int position) {
 		ECObject currObj = mECObjects.get(position);
 		viewHolder.setMessages(currObj.toString());
-		viewHolder.setEcObject(currObj);
-
-//		if (currObj instanceof ECCategory) {
-//			ECCategory cat = (ECCategory) currObj;
-//			viewHolder.setUserName(cat.getName());
-//		} else if (currObj instanceof ECUser) {
-//			ECUser user = (ECUser) currObj;
-//			viewHolder.setUserName(String.format("%s %s", user.getFirstName(), user.getLastName()));
-//		}
-
-		//Worry about profile pictures later.
-		//viewHolder.setImg(currUser.getProfilePicture());
+		viewHolder.setECObject(currObj);
+		if(currObj instanceof ECUser){
+			ECUser user = (ECUser) currObj;
+			viewHolder.setImg(user.getProfilePicture());
+		}
 
 	}
 
@@ -75,7 +68,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 			super(view);
 			//set the onclick listener in the constructor.
 			view.setOnClickListener(this);
-			img = (ImageView) view.findViewById(R.id.imageView);
+			img = (ImageView) view.findViewById(R.id.profilePicture);
 			userText = (TextView) view.findViewById(R.id.userTextView);
 		}
 
@@ -108,7 +101,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 		}
 
 
-		public void setEcObject(ECObject ecObject) {
+		public void setECObject(ECObject ecObject) {
 			this.ecObject = ecObject;
 		}
 	}

@@ -17,6 +17,9 @@ import com.loopj.android.http.RequestParams;
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.Constants;
@@ -70,6 +73,7 @@ public class LoginBackground extends Fragment {
 		params.put("email", userEmail.getText().toString());
 		params.put("password", userPass.getText().toString());
 		ECApiManager.post(Constants.loginAPI, params, new AsyncHttpResponseHandler() {
+			JSONObject obj;
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 				SharedPreferences.Editor editPrefs = prefs.edit();
@@ -79,18 +83,16 @@ public class LoginBackground extends Fragment {
 				editPrefs.putString("pass", userPass.getText().toString());
 				editPrefs.apply();
 
+
 				userHash = new String(responseBody);
 				Log.d("login", userHash);
 				try {
-					JSONObject obj = new JSONObject(userHash);
-					ECUser.setCurrentUser(new ECUser(obj));
-
+					obj = new JSONObject(userHash);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 
 			}
-
 			@Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
@@ -98,7 +100,10 @@ public class LoginBackground extends Fragment {
 
 			@Override
 			public void onFinish() {
+				ECUser.setCurrentUser(obj);
 				launchMainActivity();
+
+
 			}
 
 
@@ -106,7 +111,7 @@ public class LoginBackground extends Fragment {
 	}
 
 	private void launchMainActivity() {
-		if (ECUser.getCurrentUser() == null) {
+		if (ECUser.getUserToken() == null) {
 			((OnLoginListener) getActivity()).loginSuccessful(false);
 		} else {
 			((OnLoginListener) getActivity()).loginSuccessful(true);

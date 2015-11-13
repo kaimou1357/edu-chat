@@ -8,6 +8,7 @@ public class Constants {
     public static final String loginAPI = "https://edu.chat/api/login/";
     public static final String refreshUserAPI = "https://edu.chat/api/user";
     public static final String loadoutAPI = "https://edu.chat/message/loadout";
+    public static final String bitmapURL = "https://edu.chat/static";
 
 
 
