@@ -38,6 +38,7 @@ public class ChatActivity extends AppCompatActivity {
     @Bind(R.id.messages) RecyclerView mMessagesView;
     @Bind(R.id.message_input) EditText mInputMessageView;
     @Bind(R.id.send_button) ImageButton sendButton;
+    @Bind(R.id.nameTextView) TextView nameTextView;
     private Handler mTypingHandler = new Handler();
     private boolean mTyping = false;
     //Don't forget to set the username to something before we begin.
@@ -52,6 +53,11 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.chat_fragment);
         ButterKnife.bind(this);
         mAdapter = new MessageAdapter(this, mMessages);
+        //get extras from bundle.
+
+        String user_name = getIntent().getExtras().getString("USER_NAME");
+        nameTextView.setText(user_name);
+
 
         mMessagesView.setLayoutManager(new LinearLayoutManager(this));
         mMessagesView.setAdapter(mAdapter);
@@ -124,7 +130,7 @@ public class ChatActivity extends AppCompatActivity {
      * @param message
      */
     private void addMessage(String username, String message) {
-        //Get the message and insert it as a parameter. Then build a message with the JSON.
+        //Add the message to the RecyclerView so the user can see it.
 //        mMessages.add(new ECMessage.Builder(ECMessage.TYPE_MESSAGE)
 //                .username(username).message(message).build());
 //        mAdapter.notifyItemInserted(mMessages.size() - 1);

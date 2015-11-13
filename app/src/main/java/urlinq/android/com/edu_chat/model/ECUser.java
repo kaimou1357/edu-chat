@@ -144,7 +144,7 @@ public class ECUser extends ECObject {
                 ECMessage recentMessage = null;
                 Date lastActivity = null;
                 try {
-                    recentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
+                    recentMessage = ECMessage.ECMessageBuilder(obj.getJSONObject("most_recent_message_info"));
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     lastActivity = format.parse(obj.getString("last_email").replace("T", " "));
                 } catch (ParseException e) {

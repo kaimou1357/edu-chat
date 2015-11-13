@@ -83,9 +83,7 @@ public class PeopleListAdapter extends RecyclerView.Adapter<PeopleListAdapter.Pe
         @Override
         public void onClick(View v){
             Intent i = new Intent(mainActivity, ChatActivity.class);
-            //Put bundle information here
-            Bundle bundle = new Bundle();
-            bundle.putString("test", "hello");
+            i.putExtra("USER_NAME", "Kai Mou");
             mainActivity.startActivity(i);
         }
 

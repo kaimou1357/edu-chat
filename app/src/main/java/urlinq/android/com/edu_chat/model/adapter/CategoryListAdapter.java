@@ -86,8 +86,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             //Bundle the arguments/information here before passing it to the chatfragment.
             Intent i = new Intent(mainActivity, ChatActivity.class);
             //Put bundle information here
-            Bundle bundle = new Bundle();
-            bundle.putString("test", "hello");
+            i.putExtra("USER_NAME", "Kai Mou");
             mainActivity.startActivity(i);
         }
 

@@ -17,12 +17,12 @@ import urlinq.android.com.edu_chat.model.enums.ECCategoryType;
 public class ECCategory extends ECObject {
     
     // TODO: These must be final
-    private String name;
-    private String professorFirstName;
-    private String professorLastName;
-    private String professorID;
-    private String departmentTag;
-    private ECMessage mostRecentMessage;
+    private final String name;
+    private final String professorFirstName;
+    private final String professorLastName;
+    private final String professorID;
+    private final String departmentTag;
+    private final ECMessage mostRecentMessage;
 
     @Override
     public String toString() {
@@ -36,9 +36,17 @@ public class ECCategory extends ECObject {
                 '}' + super.toString();
     }
 
-    public ECCategory(String id, String fileURL) {
+    public ECCategory(String id, String fileURL, String name, String professorFirstName, String professorLastName, String professorID, String departmentTag, ECMessage mostRecentMessage) {
         super(id, fileURL);
+        this.name = name;
+        this.professorFirstName = professorFirstName;
+        this.professorLastName = professorLastName;
+        this.professorID = professorID;
+        this.departmentTag = departmentTag;
+        this.mostRecentMessage = mostRecentMessage;
     }
+
+
 
     public static ArrayList<ECCategory> buildManyWithJSON(JSONArray response, ECCategoryType groupType) {
         // TODO: Make this... It'll be pretty long. Set everything from the supers too
@@ -48,58 +56,19 @@ public class ECCategory extends ECObject {
                 try {
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject obj = response.getJSONObject(i);
-
-                        String identifier = obj.getString("id");
-                        String fileURL = obj.getJSONObject("picture_file").getString("file_url");
-                        ECCategory department = new ECCategory(identifier, fileURL);
-
-                        ECMessage recentMessage = null;
-                        try {
-                            recentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-                        department.setMostRecentMessage(recentMessage);
-                        department.setName(obj.getString("department_name"));
-                        Log.v(String.format("EDU.CHAT %s", ECCategory.class.getSimpleName()), department.toString());
-                        departments.add(department);
-
+                        departments.add(buildOneECCategory(obj, ECCategoryType.ECDepartmentCategoryType));
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                } catch (JSONException e) {}
+                return departments;
             }
-            break;
             case ECClassCategoryType: {
                 ArrayList<ECCategory> classes = new ArrayList<ECCategory>();
                 try {
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject obj = response.getJSONObject(i);
-
-                        String identifier = obj.getString("id");
-                        String fileURL = obj.getJSONObject("picture_file").getString("file_url");
-                        ECCategory classroom = new ECCategory(identifier, fileURL);
-                        classroom.setProfessorFirstName(obj.getString("class_professor_firstname"));
-                        classroom.setProfessorLastName(obj.getString("class_professor_lastname"));
-
-                        ECMessage recentMessage = null;
-                        try {
-
-                            recentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-                        classroom.setMostRecentMessage(recentMessage);
-                        classroom.setName(obj.getString("class_name"));
-                        Log.v(String.format("EDU.CHAT %s", ECCategory.class.getSimpleName()), classroom.toString());
-                        classes.add(classroom);
+                        classes.add(buildOneECCategory(obj, ECCategoryType.ECClassCategoryType));
                     }
-                } catch (JSONException e) {
-
-                }
+                } catch (JSONException e) {}
                 return classes;
             }
             case ECGroupCategoryType: {
@@ -108,22 +77,7 @@ public class ECCategory extends ECObject {
                     //Add each group into an ArrayList and then return the entire arraylist of category objects.
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject obj = response.getJSONObject(i);
-
-                        String identifier = obj.getString("id");
-                        String fileURL = obj.getJSONObject("picture_file").getString("file_url");
-                        ECCategory category = new ECCategory(identifier, fileURL);
-
-                        ECMessage recentMessage = null;
-                        try {
-                            recentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-                        category.setMostRecentMessage(recentMessage);
-                        category.setName(obj.getString("name"));
-                        Log.v(String.format("EDU.CHAT %s", ECCategory.class.getSimpleName()), category.toString());
-                        groups.add(category);
+                        groups.add(buildOneECCategory(obj, ECCategoryType.ECGroupCategoryType));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -135,29 +89,82 @@ public class ECCategory extends ECObject {
         return null;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    /**
+     * Helper function to help build one ECCategory in order to use with the ArrayList building later.
+     * @param obj
+     * @param groupType
+     * @return
+     * @throws JSONException
+     */
+    public static ECCategory buildOneECCategory(JSONObject obj, ECCategoryType groupType)throws JSONException{
+
+        switch(groupType){
+            case ECDepartmentCategoryType:{
+                String identifier = obj.getString("id");
+                String fileURL = obj.getJSONObject("picture_file").getString("file_url");
+
+                String name = obj.getString("department_name");
+                //There are no specific professors in a department.
+                String professorFirstName = null;
+                String professorLastName = null;
+                String professorID = null;
+                String departmentTag = obj.getString("department_tag");
+                ECMessage recentMessage = null;
+                try {
+                    recentMessage = ECMessage.ECMessageBuilder(obj.getJSONObject("most_recent_message_info"));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return new ECCategory(identifier, fileURL, name, professorFirstName, professorLastName, professorID, departmentTag, recentMessage);
+            }
+            case ECClassCategoryType:{
+
+                String identifier = obj.getString("id");
+                String fileURL = obj.getJSONObject("picture_file").getString("file_url");
+                String name = obj.getString("class_name");
+                //There are no specific professors in a department.
+                String professorFirstName = obj.getString("class_professor_firstname");
+                String professorLastName = obj.getString("class_professor_lastname");
+                //The professor is the creator in the class type.
+                String professorID = obj.getString("creator_id");
+                String departmentTag = obj.getString("parent_department_name");
+                ECMessage recentMessage = null;
+                try {
+                    recentMessage = ECMessage.ECMessageBuilder(obj.getJSONObject("most_recent_message_info"));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return new ECCategory(identifier, fileURL, name, professorFirstName, professorLastName, professorID, departmentTag, recentMessage);
+            }
+            case ECGroupCategoryType:{
+                String identifier = obj.getString("id");
+                String fileURL = obj.getJSONObject("picture_file").getString("file_url");
+                String name = obj.getString("group_name");
+                //There are no specific professors in a department.
+                String professorFirstName = null;
+                String professorLastName = null;
+                String professorID = null;
+                String departmentTag = null;
+                ECMessage recentMessage = null;
+                try {
+                    recentMessage = ECMessage.ECMessageBuilder(obj.getJSONObject("most_recent_message_info"));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return new ECCategory(identifier, fileURL, name, professorFirstName, professorLastName, professorID, departmentTag, recentMessage);
+
+            }
+
+        }
+        return null;
+
+
     }
 
-    public void setProfessorFirstName(String professorFirstName) {
-        this.professorFirstName = professorFirstName;
-    }
 
-    public void setProfessorLastName(String professorLastName) {
-        this.professorLastName = professorLastName;
-    }
 
-    public void setProfessorID(String professorID) {
-        this.professorID = professorID;
-    }
 
-    public void setDepartmentTag(String departmentTag) {
-        this.departmentTag = departmentTag;
-    }
 
-    public void setMostRecentMessage(ECMessage mostRecentMessage) {
-        this.mostRecentMessage = mostRecentMessage;
-    }
 
     public String getName() {
         return name;

@@ -25,18 +25,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        int layout = -1;
-        switch(viewType) {
-            case ECMessage.TYPE_MESSAGE:
-                layout = R.layout.item_message;
-                break;
-            case ECMessage.TYPE_LOG:
-                layout = R.layout.item_log;
-                break;
-            case ECMessage.TYPE_ACTION:
-                layout = R.layout.item_action;
-                break;
-        }
+        int layout = R.layout.item_message;
 
         View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
         return new ViewHolder(v);
