@@ -100,8 +100,12 @@ public class LoginBackground extends Fragment {
 
 			@Override
 			public void onFinish() {
-				ECUser.setCurrentUser(obj);
-				launchMainActivity();
+				try{
+					ECUser.setCurrentUser(new ECUser(obj.getJSONObject("user")));
+					launchMainActivity();
+				}catch(ParseException e){e.printStackTrace();}
+				catch(JSONException e){e.printStackTrace();}
+
 
 
 			}

@@ -38,14 +38,10 @@ public class ECUser extends ECObject {
 	private static ECUser currentUser;
 	private static String userToken;
 
-
-
 	private static String currUserSchool;
 	private static String currUserID;
 	private static String currUserFirstName;
 	private static String currUserLastName;
-
-
 
 	private final String firstName;
 	private final String lastName;
@@ -53,7 +49,7 @@ public class ECUser extends ECObject {
 	private final ECMessage mostRecentMessage;
 	private final Date lastActivity;
 	private final String department;
-	private final Bitmap profilePicture = null;
+	private Bitmap profilePicture;
 	// TODO: Field for profile picture
 
 
@@ -86,21 +82,23 @@ public class ECUser extends ECObject {
 		//UserType needs to be fixed later. Keep it at student for now.
 
 		this.userType = ECUserType.ECUserTypeStudent;
-		this.mostRecentMessage = ECMessage.ECMessageBuilder(data.getJSONObject("most_recent_message_info"));
+		try{
+			this.mostRecentMessage = ECMessage.ECMessageBuilder(data.getJSONObject("most_recent_message_info"));
+		}catch(JSONException e){
+			this.mostRecentMessage = null;
+		}
+
 
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		this.lastActivity = format.parse(data.getString("last_email").replace("T", " "));
+		this.lastActivity = format.parse(data.getString("last_activity").replace("T", " "));
 		this.department = data.getString("department");
-
 		String fileURL = Constants.bitmapURL + super.getFileURL();
+		getProfilePicture(fileURL);
+
+
 		Log.v(String.format("EDU.CHAT %s", getClass().getSimpleName()), this.toString());
 		Log.d("File URL Confirm", fileURL);
-
-
 	}
-
-
-
 	/**
 	 * Method that refreshes the state of the current user by calling the API again.
 	 */
@@ -115,12 +113,10 @@ public class ECUser extends ECObject {
 				Log.d("refreshUser", response);
 				try {
 					JSONObject obj = new JSONObject(response);
-					ECUser.userToken = obj.getString("token");
-					ECUser.currUserSchool = obj.getJSONObject("user").getJSONObject("school").getString("school_name");
-					ECUser.currUserID = obj.getJSONObject("user").getString("id");
-					ECUser.currUserFirstName = obj.getJSONObject("user").getString("firstname");
-					ECUser.currUserLastName = obj.getJSONObject("user").getString("lastname");
+					ECUser.setCurrentUser(new ECUser(obj));
 				} catch (JSONException e) {
+					e.printStackTrace();
+				} catch (ParseException e) {
 					e.printStackTrace();
 				}
 			}
@@ -153,7 +149,7 @@ public class ECUser extends ECObject {
 		return personList;
 	}
 
-	private Bitmap getBitMap(String fileURL){
+	private void getProfilePicture(String fileURL){
 
 		ECApiManager.get(fileURL, null, new BinaryHttpResponseHandler() {
 			Bitmap image;
@@ -167,29 +163,22 @@ public class ECUser extends ECObject {
 			}
 			@Override
 			public void onFinish(){
-
+				setProfilePicture(image);
 			}
 		});
-		return null;
+
 	}
 
 	private void setProfilePicture(Bitmap img){
-
+		this.profilePicture = img;
 	}
+
 
 
 
 	// Static
-	public static void setCurrentUser(JSONObject response){
-		try{
-			ECUser.setUserToken(response.getString("token"));
-			ECUser.setCurrUserSchool(response.getJSONObject("user").getJSONObject("school").getString("school_name"));
-			ECUser.setCurrUserID(response.getJSONObject("user").getString("id"));
-			ECUser.setCurrUserFirstName(response.getJSONObject("user").getString("firstname"));
-			ECUser.setCurrUserLastName(response.getJSONObject("user").getString("lastname"));
-		}catch(JSONException e){
-			Log.e("Login error", "Login Error");
-		}
+	public static void setCurrentUser(ECUser user){
+		ECUser.currentUser = user;
 
 	}
 

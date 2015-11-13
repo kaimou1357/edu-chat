@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 	 * This method will load the profile picture and the student full name and school.
 	 */
 	private void loadCurrentUser() {
-		userFullName.setText(String.format("%s %s", ECUser.getCurrUserFirstName(), ECUser.getCurrUserLastName()));
+		userFullName.setText(String.format("%s %s", ECUser.getCurrentUser().getFirstName(), ECUser.getCurrentUser().getFirstName()));
 
 	}
 
