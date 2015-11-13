@@ -1,8 +1,6 @@
 package urlinq.android.com.edu_chat.controller;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,17 +12,15 @@ import com.loopj.android.http.RequestParams;
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.solovyev.android.views.llm.DividerItemDecoration;
 import org.solovyev.android.views.llm.LinearLayoutManager;
-
-import urlinq.android.com.edu_chat.model.Constants;
 import urlinq.android.com.edu_chat.R;
-import urlinq.android.com.edu_chat.model.adapter.CategoryListAdapter;
+import urlinq.android.com.edu_chat.controller.adapter.MainScreenListAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
+import urlinq.android.com.edu_chat.model.Constants;
 import urlinq.android.com.edu_chat.model.ECCategory;
-import urlinq.android.com.edu_chat.model.adapter.PeopleListAdapter;
-import urlinq.android.com.edu_chat.model.enums.ECCategoryType;
+import urlinq.android.com.edu_chat.model.ECObject;
 import urlinq.android.com.edu_chat.model.ECUser;
+import urlinq.android.com.edu_chat.model.enums.ECCategoryType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,27 +30,27 @@ import java.util.List;
  * Created by Kai on 10/16/2015.
  */
 public class MainActivity extends AppCompatActivity {
-	private List<ECCategory> ECCategoryGroupList = new ArrayList<>();
-    private List<ECCategory> ECCategoryClassList = new ArrayList<ECCategory>();
-    private List<ECCategory> ECCategoryDepartmentList = new ArrayList<ECCategory>();
-    private List<ECUser> recentList = new ArrayList<ECUser>();
+	private List<ECObject> ECCategoryGroupList = new ArrayList<>();
+	private List<ECObject> ECCategoryClassList = new ArrayList<>();
+	private List<ECObject> ECCategoryDepartmentList = new ArrayList<>();
+	private List<ECObject> recentList = new ArrayList<>();
 
-    private JSONObject loadOut;
+	private JSONObject loadOut;
 
 
-	private CategoryListAdapter labAdapter;
-    private CategoryListAdapter classAdapter;
-    private CategoryListAdapter departmentAdapter;
-    private CategoryListAdapter groupAdapter;
-    private PeopleListAdapter peopleAdapter;
+	private MainScreenListAdapter labAdapter;
+	private MainScreenListAdapter classAdapter;
+	private MainScreenListAdapter departmentAdapter;
+	private MainScreenListAdapter groupAdapter;
+	private MainScreenListAdapter peopleAdapter;
 
-    private ECUser currentUser;
+	private ECUser currentUser;
 
 	@Bind(R.id.classList) RecyclerView classList;
 	@Bind(R.id.groupList) RecyclerView groupList;
-    @Bind(R.id.departmentList) RecyclerView departmentList;
-    @Bind(R.id.labList) RecyclerView labList;
-    @Bind(R.id.peopleList)RecyclerView peopleList;
+	@Bind(R.id.departmentList) RecyclerView departmentList;
+	@Bind(R.id.labList) RecyclerView labList;
+	@Bind(R.id.peopleList) RecyclerView peopleList;
 	@Bind(R.id.userFullName) TextView userFullName;
 	@Bind(R.id.userSchool) TextView userSchoolName;
 
@@ -64,41 +60,42 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_activity_container);
 		ButterKnife.bind(this);
-        loadCurrentUser();
-        getChatLoadOut();
-        //Check the populateRecyclerView() method. Will load after all objects are loaded.
-    }
-    /**
+		loadCurrentUser();
+		getChatLoadOut();
+		//Check the populateRecyclerView() method. Will load after all objects are loaded.
+	}
+
+	/**
 	 * This method will populate ecUserList with the users loaded in from the login call.
 	 */
 	private void getChatLoadOut() {
 		RequestParams params = new RequestParams();
 		params.put("token", ECUser.getUserToken());
 		ECApiManager.get(Constants.loadoutAPI, params, new AsyncHttpResponseHandler() {
-            JSONObject obj;
+			JSONObject obj;
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String response = new String(responseBody);
-                Log.d("response", response);
-                try {
-                    obj = new JSONObject(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+				String response = new String(responseBody);
+				Log.d("response", response);
+				try {
+					obj = new JSONObject(response);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+			@Override
+			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
-            }
+			}
 
-            @Override
-            public void onFinish() {
-                makeObjects(obj);
-                populateRecyclerView();
-            }
-        });
+			@Override
+			public void onFinish() {
+				makeObjects(obj);
+				populateRecyclerView();
+			}
+		});
 	}
 
 	/**
@@ -109,12 +106,11 @@ public class MainActivity extends AppCompatActivity {
 		try {
 			//Add for classes, departments, people, groups.
 			ECCategoryGroupList = ECCategory.buildManyWithJSON(response.getJSONArray("groups"), ECCategoryType.ECGroupCategoryType);
-            ECCategoryClassList = ECCategory.buildManyWithJSON(response.getJSONArray("classes"), ECCategoryType.ECClassCategoryType);
-            ECCategoryDepartmentList = ECCategory.buildManyWithJSON(response.getJSONArray("departments"), ECCategoryType.ECDepartmentCategoryType);
+			ECCategoryClassList = ECCategory.buildManyWithJSON(response.getJSONArray("classes"), ECCategoryType.ECClassCategoryType);
+			ECCategoryDepartmentList = ECCategory.buildManyWithJSON(response.getJSONArray("departments"), ECCategoryType.ECDepartmentCategoryType);
+			recentList = ECUser.buildManyWithJSON(response.getJSONArray("recent"));
 
-            recentList = ECUser.buildManyWithJSON(response.getJSONArray("recent"));
-
-        } catch (JSONException e) {
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
@@ -126,34 +122,35 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	private void loadCurrentUser() {
 		currentUser = ECUser.getCurrentUser();
-		userFullName.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
+		userFullName.setText(String.format("%s %s", currentUser.getFirstName(), currentUser.getLastName()));
 
 	}
-    private void populateRecyclerView(){
 
-        if(ECCategoryGroupList != null){
-            groupAdapter = new CategoryListAdapter(this, ECCategoryGroupList);
-            groupList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
-            groupList.setAdapter(groupAdapter);
-        }
+	private void populateRecyclerView() {
 
-        if(ECCategoryClassList !=null){
-            classAdapter = new CategoryListAdapter(this, ECCategoryClassList);
-            classList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
-            classList.setAdapter(classAdapter);
-        }
-        if(ECCategoryDepartmentList !=null){
-            departmentAdapter = new CategoryListAdapter(this, ECCategoryDepartmentList);
-            departmentList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
-            departmentList.setAdapter(departmentAdapter);
-        }
-        if(recentList!=null){
-            peopleAdapter = new PeopleListAdapter(this, recentList);
-            peopleList.setLayoutManager(new LinearLayoutManager(this));
-            peopleList.setAdapter(peopleAdapter);
-        }
+		if (ECCategoryGroupList != null) {
+			groupAdapter = new MainScreenListAdapter(this, ECCategoryGroupList);
+			groupList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
+			groupList.setAdapter(groupAdapter);
+		}
 
-    }
+		if (ECCategoryClassList != null) {
+			classAdapter = new MainScreenListAdapter(this, ECCategoryClassList);
+			classList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
+			classList.setAdapter(classAdapter);
+		}
+		if (ECCategoryDepartmentList != null) {
+			departmentAdapter = new MainScreenListAdapter(this, ECCategoryDepartmentList);
+			departmentList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
+			departmentList.setAdapter(departmentAdapter);
+		}
+		if (recentList != null) {
+			peopleAdapter = new MainScreenListAdapter(this, recentList);
+			peopleList.setLayoutManager(new LinearLayoutManager(this));
+			peopleList.setAdapter(peopleAdapter);
+		}
+
+	}
 
 
 }

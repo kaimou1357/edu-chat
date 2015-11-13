@@ -35,7 +35,7 @@ public class ECMessage extends ECObject {
     }
 
     public ECMessage(String id, String fileURL,String messageTitle, String author, Date messageDate, ECMessageType messageType ){
-        super(id, fileURL);
+        super(id, fileURL, null);
         this.messageTitle = messageTitle;
         this.author = author;
         this.messageDate = messageDate;

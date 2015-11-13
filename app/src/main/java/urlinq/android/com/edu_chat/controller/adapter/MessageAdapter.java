@@ -1,4 +1,4 @@
-package urlinq.android.com.edu_chat.model.adapter;
+package urlinq.android.com.edu_chat.controller.adapter;
 
 import android.content.Context;
 
