@@ -10,8 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.controller.ChatActivity;
+import urlinq.android.com.edu_chat.model.Constants;
 import urlinq.android.com.edu_chat.model.ECCategory;
 import urlinq.android.com.edu_chat.model.ECObject;
 import urlinq.android.com.edu_chat.model.ECUser;
@@ -46,7 +50,13 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 		viewHolder.setECObject(currObj);
 		if(currObj instanceof ECUser){
 			ECUser user = (ECUser) currObj;
-			viewHolder.setImg(user.getProfilePicture());
+			String fileURL = Constants.bitmapURL + user.getFileURL();
+			Picasso.with(mainActivity).load(fileURL).resize(1280, 720).into(viewHolder.img);
+		}
+		if(currObj instanceof ECCategory){
+			ECCategory category = (ECCategory) currObj;
+			String fileURL = Constants.bitmapURL + category.getFileURL();
+			Picasso.with(mainActivity).load(fileURL).resize(1280, 720).into(viewHolder.img);
 		}
 
 	}
@@ -82,10 +92,6 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 			userText.setText(messageTest);
 		}
 
-		public void setImg(Bitmap b) {
-			if (b == null) return;
-			img.setImageBitmap(b);
-		}
 
 		@Override
 		public void onClick(View v) {

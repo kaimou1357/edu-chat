@@ -40,7 +40,7 @@ public class ECUser extends ECObject {
 	private final Date lastActivity;
 	private final String department;
 	private Bitmap profilePicture;
-	// TODO: Field for profile picture
+
 
 
 	@Override
@@ -162,7 +162,6 @@ public class ECUser extends ECObject {
 	private void setProfilePicture(Bitmap img) {
 		this.profilePicture = img;
 	}
-
 
 	// Static
 	public static void setCurrentUser(ECUser user) {

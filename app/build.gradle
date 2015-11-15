@@ -44,5 +44,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'org.solovyev.android.views:linear-layout-manager:0.5@aar'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     testCompile 'org.json:json:20150729'
 }
