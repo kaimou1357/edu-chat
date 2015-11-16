@@ -28,7 +28,6 @@ public class ECUser extends ECObject {
 
 	private static ECUser currentUser;
 	private static String userToken;
-
 	private static String currUserSchool;
 	private static String currUserID;
 	private static String currUserFirstName;
@@ -41,7 +40,7 @@ public class ECUser extends ECObject {
 	private final Date lastActivity;
 	private final String department;
 	private Bitmap profilePicture;
-	// TODO: Field for profile picture
+
 
 
 	@Override
@@ -65,23 +64,17 @@ public class ECUser extends ECObject {
 	 */
 	public ECUser(JSONObject data) throws JSONException, ParseException {
 		super(data.getString("id"), data.getJSONObject("picture_file").getString("file_url"), null);
-
-
 		this.firstName = data.getString("firstname");
-
 		this.lastName = data.getString("lastname");
 		//UserType needs to be fixed later. Keep it at student for now.
-
 		this.userType = ECUserType.ECUserTypeStudent;
-		
 		ECMessage mostRecentMessage1;
 		try {
-			mostRecentMessage1 = ECMessage.ECMessageBuilder(data.getJSONObject("most_recent_message_info"));
+			mostRecentMessage1 = new ECMessage(data.getJSONObject("most_recent_message_info"));
 		} catch (JSONException e) {
 			mostRecentMessage1 = null;
 		}
 		this.mostRecentMessage = mostRecentMessage1;
-
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		this.lastActivity = format.parse(data.getString("last_activity").replace("T", " "));
 		this.department = data.getString("department");
@@ -169,7 +162,6 @@ public class ECUser extends ECObject {
 	private void setProfilePicture(Bitmap img) {
 		this.profilePicture = img;
 	}
-
 
 	// Static
 	public static void setCurrentUser(ECUser user) {

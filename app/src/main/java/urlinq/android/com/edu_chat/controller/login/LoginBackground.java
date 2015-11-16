@@ -102,6 +102,7 @@ public class LoginBackground extends Fragment {
 			public void onFinish() {
 				try{
 					ECUser.setCurrentUser(new ECUser(obj.getJSONObject("user")));
+					ECUser.setUserToken(obj.getString("token"));
 					launchMainActivity();
 				}catch(ParseException e){e.printStackTrace();}
 				catch(JSONException e){e.printStackTrace();}
@@ -109,13 +110,11 @@ public class LoginBackground extends Fragment {
 
 
 			}
-
-
 		});
 	}
 
 	private void launchMainActivity() {
-		if (ECUser.getUserToken() == null) {
+		if (ECUser.getCurrentUser() == null) {
 			((OnLoginListener) getActivity()).loginSuccessful(false);
 		} else {
 			((OnLoginListener) getActivity()).loginSuccessful(true);

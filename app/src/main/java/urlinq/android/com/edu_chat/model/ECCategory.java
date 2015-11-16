@@ -35,7 +35,7 @@ public class ECCategory extends ECObject {
 				this.professorID = null;
 				this.departmentTag = obj.getString("department_tag");
 
-				this.mostRecentMessage = ECMessage.ECMessageBuilder(obj.getJSONObject("most_recent_message_info"));
+				this.mostRecentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
 				if (getColor() == null) {
 					Log.e(getClass().getSimpleName(),
 							String.format("CREATED A CATEGORY THAT HAS NO COLOR!!! Category = %s",
@@ -53,7 +53,7 @@ public class ECCategory extends ECObject {
 				this.professorID = obj.getString("creator_id");
 				this.departmentTag = obj.getString("parent_department_name");
 
-				this.mostRecentMessage = ECMessage.ECMessageBuilder(obj.getJSONObject("most_recent_message_info"));
+				this.mostRecentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
 				if (getColor() == null) {
 					Log.e(getClass().getSimpleName(),
 							String.format("CREATED A CATEGORY THAT HAS NO COLOR!!! Category = %s",
@@ -70,7 +70,7 @@ public class ECCategory extends ECObject {
 				this.professorID = null;
 				this.departmentTag = null;
 
-				mostRecentMessage = ECMessage.ECMessageBuilder(obj.getJSONObject("most_recent_message_info"));
+				mostRecentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
 				if (getColor() == null) {
 					Log.e(getClass().getSimpleName(),
 							String.format("CREATED A CATEGORY THAT HAS NO COLOR!!! Category = %s",

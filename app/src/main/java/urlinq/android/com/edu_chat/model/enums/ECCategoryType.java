@@ -1,19 +1,20 @@
 package urlinq.android.com.edu_chat.model.enums;
 
+import urlinq.android.com.edu_chat.model.ECCategory;
+
 /**
  * Created by Jacob on 10/29/15.
  */
 public enum ECCategoryType {
-	ECDepartmentCategoryType(0),
-	ECClassCategoryType(1),
-	ECGroupCategoryType(2);
+	ECDepartmentCategoryType("Department"),
+	ECClassCategoryType("Class"),
+	ECGroupCategoryType("Group");
 
-    private final int value;
+    private final String userType;
 
-    ECCategoryType(final int newValue){
-        value = newValue;
-    }
 
-    public int getValue(){return value;}
+    ECCategoryType(final String userType){this.userType = userType;}
+
+    public String getUserType(){return userType;}
 
 }
