@@ -9,4 +9,5 @@
     <string name ="heroFragment1">An easy way to communicate academically</string>
     <string name = "heroFragment2">Put the text you want here</string>
     <string name = "heroFragment3">Put the rest of the text here</string>
+	<string name="PARSE_CONFIG_AUTO_LOGIN">shouldAutoLogin</string>
 </resources>

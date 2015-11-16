@@ -14,16 +14,16 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.parse.ParseConfig;
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.ParseException;
-
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.Constants;
 import urlinq.android.com.edu_chat.model.ECUser;
+
+import java.text.ParseException;
 
 
 /**
@@ -50,6 +50,10 @@ public class LoginBackground extends Fragment {
 		if (prefs.getBoolean("saveLogin", false)) {
 			userEmail.setText(prefs.getString("email", ""));
 			userPass.setText(prefs.getString("pass", ""));
+			ParseConfig config = ParseConfig.getCurrentConfig();
+			if (config.getBoolean(getString(R.string.PARSE_CONFIG_AUTO_LOGIN), false)) {
+				attemptLogin();
+			}
 		}
 		logInBlue.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -69,11 +73,11 @@ public class LoginBackground extends Fragment {
 		//final CountDownLatch latch = new CountDownLatch(1);
 		RequestParams params = new RequestParams();
 
-		//Change back later.
 		params.put("email", userEmail.getText().toString());
 		params.put("password", userPass.getText().toString());
 		ECApiManager.post(Constants.loginAPI, params, new AsyncHttpResponseHandler() {
 			JSONObject obj;
+
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 				SharedPreferences.Editor editPrefs = prefs.edit();
@@ -93,6 +97,7 @@ public class LoginBackground extends Fragment {
 				}
 
 			}
+
 			@Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
@@ -100,13 +105,15 @@ public class LoginBackground extends Fragment {
 
 			@Override
 			public void onFinish() {
-				try{
+				try {
 					ECUser.setCurrentUser(new ECUser(obj.getJSONObject("user")));
 					ECUser.setUserToken(obj.getString("token"));
 					launchMainActivity();
-				}catch(ParseException e){e.printStackTrace();}
-				catch(JSONException e){e.printStackTrace();}
-
+				} catch (ParseException e) {
+					e.printStackTrace();
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 
 
 			}
