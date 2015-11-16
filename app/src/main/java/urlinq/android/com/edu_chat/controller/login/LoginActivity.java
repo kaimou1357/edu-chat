@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
+
+import com.parse.Parse;
+
 import butterknife.ButterKnife;
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.controller.MainActivity;
@@ -19,6 +22,9 @@ public class LoginActivity extends AppCompatActivity implements LoginBackground.
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.content_main);
 		ButterKnife.bind(this);
+		Parse.enableLocalDatastore(this);
+
+		Parse.initialize(this, "8HRtau0wTVMAJCL6QAb0qVi1iI661qsdy7CT9xnN", "Bd4rgDMBk5OIHbYB9wdlyA75Ys2QckhhtQpZmvxO");
 
 		//Start the LoginFragment. This Activity will act as a container for the fragment.
 		//This activity will only hold the Fragment and communicate between fragments and go onto the next activity.
