@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.parse.ParseConfig;
+import com.parse.ParseObject;
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,6 +109,11 @@ public class LoginBackground extends Fragment {
 				try {
 					ECUser.setCurrentUser(new ECUser(obj.getJSONObject("user")));
 					ECUser.setUserToken(obj.getString("token"));
+
+					ParseObject login = new ParseObject("Logins");
+					login.put("userid", ECUser.getCurrentUser().getObjectIdentifier());
+					login.saveInBackground();
+
 					launchMainActivity();
 				} catch (ParseException e) {
 					e.printStackTrace();
