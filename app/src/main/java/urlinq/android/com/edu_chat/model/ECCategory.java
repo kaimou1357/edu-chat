@@ -21,6 +21,7 @@ public class ECCategory extends ECObject {
 	private final String professorID;
 	private final String departmentTag;
 	private final ECMessage mostRecentMessage;
+	private final ECCategoryType typeOfCategory;
 
 
 
@@ -28,6 +29,7 @@ public class ECCategory extends ECObject {
 		super(obj.getString("id"), obj.getJSONObject("picture_file").getString("file_url"), obj.getString("color"));
 		switch (groupType) {
 			case ECDepartmentCategoryType: {
+				this.typeOfCategory = ECCategoryType.ECDepartmentCategoryType;
 				this.name = obj.getString("department_name");
 				//There are no specific professors in a department.
 				this.professorFirstName = null;
@@ -35,7 +37,7 @@ public class ECCategory extends ECObject {
 				this.professorID = null;
 				this.departmentTag = obj.getString("department_tag");
 
-				this.mostRecentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
+				this.mostRecentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info").getJSONObject("message_data"));
 				if (getColor() == null) {
 					Log.e(getClass().getSimpleName(),
 							String.format("CREATED A CATEGORY THAT HAS NO COLOR!!! Category = %s",
@@ -45,6 +47,7 @@ public class ECCategory extends ECObject {
 			}
 			break;
 			case ECClassCategoryType: {
+				this.typeOfCategory = ECCategoryType.ECClassCategoryType;
 				this.name = obj.getString("class_name");
 				//There are no specific professors in a department.
 				this.professorFirstName = obj.getString("class_professor_firstname");
@@ -53,7 +56,7 @@ public class ECCategory extends ECObject {
 				this.professorID = obj.getString("creator_id");
 				this.departmentTag = obj.getString("parent_department_name");
 
-				this.mostRecentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
+				this.mostRecentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info").getJSONObject("message_data"));
 				if (getColor() == null) {
 					Log.e(getClass().getSimpleName(),
 							String.format("CREATED A CATEGORY THAT HAS NO COLOR!!! Category = %s",
@@ -63,6 +66,7 @@ public class ECCategory extends ECObject {
 			}
 			break;
 			case ECGroupCategoryType: {
+				this.typeOfCategory = ECCategoryType.ECGroupCategoryType;
 				this.name = obj.getString("group_name");
 				//There are no specific professors in a department.
 				this.professorFirstName = null;
@@ -70,7 +74,7 @@ public class ECCategory extends ECObject {
 				this.professorID = null;
 				this.departmentTag = null;
 
-				mostRecentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info"));
+				mostRecentMessage = new ECMessage(obj.getJSONObject("most_recent_message_info").getJSONObject("message_data"));
 				if (getColor() == null) {
 					Log.e(getClass().getSimpleName(),
 							String.format("CREATED A CATEGORY THAT HAS NO COLOR!!! Category = %s",
@@ -80,6 +84,7 @@ public class ECCategory extends ECObject {
 			break;
 			//Should never reach the default case.
 			default:{
+				this.typeOfCategory = null;
 				this.name = null;
 				//There are no specific professors in a department.
 				this.professorFirstName = null;
@@ -171,6 +176,9 @@ public class ECCategory extends ECObject {
 
 	public String getDepartmentTag() {
 		return departmentTag;
+	}
+	public ECCategoryType getTypeOfCategory() {
+		return typeOfCategory;
 	}
 
 	public ECMessage getMostRecentMessage() {

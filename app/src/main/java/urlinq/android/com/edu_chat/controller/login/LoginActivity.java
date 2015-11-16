@@ -4,9 +4,13 @@ package urlinq.android.com.edu_chat.controller.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.parse.ConfigCallback;
 import com.parse.Parse;
+import com.parse.ParseConfig;
+import com.parse.ParseException;
 
 import butterknife.ButterKnife;
 import urlinq.android.com.edu_chat.R;
@@ -25,6 +29,22 @@ public class LoginActivity extends AppCompatActivity implements LoginBackground.
 		Parse.enableLocalDatastore(this);
 
 		Parse.initialize(this, "8HRtau0wTVMAJCL6QAb0qVi1iI661qsdy7CT9xnN", "Bd4rgDMBk5OIHbYB9wdlyA75Ys2QckhhtQpZmvxO");
+
+		ParseConfig.getInBackground(new ConfigCallback() {
+			@Override
+			public void done(ParseConfig config, ParseException e) {
+				if (e == null) {
+					Log.d("TAG", "Yay! Config was fetched from the server.");
+				} else {
+					Log.e("TAG", "Failed to fetch. Using Cached Config.");
+					config = ParseConfig.getCurrentConfig();
+				}
+
+				// Get the message from config or fallback to default value
+				String welcomeMessage = config.getString("welcomeMessage", "Welcome!");
+				Log.d("TAG", String.format("Welcome Messsage From Config = %s", welcomeMessage));
+			}
+		});
 
 		//Start the LoginFragment. This Activity will act as a container for the fragment.
 		//This activity will only hold the Fragment and communicate between fragments and go onto the next activity.

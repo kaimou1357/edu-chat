@@ -3,7 +3,6 @@ package urlinq.android.com.edu_chat.controller.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,9 +98,13 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 			if (ecObject instanceof ECCategory) {
 				ECCategory cat = (ECCategory) ecObject;
 				i.putExtra("USER_NAME", cat.getName());
+				i.putExtra("target_type",cat.getTypeOfCategory().getCategoryString());
+				i.putExtra("target_id", cat.getObjectIdentifier());
 			} else if (ecObject instanceof ECUser) {
 				ECUser user = (ECUser) ecObject;
-				i.putExtra("USER_NAME", String.format("%s %s", user.getFirstName(), user.getLastName()));
+				i.putExtra("USER_NAME", user.getFirstName() + " " + user.getLastName());
+				i.putExtra("target_type", user.getUserType().getUserTypeString());
+				i.putExtra("target_id", user.getObjectIdentifier());
 			}
 			mainActivity.startActivity(i);
 		}

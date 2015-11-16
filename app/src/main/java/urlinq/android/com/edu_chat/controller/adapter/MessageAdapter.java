@@ -2,6 +2,7 @@ package urlinq.android.com.edu_chat.controller.adapter;
 
 import android.content.Context;
 
+import android.support.annotation.UiThread;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public int getItemCount(){
         return mMessages.size();
     }
+
+    @UiThread
+    public void dataSetChanged(){
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public int getItemViewType(int position){

@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
 	private JSONObject loadOut;
 
-
 	private MainScreenListAdapter labAdapter;
 	private MainScreenListAdapter classAdapter;
 	private MainScreenListAdapter departmentAdapter;
@@ -77,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 				String response = new String(responseBody);
-				Log.d("response", response);
+				Log.d("response", getRequestURI().toString());
 				try {
 					obj = new JSONObject(response);
 				} catch (JSONException e) {
@@ -113,10 +112,7 @@ public class MainActivity extends AppCompatActivity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
-
 	}
-
 	/**
 	 * This method will load the profile picture and the student full name and school.
 	 */

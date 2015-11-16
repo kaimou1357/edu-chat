@@ -2,6 +2,8 @@ package urlinq.android.com.edu_chat.model;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.BinaryHttpResponseHandler;
@@ -13,6 +15,7 @@ import org.json.JSONObject;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.enums.ECUserType;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,7 +73,7 @@ public class ECUser extends ECObject {
 		this.userType = ECUserType.ECUserTypeStudent;
 		ECMessage mostRecentMessage1;
 		try {
-			mostRecentMessage1 = new ECMessage(data.getJSONObject("most_recent_message_info"));
+			mostRecentMessage1 = new ECMessage(data.getJSONObject("most_recent_message_info").getJSONObject("message_data"));
 		} catch (JSONException e) {
 			mostRecentMessage1 = null;
 		}

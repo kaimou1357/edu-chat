@@ -30,12 +30,12 @@ public class ECMessage extends ECObject {
 	}
 
 	public ECMessage (JSONObject recentMessage) throws JSONException, ParseException {
-		super(recentMessage.getJSONObject("message_data").getString("id"), null, null);
-		this.author = recentMessage.getJSONObject("most_recent_message_creator_info").getString("firstname") + " " + recentMessage.getJSONObject("most_recent_message_creator_info").getString("lastname");
-		this.messageTitle= recentMessage.getJSONObject("message_data").getString("text");
+		super(recentMessage.getString("object_id"), null, null);
+		this.author = recentMessage.getJSONObject("user").getString("name");
+		this.messageTitle= recentMessage.getString("text");
 		this.messageType = ECMessageType.ECMessageTextType;
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		this.messageDate = format.parse(recentMessage.getJSONObject("message_data").getString("sent_at").replace("T", " "));
+		this.messageDate = format.parse(recentMessage.getString("sent_at").replace("T", " "));
 		Log.v(String.format("EDU.CHAT %s", getClass().getSimpleName()), this.toString());
 
 	}
