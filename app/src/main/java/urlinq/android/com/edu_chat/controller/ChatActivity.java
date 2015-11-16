@@ -1,11 +1,7 @@
 package urlinq.android.com.edu_chat.controller;
 
-import android.app.DownloadManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,18 +15,14 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.parse.Parse;
-
+import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import cz.msebera.android.httpclient.Header;
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.controller.adapter.MessageAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
@@ -50,16 +42,15 @@ public class ChatActivity extends AppCompatActivity {
 	private static final int TYPING_TIMER_LENGTH = 600;
 	private static final String REQUEST_LENGTH = "40";
 
-	@Bind(R.id.messages)
-	RecyclerView mMessagesView;
+	@Bind(R.id.messages) RecyclerView mMessagesView;
 	@Bind(R.id.message_input) EditText mInputMessageView;
 	@Bind(R.id.send_button) ImageButton sendButton;
 	@Bind(R.id.nameTextView) TextView nameTextView;
-	private Handler mTypingHandler = new Handler();
+	private final Handler mTypingHandler = new Handler();
 	private boolean mTyping = false;
 	//Don't forget to set the username to something before we begin.
 	private String mUsername;
-	private List<ECMessage> mMessages = new ArrayList<ECMessage>();
+	private final List<ECMessage> mMessages = new ArrayList<>();
 	private MessageAdapter mAdapter;
 
 
@@ -117,7 +108,7 @@ public class ChatActivity extends AppCompatActivity {
 
 	}
 
-	private void updateChatRoom(String targetType, String targetID, String token){
+	private void updateChatRoom(String targetType, String targetID, String token) {
 		RequestParams params = new RequestParams();
 		params.add("target_type", targetType);
 		params.add("target_id", targetID);
@@ -126,14 +117,18 @@ public class ChatActivity extends AppCompatActivity {
 		ECApiManager.get(Constants.loadChatRoomURL, params, new AsyncHttpResponseHandler() {
 
 			JSONArray obj;
+
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 				String response = new String(responseBody);
 				Log.d("chatResponse", getRequestURI().toString());
-				try{
+				try {
 					obj = new JSONObject(response).getJSONArray("messages");
-				}catch(JSONException e){e.printStackTrace();}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 			}
+
 			@Override
 			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
@@ -148,19 +143,20 @@ public class ChatActivity extends AppCompatActivity {
 
 	}
 
-	private void makeObjects(JSONArray obj){
-		try{
+	private void makeObjects(JSONArray obj) {
+		try {
 			for (int i = 0; i < obj.length(); i++) {
 				JSONObject singleMessage = obj.getJSONObject(i);
 				mMessages.add(new ECMessage(singleMessage));
 			}
-		}catch(JSONException e){e.printStackTrace();}
-		catch(ParseException e){e.printStackTrace();}
+		} catch (JSONException | ParseException e) {
+			e.printStackTrace();
+		}
 		updateRecyclerView();
 
 	}
 
-	private void updateRecyclerView(){
+	private void updateRecyclerView() {
 		mAdapter = new MessageAdapter(this, mMessages);
 		mMessagesView.setLayoutManager(new LinearLayoutManager(this));
 		mMessagesView.setAdapter(mAdapter);
@@ -218,7 +214,6 @@ public class ChatActivity extends AppCompatActivity {
 //	}
 
 
-
 	/**
 	 * Private method to send message. Make sure to make the HTTP/Socket calls here.
 	 */
@@ -259,7 +254,7 @@ public class ChatActivity extends AppCompatActivity {
 		mMessagesView.scrollToPosition(mAdapter.getItemCount() - 1);
 	}
 
-	private Runnable onTypingTimeOut = new Runnable() {
+	private final Runnable onTypingTimeOut = new Runnable() {
 		@Override
 		public void run() {
 			if (!mTyping) return;

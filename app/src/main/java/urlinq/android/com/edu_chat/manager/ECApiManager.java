@@ -18,8 +18,8 @@ public class ECApiManager {
 
 
     // A SyncHttpClient is an AsyncHttpClient
-    public static AsyncHttpClient syncHttpClient = new SyncHttpClient();
-    public static AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+    private static final AsyncHttpClient syncHttpClient = new SyncHttpClient();
+    private static final AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
 
     public static void setCookieStore(PersistentCookieStore cookieStore) {
         getClient().setCookieStore(cookieStore);

@@ -32,8 +32,7 @@ import java.text.ParseException;
  * This Fragment handles all the information associated with the different layouts between the signin form and the login form.
  */
 public class LoginBackground extends Fragment {
-	private View v;
-	static String userHash;
+	private static String userHash;
 	private SharedPreferences prefs;
 	//@Bind(R.id.signUpToggle)  ImageButton signUpBtn;
 	@Bind(R.id.logInBlue) ImageButton logInBlue;
@@ -43,7 +42,7 @@ public class LoginBackground extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		v = inflater.inflate(R.layout.combined_login, container, false);
+		View v = inflater.inflate(R.layout.combined_login, container, false);
 		//get reference to other fragment
 		ButterKnife.bind(this, v);
 		// TODO: Don't do what I am doing lol.
@@ -115,9 +114,7 @@ public class LoginBackground extends Fragment {
 					login.saveInBackground();
 
 					launchMainActivity();
-				} catch (ParseException e) {
-					e.printStackTrace();
-				} catch (JSONException e) {
+				} catch (ParseException | JSONException e) {
 					e.printStackTrace();
 				}
 
@@ -136,7 +133,7 @@ public class LoginBackground extends Fragment {
 
 
 	public interface OnLoginListener {
-		public void loginSuccessful(boolean success);
+		void loginSuccessful(boolean success);
 	}
 
 

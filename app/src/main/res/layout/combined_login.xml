@@ -66,8 +66,7 @@
                 android:id="@+id/loginBtn"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_alignBottom="@+id/signUpBlue"
-                android:background="@drawable/logintoggleactive" />
+				android:background="@drawable/logintoggleactive" />
 
             <ImageView
                 android:id="@+id/imageView2"

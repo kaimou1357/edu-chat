@@ -16,9 +16,6 @@ import urlinq.android.com.edu_chat.controller.MainActivity;
 
 public class LoginActivity extends AppCompatActivity implements LoginBackground.OnLoginListener {
 
-	private LoginFragment myFragment;
-	private LoginBackground loginForm;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,7 +32,7 @@ public class LoginActivity extends AppCompatActivity implements LoginBackground.
 					Log.d(LoginActivity.this.getClass().getSimpleName(), "Yay! Config was fetched from the server.");
 				} else {
 					Log.e("TAG", "Failed to fetch. Using Cached Config.");
-					config = ParseConfig.getCurrentConfig();
+//					config = ParseConfig.getCurrentConfig();
 				}
 			}
 		});
@@ -44,8 +41,8 @@ public class LoginActivity extends AppCompatActivity implements LoginBackground.
 		//This activity will only hold the Fragment and communicate between fragments and go onto the next activity.
 		if (savedInstanceState == null) {
 			android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-			loginForm = new LoginBackground();
-			myFragment = new LoginFragment();
+			LoginBackground loginForm = new LoginBackground();
+			LoginFragment myFragment = new LoginFragment();
 			ft.add(R.id.loginContainerView, myFragment);
 			//Below the fragment is added to a small framelayout embedded within the main login screen.
 			ft.add(R.id.loginFormFragmentContainer, loginForm);

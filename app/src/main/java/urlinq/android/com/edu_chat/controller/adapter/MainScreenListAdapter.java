@@ -25,8 +25,8 @@ import java.util.List;
  * Created by Kai on 10/28/2015.
  */
 public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAdapter.CategoryViewHolder> {
-	private List<ECObject> mECObjects;
-	private Context mainActivity;
+	private final List<ECObject> mECObjects;
+	private final Context mainActivity;
 
 	public MainScreenListAdapter(Context context, List<ECObject> mECObjects) {
 		this.mECObjects = mECObjects;
@@ -68,8 +68,8 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 
 	public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-		private ImageView img;
-		private TextView userText;
+		private final ImageView img;
+		private final TextView userText;
 		private ECObject ecObject;
 
 

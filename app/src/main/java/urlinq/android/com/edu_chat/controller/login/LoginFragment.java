@@ -19,18 +19,12 @@ public class LoginFragment extends Fragment {
 
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
-
-	@Override
 	/**
 	 * Load the login_main.xml layout.
 	 * In addition, load the ViewPager.
 	 */
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		//initialize viewpager object.
-		View v = inflater.inflate(R.layout.login_main, container, false);
 
 
 		/**
@@ -65,7 +59,7 @@ public class LoginFragment extends Fragment {
 //            }
 //        });
 
-		return v;
+		return inflater.inflate(R.layout.login_main, container, false);
 	}
 
 
