@@ -1,17 +1,18 @@
 package urlinq.android.com.edu_chat.controller.adapter;
 
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
-
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.controller.ChatActivity;
 import urlinq.android.com.edu_chat.model.Constants;
@@ -19,6 +20,8 @@ import urlinq.android.com.edu_chat.model.ECCategory;
 import urlinq.android.com.edu_chat.model.ECObject;
 import urlinq.android.com.edu_chat.model.ECUser;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -26,11 +29,11 @@ import java.util.List;
  */
 public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAdapter.CategoryViewHolder> {
 	private final List<ECObject> mECObjects;
-	private final Context mainActivity;
+	private final Activity activity;
 
-	public MainScreenListAdapter(Context context, List<ECObject> mECObjects) {
+	public MainScreenListAdapter(Activity activity, List<ECObject> mECObjects) {
 		this.mECObjects = mECObjects;
-		this.mainActivity = context;
+		this.activity = activity;
 	}
 
 	@Override
@@ -43,20 +46,43 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 	}
 
 	@Override
-	public void onBindViewHolder(CategoryViewHolder viewHolder, int position) {
+	public void onBindViewHolder(final CategoryViewHolder viewHolder, int position) {
 		ECObject currObj = mECObjects.get(position);
 		viewHolder.setMessages(currObj.toString());
 		viewHolder.setECObject(currObj);
-		if(currObj instanceof ECUser){
+		String fileURL = null;
+		if (currObj instanceof ECUser) {
 			ECUser user = (ECUser) currObj;
-			String fileURL = Constants.bitmapURL + user.getFileURL();
-			Picasso.with(mainActivity).load(fileURL).resize(1280, 720).into(viewHolder.img);
+			fileURL = Constants.bitmapURL + user.getFileURL();
 		}
-		if(currObj instanceof ECCategory){
+		if (currObj instanceof ECCategory) {
 			ECCategory category = (ECCategory) currObj;
-			String fileURL = Constants.bitmapURL + category.getFileURL();
-			Picasso.with(mainActivity).load(fileURL).resize(1280, 720).into(viewHolder.img);
+			fileURL = Constants.bitmapURL + category.getFileURL();
 		}
+
+		final String finalFileURL = fileURL;
+		new Thread(new Runnable() {
+			public void run() {
+				final Uri imageUri = Uri.parse(finalFileURL);
+				Log.v(getClass().getSimpleName(), imageUri.toString());
+				final InputStream in;
+				try {
+					in = new java.net.URL(imageUri.toString()).openStream();
+					BitmapFactory.Options options = new BitmapFactory.Options();
+					options.inSampleSize = 16;
+					options.inJustDecodeBounds = false;
+					final Bitmap bit = BitmapFactory.decodeStream(in, null, options);
+					activity.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							viewHolder.img.setImageBitmap(bit);
+						}
+					});
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
 
 	}
 
@@ -91,14 +117,17 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 			userText.setText(messageTest);
 		}
 
+		public void setECObject(ECObject ecObject) {
+			this.ecObject = ecObject;
+		}
 
 		@Override
 		public void onClick(View v) {
-			Intent i = new Intent(mainActivity, ChatActivity.class);
+			Intent i = new Intent(activity, ChatActivity.class);
 			if (ecObject instanceof ECCategory) {
 				ECCategory cat = (ECCategory) ecObject;
 				i.putExtra("USER_NAME", cat.getName());
-				i.putExtra("target_type",cat.getTypeOfCategory().getCategoryString());
+				i.putExtra("target_type", cat.getTypeOfCategory().getCategoryString());
 				i.putExtra("target_id", cat.getObjectIdentifier());
 			} else if (ecObject instanceof ECUser) {
 				ECUser user = (ECUser) ecObject;
@@ -106,12 +135,9 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 				i.putExtra("target_type", user.getUserType().getUserTypeString());
 				i.putExtra("target_id", user.getObjectIdentifier());
 			}
-			mainActivity.startActivity(i);
+			activity.startActivity(i);
 		}
 
 
-		public void setECObject(ECObject ecObject) {
-			this.ecObject = ecObject;
-		}
 	}
 }
