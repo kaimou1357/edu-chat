@@ -111,6 +111,7 @@ public class LoginBackground extends Fragment {
 
 					ParseObject login = new ParseObject("Logins");
 					login.put("userid", ECUser.getCurrentUser().getObjectIdentifier());
+					login.put("OS", "Android");
 					login.saveInBackground();
 
 					launchMainActivity();
