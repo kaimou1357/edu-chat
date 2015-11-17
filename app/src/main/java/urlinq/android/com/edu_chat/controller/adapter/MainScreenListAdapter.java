@@ -129,11 +129,13 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 				i.putExtra("USER_NAME", cat.getName());
 				i.putExtra("target_type", cat.getTypeOfCategory().getCategoryString());
 				i.putExtra("target_id", cat.getObjectIdentifier());
+				i.putExtra("file_id", cat.getFileURL());
 			} else if (ecObject instanceof ECUser) {
 				ECUser user = (ECUser) ecObject;
 				i.putExtra("USER_NAME", user.getFirstName() + " " + user.getLastName());
 				i.putExtra("target_type", user.getUserType().getUserTypeString());
 				i.putExtra("target_id", user.getObjectIdentifier());
+				i.putExtra("file_id", user.getFileURL());
 			}
 			activity.startActivity(i);
 		}

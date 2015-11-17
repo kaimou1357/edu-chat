@@ -52,6 +52,7 @@ public class ChatActivity extends AppCompatActivity {
 	private String mUsername;
 	private final List<ECMessage> mMessages = new ArrayList<>();
 	private MessageAdapter mAdapter;
+	private String fileURL;
 
 
 	@Override
@@ -63,6 +64,7 @@ public class ChatActivity extends AppCompatActivity {
 		updateRecyclerView();
 
 		updateChatRoom(getIntent().getStringExtra("target_type"), getIntent().getStringExtra("target_id"), ECUser.getUserToken());
+		fileURL = getIntent().getStringExtra("file_id");
 		mUsername = getIntent().getStringExtra("USER_NAME");
 		nameTextView.setText(mUsername);
 
@@ -157,61 +159,11 @@ public class ChatActivity extends AppCompatActivity {
 	}
 
 	private void updateRecyclerView() {
-		mAdapter = new MessageAdapter(this, mMessages);
+		mAdapter = new MessageAdapter(this, mMessages, fileURL, mUsername);
 		mMessagesView.setLayoutManager(new LinearLayoutManager(this));
 		mMessagesView.setAdapter(mAdapter);
 		scrollToBottom();
 	}
-
-//	private class ChatRoomUpdateOperation extends AsyncTask<String, Void, String>{
-//
-//		@Override
-//		protected String doInBackground(String... parameters){
-//			RequestParams params = new RequestParams();
-//			params.add("target_type", parameters[0]);
-//			params.add("target_id", parameters[1]);
-//			params.add("token", parameters[2]);
-//			params.add("limit", REQUEST_LENGTH);
-//			ECApiManager.get(Constants.loadChatRoomURL, params, new AsyncHttpResponseHandler() {
-//				ArrayList<ECMessage> messageList = new ArrayList<ECMessage>();
-//
-//				@Override
-//				public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-//					String response = new String(responseBody);
-//					Log.d("chatResponse", getRequestURI().toString());
-//					JSONObject obj = null;
-//					JSONArray messages = null;
-//
-//					try {
-//						obj = new JSONObject(response);
-//						messages = obj.getJSONArray("messages");
-//						for (int i = 0; i < messages.length(); i++) {
-//							JSONObject singleMessage = messages.getJSONObject(i);
-//							messageList.add(new ECMessage(singleMessage));
-//						}
-//					} catch (JSONException e) {
-//						e.printStackTrace();
-//					} catch (ParseException e) {
-//						e.printStackTrace();
-//					}
-//
-//				}
-//
-//				@Override
-//				public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-//
-//				}
-//
-//			});
-//			return null;
-//
-//		}
-//		@Override
-//		protected void onPostExecute(String result){
-//
-//
-//		}
-//	}
 
 
 	/**
@@ -261,4 +213,8 @@ public class ChatActivity extends AppCompatActivity {
 			mTyping = false;
 		}
 	};
+
+	public String getFileURL(){
+		return fileURL;
+	}
 }

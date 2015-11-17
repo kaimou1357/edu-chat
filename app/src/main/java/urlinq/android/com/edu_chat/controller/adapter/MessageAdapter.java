@@ -1,14 +1,22 @@
 package urlinq.android.com.edu_chat.controller.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.media.Image;
 import android.support.annotation.UiThread;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
 import urlinq.android.com.edu_chat.R;
+import urlinq.android.com.edu_chat.model.Constants;
 import urlinq.android.com.edu_chat.model.ECMessage;
+import urlinq.android.com.edu_chat.model.ECUser;
 
 import java.util.List;
 
@@ -17,9 +25,15 @@ import java.util.List;
  */
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
 	private final List<ECMessage> mMessages;
+	private final Activity activity;
+	private final String fileURL;
+	private final String userName;
 
-	public MessageAdapter(Context context, List<ECMessage> messages) {
+	public MessageAdapter(Activity context, List<ECMessage> messages, String fileURL, String userName) {
 		mMessages = messages;
+		this.activity = context;
+		this.fileURL = fileURL;
+		this.userName = userName;
 
 	}
 
@@ -37,6 +51,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 		ECMessage message = mMessages.get(position);
 		viewHolder.setMessage(message.getMessageTitle());
 		viewHolder.setUsername(message.getAuthor());
+		if(message.getAuthor().equals(userName)){
+			Picasso.with(activity).load(Constants.bitmapURL + fileURL).resize(240, 240).into(viewHolder.userProfilePicture);
+		}
+		else{
+			Picasso.with(activity).load(Constants.bitmapURL + ECUser.getCurrentUser().getFileURL()).resize(240, 240).into(viewHolder.userProfilePicture);
+		}
+
 
 	}
 
@@ -60,10 +81,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 	public class ViewHolder extends RecyclerView.ViewHolder {
 		private final TextView mUserNameView;
 		private final TextView mMessageView;
+		private final ImageView userProfilePicture;
 
 		public ViewHolder(View itemView) {
 			super(itemView);
 			mUserNameView = (TextView) itemView.findViewById(R.id.username);
+			userProfilePicture = (ImageView)itemView.findViewById(R.id.userProfilePicture);
 			mMessageView = (TextView) itemView.findViewById(R.id.message);
 
 		}
