@@ -1,8 +1,6 @@
 package urlinq.android.com.edu_chat.controller.adapter;
 
 import android.app.Activity;
-import android.content.Context;
-import android.media.Image;
 import android.support.annotation.UiThread;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,9 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
-
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.model.Constants;
 import urlinq.android.com.edu_chat.model.ECMessage;
@@ -29,21 +25,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 	private final String fileURL;
 	private final String userName;
 
-	public MessageAdapter(Activity context, List<ECMessage> messages, String fileURL, String userName) {
+	public MessageAdapter(Activity activity, List<ECMessage> messages, String fileURL, String userName) {
 		mMessages = messages;
-		this.activity = context;
+		this.activity = activity;
 		this.fileURL = fileURL;
 		this.userName = userName;
-
 	}
 
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		int layout = R.layout.item_message;
-
 		View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
 		return new ViewHolder(v);
-
 	}
 
 	@Override
@@ -51,12 +44,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 		ECMessage message = mMessages.get(position);
 		viewHolder.setMessage(message.getMessageTitle());
 		viewHolder.setUsername(message.getAuthor());
-		if(message.getAuthor().equals(userName)){
-			Picasso.with(activity).load(Constants.bitmapURL + fileURL).resize(240, 240).into(viewHolder.userProfilePicture);
+		String path;
+		if (message.getAuthor().equals(userName)) {
+			path = Constants.bitmapURL + fileURL;
+		} else {
+			path = Constants.bitmapURL + ECUser.getCurrentUser().getFileURL();
 		}
-		else{
-			Picasso.with(activity).load(Constants.bitmapURL + ECUser.getCurrentUser().getFileURL()).resize(240, 240).into(viewHolder.userProfilePicture);
-		}
+		Picasso.with(activity).load(path).resize(240, 240).into(viewHolder.userProfilePicture);
 
 
 	}
@@ -86,7 +80,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 		public ViewHolder(View itemView) {
 			super(itemView);
 			mUserNameView = (TextView) itemView.findViewById(R.id.username);
-			userProfilePicture = (ImageView)itemView.findViewById(R.id.userProfilePicture);
+			userProfilePicture = (ImageView) itemView.findViewById(R.id.userProfilePicture);
 			mMessageView = (TextView) itemView.findViewById(R.id.message);
 
 		}

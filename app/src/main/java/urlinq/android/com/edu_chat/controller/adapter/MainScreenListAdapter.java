@@ -107,12 +107,6 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 			userText = (TextView) view.findViewById(R.id.userTextView);
 		}
 
-		public void setUserName(String userName) {
-			if (userName == null) return;
-			userText.setText(userName);
-		}
-		//Test method to set a message.
-
 		public void setMessages(String messageTest) {
 			userText.setText(messageTest);
 		}

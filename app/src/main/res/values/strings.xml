@@ -10,4 +10,5 @@
     <string name = "heroFragment2">Put the text you want here</string>
     <string name = "heroFragment3">Put the rest of the text here</string>
 	<string name="PARSE_CONFIG_AUTO_LOGIN">shouldAutoLogin</string>
+	<string name="user_profile_picture_content_description">the user\'s profile picture</string>
 </resources>
