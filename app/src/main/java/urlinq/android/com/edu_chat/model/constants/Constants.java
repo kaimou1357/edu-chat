@@ -1,4 +1,4 @@
-package urlinq.android.com.edu_chat.model;
+package urlinq.android.com.edu_chat.model.constants;
 
 /**
  * Created by Kai on 9/16/2015.

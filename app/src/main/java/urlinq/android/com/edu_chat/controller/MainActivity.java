@@ -16,7 +16,7 @@ import org.solovyev.android.views.llm.LinearLayoutManager;
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.controller.adapter.MainScreenListAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
-import urlinq.android.com.edu_chat.model.Constants;
+import urlinq.android.com.edu_chat.model.constants.Constants;
 import urlinq.android.com.edu_chat.model.ECCategory;
 import urlinq.android.com.edu_chat.model.ECObject;
 import urlinq.android.com.edu_chat.model.ECUser;

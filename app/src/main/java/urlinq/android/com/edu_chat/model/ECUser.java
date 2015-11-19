@@ -15,11 +15,13 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
+import urlinq.android.com.edu_chat.model.constants.Constants;
 import urlinq.android.com.edu_chat.model.enums.ECUserType;
 
 
@@ -39,8 +41,8 @@ public class ECUser extends ECObject {
 	private final ECMessage mostRecentMessage;
 	private final Date lastActivity;
 	private final String department;
-	private Bitmap profilePicture;
 	private final String[] subchannel = null;
+	private Bitmap profilePicture;
 
 
 	@Override
@@ -49,12 +51,14 @@ public class ECUser extends ECObject {
 				"department='" + department + '\'' +
 				", firstName='" + firstName + '\'' +
 				", lastName='" + lastName + '\'' +
+				", email='" + email + '\'' +
 				", userType=" + userType +
 				", mostRecentMessage=" + mostRecentMessage +
 				", lastActivity=" + lastActivity +
+				", subchannel=" + Arrays.toString(subchannel) +
+				", profilePicture=" + profilePicture +
 				'}' + super.toString();
 	}
-
 
 	/**
 	 * This constructor will be for the current user using the application.

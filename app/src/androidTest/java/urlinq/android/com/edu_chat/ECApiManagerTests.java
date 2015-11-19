@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
-import urlinq.android.com.edu_chat.model.Constants;
+import urlinq.android.com.edu_chat.model.constants.Constants;
 
 /**
  * Created by Kai on 9/30/2015.

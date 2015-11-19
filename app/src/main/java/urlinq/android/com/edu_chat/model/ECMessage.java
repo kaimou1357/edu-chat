@@ -31,6 +31,8 @@ public class ECMessage extends ECObject {
 				", messageTitle='" + messageTitle + '\'' +
 				", messageDate=" + messageDate +
 				", messageType=" + messageType +
+				", subchannelID=" + subchannelID +
+				", subchannelName='" + subchannelName + '\'' +
 				'}' + super.toString();
 	}
 

@@ -26,7 +26,7 @@ import org.json.JSONObject;
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.controller.adapter.MessageAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
-import urlinq.android.com.edu_chat.model.Constants;
+import urlinq.android.com.edu_chat.model.constants.Constants;
 import urlinq.android.com.edu_chat.model.ECMessage;
 import urlinq.android.com.edu_chat.model.ECUser;
 

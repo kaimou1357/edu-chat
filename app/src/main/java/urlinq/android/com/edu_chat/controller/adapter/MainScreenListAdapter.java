@@ -16,7 +16,7 @@ import java.util.List;
 
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.controller.ChatActivity;
-import urlinq.android.com.edu_chat.model.Constants;
+import urlinq.android.com.edu_chat.model.constants.Constants;
 import urlinq.android.com.edu_chat.model.ECCategory;
 import urlinq.android.com.edu_chat.model.ECObject;
 import urlinq.android.com.edu_chat.model.ECUser;

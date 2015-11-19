@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import urlinq.android.com.edu_chat.model.enums.ECCategoryType;
@@ -25,7 +26,21 @@ public class ECCategory extends ECObject {
 	private final String departmentTag;
 	private final ECMessage mostRecentMessage;
 	private final ECCategoryType typeOfCategory;
-	private String[] subchannels;
+	private final String[] subchannels = null;
+
+	@Override
+	public String toString () {
+		return "ECCategory{" +
+				"departmentTag='" + departmentTag + '\'' +
+				", name='" + name + '\'' +
+				", professorFirstName='" + professorFirstName + '\'' +
+				", professorLastName='" + professorLastName + '\'' +
+				", professorID='" + professorID + '\'' +
+				", mostRecentMessage=" + mostRecentMessage +
+				", typeOfCategory=" + typeOfCategory +
+				", subchannels=" + Arrays.toString(subchannels) +
+				'}' + super.toString();
+	}
 
 	public ECCategory (JSONObject obj, ECCategoryType groupType) throws JSONException, ParseException {
 		super(obj.getString("id"), obj.getJSONObject("picture_file").getString("file_url"), obj.getString("color"));
@@ -146,18 +161,6 @@ public class ECCategory extends ECObject {
 
 		}
 		return null;
-	}
-
-	@Override
-	public String toString () {
-		return "ECCategory{" +
-				"departmentTag='" + departmentTag + '\'' +
-				", name='" + name + '\'' +
-				", professorFirstName='" + professorFirstName + '\'' +
-				", professorLastName='" + professorLastName + '\'' +
-				", professorID='" + professorID + '\'' +
-				", mostRecentMessage=" + mostRecentMessage +
-				'}' + super.toString();
 	}
 
 	public String getName () {

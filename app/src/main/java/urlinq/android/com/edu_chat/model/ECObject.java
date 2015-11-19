@@ -12,6 +12,15 @@ public class ECObject {
 	private final String fileURL;
 	private final String color;
 
+	@Override
+	public String toString () {
+		return "ECObject{" +
+				"color='" + color + '\'' +
+				", objectIdentifier='" + objectIdentifier + '\'' +
+				", fileURL='" + fileURL + '\'' +
+				'}' + super.toString();
+	}
+
 	public ECObject (String objectIdentifier, String fileURL, String color) {
 		this.color = color;
 		if (objectIdentifier == null || fileURL == null) {
@@ -34,12 +43,4 @@ public class ECObject {
 		return color;
 	}
 
-	@Override
-	public String toString () {
-		return "ECObject{" +
-				"color='" + color + '\'' +
-				", objectIdentifier='" + objectIdentifier + '\'' +
-				", fileURL='" + fileURL + '\'' +
-				'}';
-	}
 }
