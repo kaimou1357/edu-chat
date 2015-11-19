@@ -58,7 +58,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 			fileURL = Constants.bitmapURL + category.getFileURL();
 		}
 
-		Picasso.with(activity).load(fileURL).resize(720, 720).into(viewHolder.img);
+		Picasso.with(activity).load(fileURL).resize(128, 128).centerInside().into(viewHolder.img);
 
 //		final String finalFileURL = fileURL;
 //		new Thread(new Runnable() {

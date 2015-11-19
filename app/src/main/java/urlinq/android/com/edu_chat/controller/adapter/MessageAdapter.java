@@ -50,7 +50,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 		} else {
 			path = Constants.bitmapURL + ECUser.getCurrentUser().getFileURL();
 		}
-		Picasso.with(activity).load(path).resize(240, 240).into(viewHolder.userProfilePicture);
+		Picasso.with(activity).load(path).resize(128, 128).centerInside().into(viewHolder.userProfilePicture);
 
 
 	}

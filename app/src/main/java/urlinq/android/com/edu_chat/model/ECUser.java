@@ -40,7 +40,7 @@ public class ECUser extends ECObject {
 	private final Date lastActivity;
 	private final String department;
 	private Bitmap profilePicture;
-	private String[] subchannels;
+	private final String[] subchannel = null;
 
 
 	@Override
