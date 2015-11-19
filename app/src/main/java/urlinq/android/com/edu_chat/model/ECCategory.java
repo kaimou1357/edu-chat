@@ -1,14 +1,17 @@
 package urlinq.android.com.edu_chat.model;
 
 import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import urlinq.android.com.edu_chat.model.enums.ECCategoryType;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import urlinq.android.com.edu_chat.model.enums.ECCategoryType;
+
 
 /**
  * Created by Jacob on 10/27/15.
@@ -22,8 +25,7 @@ public class ECCategory extends ECObject {
 	private final String departmentTag;
 	private final ECMessage mostRecentMessage;
 	private final ECCategoryType typeOfCategory;
-
-
+	private String[] subchannels;
 
 	public ECCategory (JSONObject obj, ECCategoryType groupType) throws JSONException, ParseException {
 		super(obj.getString("id"), obj.getJSONObject("picture_file").getString("file_url"), obj.getString("color"));
@@ -83,7 +85,7 @@ public class ECCategory extends ECObject {
 			}
 			break;
 			//Should never reach the default case.
-			default:{
+			default: {
 				this.typeOfCategory = null;
 				this.name = null;
 				//There are no specific professors in a department.
@@ -99,7 +101,7 @@ public class ECCategory extends ECObject {
 
 	}
 
-	public static List<ECObject> buildManyWithJSON(JSONArray response, ECCategoryType groupType) {
+	public static List<ECObject> buildManyWithJSON (JSONArray response, ECCategoryType groupType) {
 		ArrayList<ECObject> objects = new ArrayList<>();
 		switch (groupType) {
 			case ECDepartmentCategoryType: {
@@ -110,7 +112,7 @@ public class ECCategory extends ECObject {
 					}
 				} catch (JSONException e) {
 					Log.e(ECCategory.class.getSimpleName(), e.getClass().getSimpleName());
-				}catch(ParseException e){
+				} catch (ParseException e) {
 					e.printStackTrace();
 				}
 				return objects;
@@ -123,7 +125,7 @@ public class ECCategory extends ECObject {
 					}
 				} catch (JSONException e) {
 					Log.e(ECCategory.class.getSimpleName(), e.getClass().getSimpleName());
-				}catch(ParseException e){
+				} catch (ParseException e) {
 					e.printStackTrace();
 				}
 				return objects;
@@ -136,7 +138,7 @@ public class ECCategory extends ECObject {
 					}
 				} catch (JSONException e) {
 					Log.e(ECCategory.class.getSimpleName(), e.getClass().getSimpleName());
-				}catch(ParseException e){
+				} catch (ParseException e) {
 					e.printStackTrace();
 				}
 				return objects;
@@ -147,7 +149,7 @@ public class ECCategory extends ECObject {
 	}
 
 	@Override
-	public String toString() {
+	public String toString () {
 		return "ECCategory{" +
 				"departmentTag='" + departmentTag + '\'' +
 				", name='" + name + '\'' +
@@ -158,30 +160,31 @@ public class ECCategory extends ECObject {
 				'}' + super.toString();
 	}
 
-	public String getName() {
+	public String getName () {
 		return name;
 	}
 
-	public String getProfessorFirstName() {
+	public String getProfessorFirstName () {
 		return professorFirstName;
 	}
 
-	public String getProfessorLastName() {
+	public String getProfessorLastName () {
 		return professorLastName;
 	}
 
-	public String getProfessorID() {
+	public String getProfessorID () {
 		return professorID;
 	}
 
-	public String getDepartmentTag() {
+	public String getDepartmentTag () {
 		return departmentTag;
 	}
-	public ECCategoryType getTypeOfCategory() {
+
+	public ECCategoryType getTypeOfCategory () {
 		return typeOfCategory;
 	}
 
-	public ECMessage getMostRecentMessage() {
+	public ECMessage getMostRecentMessage () {
 		return mostRecentMessage;
 	}
 }
