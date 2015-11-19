@@ -9,7 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.controller.ChatActivity;
 import urlinq.android.com.edu_chat.model.Constants;
@@ -17,7 +21,6 @@ import urlinq.android.com.edu_chat.model.ECCategory;
 import urlinq.android.com.edu_chat.model.ECObject;
 import urlinq.android.com.edu_chat.model.ECUser;
 
-import java.util.List;
 
 /**
  * Created by Kai on 10/28/2015.
@@ -26,13 +29,13 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 	private final List<ECObject> mECObjects;
 	private final Activity activity;
 
-	public MainScreenListAdapter(Activity activity, List<ECObject> mECObjects) {
+	public MainScreenListAdapter (Activity activity, List<ECObject> mECObjects) {
 		this.mECObjects = mECObjects;
 		this.activity = activity;
 	}
 
 	@Override
-	public CategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewCase) {
+	public CategoryViewHolder onCreateViewHolder (ViewGroup parent, int viewCase) {
 		//Shouldn't be item scroll chat. Change later to the appropriate layout.
 		int layout = R.layout.item_scroll_chat;
 		View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
@@ -41,7 +44,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 	}
 
 	@Override
-	public void onBindViewHolder(final CategoryViewHolder viewHolder, int position) {
+	public void onBindViewHolder (final CategoryViewHolder viewHolder, int position) {
 		Picasso.with(activity).setIndicatorsEnabled(true);
 		Picasso.with(activity).setLoggingEnabled(true);
 
@@ -87,7 +90,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 	}
 
 	@Override
-	public int getItemCount() {
+	public int getItemCount () {
 		return mECObjects.size();
 	}
 
@@ -99,7 +102,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 		private ECObject ecObject;
 
 
-		public CategoryViewHolder(View view) {
+		public CategoryViewHolder (View view) {
 			super(view);
 			//set the onclick listener in the constructor.
 			view.setOnClickListener(this);
@@ -107,16 +110,16 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 			userText = (TextView) view.findViewById(R.id.userTextView);
 		}
 
-		public void setMessages(String messageTest) {
+		public void setMessages (String messageTest) {
 			userText.setText(messageTest);
 		}
 
-		public void setECObject(ECObject ecObject) {
+		public void setECObject (ECObject ecObject) {
 			this.ecObject = ecObject;
 		}
 
 		@Override
-		public void onClick(View v) {
+		public void onClick (View v) {
 			Intent i = new Intent(activity, ChatActivity.class);
 			if (ecObject instanceof ECCategory) {
 				ECCategory cat = (ECCategory) ecObject;
