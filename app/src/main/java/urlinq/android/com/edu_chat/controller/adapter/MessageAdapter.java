@@ -14,9 +14,9 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import urlinq.android.com.edu_chat.R;
-import urlinq.android.com.edu_chat.model.constants.Constants;
 import urlinq.android.com.edu_chat.model.ECMessage;
 import urlinq.android.com.edu_chat.model.ECUser;
+import urlinq.android.com.edu_chat.model.constants.Constants;
 
 
 /**
@@ -53,7 +53,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 		} else {
 			path = Constants.bitmapURL + ECUser.getCurrentUser().getFileURL();
 		}
-		Picasso.with(activity).load(path).resize(128, 128).centerInside().into(viewHolder.userProfilePicture);
+		Picasso.with(activity).load(path).resize(Constants.globalImageSize, Constants.globalImageSize)
+				.centerInside().into(viewHolder.userProfilePicture);
 
 
 	}

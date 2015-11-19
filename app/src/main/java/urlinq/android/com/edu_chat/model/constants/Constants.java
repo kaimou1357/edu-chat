@@ -11,6 +11,8 @@ public class Constants {
     public static final String bitmapURL = "https://edu.chat/static";
     public static final String loadChatRoomURL = "https://edu.chat/message/load_chat";
 
+    public static final int globalImageSize = 128;
+
 
 
 
