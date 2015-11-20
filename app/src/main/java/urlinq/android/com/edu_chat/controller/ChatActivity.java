@@ -19,6 +19,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.parse.Parse;
+
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,6 +55,8 @@ public class ChatActivity extends AppCompatActivity {
 	private final List<ECMessage> mMessages = new ArrayList<>();
 	private MessageAdapter mAdapter;
 	private String fileURL;
+    private String target_type;
+    private String target_id;
 
 
 	@Override
@@ -62,8 +66,10 @@ public class ChatActivity extends AppCompatActivity {
 		ButterKnife.bind(this);
 		//get extras from bundle.
 		updateRecyclerView();
+        target_type = getIntent().getStringExtra("target_type");
+        target_id = getIntent().getStringExtra("target_id");
 
-		updateChatRoom(getIntent().getStringExtra("target_type"), getIntent().getStringExtra("target_id"), ECUser.getUserToken());
+		updateChatRoom(target_type, target_id, ECUser.getUserToken());
 		mUsername = getIntent().getStringExtra("USER_NAME");
 		nameTextView.setText(mUsername);
 
@@ -169,33 +175,62 @@ public class ChatActivity extends AppCompatActivity {
 	 * Private method to send message. Make sure to make the HTTP/Socket calls here.
 	 */
 	private void attemptSend() {
-		if (null == mUsername) return;
 
-		mTyping = false;
-
-		String message = mInputMessageView.getText().toString().trim();
+        String message = mInputMessageView.getText().toString().trim();
 		if (TextUtils.isEmpty(message)) {
 			mInputMessageView.requestFocus();
 			return;
 		}
+        mInputMessageView.setText("");
+        RequestParams params = new RequestParams();
+        params.add("text", message);
+        params.add("target_id", target_id);
+        params.add("target_type", target_type);
+        params.add("token", ECUser.getUserToken());
 
-		mInputMessageView.setText("");
-		addMessage(mUsername, message);
+        ECApiManager.post(Constants.sendMessageURL, params, new AsyncHttpResponseHandler() {
+            JSONObject object;
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String response = new String(responseBody);
+                Log.d("send_msg_response", response);
+                try{
+                    object = new JSONObject(response);
+                }catch(JSONException e){e.printStackTrace();}
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+
+            @Override
+            public void onFinish(){
+                //Add message to the adapterview after sending.
+                try{
+                    addMessage(new ECMessage(object.getJSONObject("message")));
+                }catch(ParseException e){
+                    e.printStackTrace();
+                }catch(JSONException e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
 
 	}
 
 	/**
 	 * Adds message to the recyclerview.
-	 *
-	 * @param username
-	 * @param message
 	 */
-	private void addMessage(String username, String message) {
-		//Add the message to the RecyclerView so the user can see it.
-//        mMessages.add(new ECMessage.Builder(ECMessage.TYPE_MESSAGE)
-//                .username(username).message(message).build());
-//        mAdapter.notifyItemInserted(mMessages.size() - 1);
-//        scrollToBottom();
+	private void addMessage(ECMessage message) {
+        mMessages.add(message);
+        mAdapter.notifyItemInserted(mMessages.size() -1);
+        scrollToBottom();
 	}
 
 	/**
