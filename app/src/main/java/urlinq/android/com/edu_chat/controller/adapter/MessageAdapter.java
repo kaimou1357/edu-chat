@@ -25,14 +25,11 @@ import urlinq.android.com.edu_chat.model.constants.Constants;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
 	private final List<ECMessage> mMessages;
 	private final Activity activity;
-	private final String fileURL;
-	private final String userName;
 
-	public MessageAdapter (Activity activity, List<ECMessage> messages, String fileURL, String userName) {
+	public MessageAdapter (Activity activity, List<ECMessage> messages) {
 		mMessages = messages;
 		this.activity = activity;
-		this.fileURL = fileURL;
-		this.userName = userName;
+
 	}
 
 	@Override
@@ -46,13 +43,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 	public void onBindViewHolder (ViewHolder viewHolder, int position) {
 		ECMessage message = mMessages.get(position);
 		viewHolder.setMessage(message.getMessageTitle());
-		viewHolder.setUsername(message.getAuthor());
-		String path;
-		if (message.getAuthor().equals(userName)) {
-			path = Constants.bitmapURL + fileURL;
-		} else {
-			path = Constants.bitmapURL + ECUser.getCurrentUser().getFileURL();
-		}
+		viewHolder.setUsername(message.getAuthor().getFullName());
+		String path = message.getAuthor().getFileURL();
+
 		Picasso.with(activity).load(path).resize(Constants.globalImageSize, Constants.globalImageSize)
 				.centerInside().into(viewHolder.userProfilePicture);
 

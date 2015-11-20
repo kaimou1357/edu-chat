@@ -64,7 +64,6 @@ public class ChatActivity extends AppCompatActivity {
 		updateRecyclerView();
 
 		updateChatRoom(getIntent().getStringExtra("target_type"), getIntent().getStringExtra("target_id"), ECUser.getUserToken());
-		fileURL = getIntent().getStringExtra("file_id");
 		mUsername = getIntent().getStringExtra("USER_NAME");
 		nameTextView.setText(mUsername);
 
@@ -159,7 +158,7 @@ public class ChatActivity extends AppCompatActivity {
 	}
 
 	private void updateRecyclerView() {
-		mAdapter = new MessageAdapter(this, mMessages, fileURL, mUsername);
+		mAdapter = new MessageAdapter(this, mMessages);
 		mMessagesView.setLayoutManager(new LinearLayoutManager(this));
 		mMessagesView.setAdapter(mAdapter);
 		scrollToBottom();
@@ -214,7 +213,4 @@ public class ChatActivity extends AppCompatActivity {
 		}
 	};
 
-	public String getFileURL(){
-		return fileURL;
-	}
 }

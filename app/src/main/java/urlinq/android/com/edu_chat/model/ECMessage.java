@@ -19,7 +19,7 @@ public class ECMessage extends ECObject {
 
 	private final String messageTitle;
 	private final Date messageDate;
-	private final String author;
+	private final ECUser author;
 	private final ECMessageType messageType;
 	private final int subchannelID = 0;
 	private final String subchannelName = null;
@@ -38,7 +38,7 @@ public class ECMessage extends ECObject {
 
 	public ECMessage (JSONObject recentMessage) throws JSONException, ParseException {
 		super(recentMessage.getString("object_id"), null, null);
-		this.author = recentMessage.getJSONObject("user").getString("name");
+		this.author = new ECUser(recentMessage.getJSONObject("user"));
 		this.messageTitle = recentMessage.getString("text");
 		this.messageType = ECMessageType.ECMessageTextType;
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -52,7 +52,7 @@ public class ECMessage extends ECObject {
 		return messageTitle;
 	}
 
-	public String getAuthor () {
+	public ECUser getAuthor () {
 		return author;
 	}
 

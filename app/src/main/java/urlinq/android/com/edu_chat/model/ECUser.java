@@ -203,6 +203,9 @@ public class ECUser extends ECObject {
 	public String getLastName () {
 		return this.lastName;
 	}
+    public String getFullName(){
+        return this.firstName + " " + this.lastName;
+    }
 
 	public String getFirstName () {
 		return this.firstName;
