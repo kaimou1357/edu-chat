@@ -219,10 +219,7 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-	}
+    }
 
 	/**
 	 * Adds message to the recyclerview.

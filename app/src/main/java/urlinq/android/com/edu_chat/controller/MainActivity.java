@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	private void loadCurrentUser() {
 		userFullName.setText(String.format("%s %s", ECUser.getCurrentUser().getFirstName(), ECUser.getCurrentUser().getLastName()));
+        userSchoolName.setText(String.format("%s", ECUser.getCurrentUser().getCurrentUserSchool()));
 
 	}
 

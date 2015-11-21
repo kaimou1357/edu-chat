@@ -34,6 +34,10 @@ public class ECUser extends ECObject {
 	private static ECUser currentUser;
 	private static String userToken;
 
+
+
+    private static String currentUserSchool;
+
 	private final String firstName;
 	private final String lastName;
 	private final String email = null;
@@ -83,7 +87,7 @@ public class ECUser extends ECObject {
 		this.lastActivity = format.parse(data.getString("last_activity").replace("T", " "));
 		this.department = data.getString("department");
 		String fileURL = Constants.bitmapURL + super.getFileURL();
-		getProfilePicture(fileURL);
+		//getProfilePicture(fileURL);
 
 
 		Log.v(String.format("EDU.CHAT %s", getClass().getSimpleName()), this.toString());
@@ -180,6 +184,13 @@ public class ECUser extends ECObject {
 	public static ECUser getCurrentUser () {
 		return ECUser.currentUser;
 	}
+    public static String getCurrentUserSchool() {
+        return currentUserSchool;
+    }
+
+    public static void setCurrentUserSchool(String currentUserSchool) {
+        ECUser.currentUserSchool = currentUserSchool;
+    }
 
 
 	// Dynamic
@@ -187,31 +198,25 @@ public class ECUser extends ECObject {
 	public ECMessage getMostRecentMessage () {
 		return this.mostRecentMessage;
 	}
-
-	public Date getLastActivity () {
+    public Date getLastActivity () {
 		return this.lastActivity;
 	}
-
-	public String getDepartment () {
+    public String getDepartment () {
 		return this.department;
 	}
-
-	public ECUserType getUserType () {
+    public ECUserType getUserType () {
 		return this.userType;
 	}
-
-	public String getLastName () {
+    public String getLastName () {
 		return this.lastName;
 	}
     public String getFullName(){
         return this.firstName + " " + this.lastName;
     }
-
-	public String getFirstName () {
+    public String getFirstName () {
 		return this.firstName;
 	}
-
-	public Bitmap getProfilePicture () {
+    public Bitmap getProfilePicture () {
 		return this.profilePicture;
 	}
 

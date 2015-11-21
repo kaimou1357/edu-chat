@@ -45,7 +45,6 @@ public class LoginBackground extends Fragment {
 		View v = inflater.inflate(R.layout.combined_login, container, false);
 		//get reference to other fragment
 		ButterKnife.bind(this, v);
-		// TODO: Don't do what I am doing lol.
 		prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
 		if (prefs.getBoolean("saveLogin", false)) {
 			userEmail.setText(prefs.getString("email", ""));
@@ -108,6 +107,7 @@ public class LoginBackground extends Fragment {
 				try {
 					ECUser.setCurrentUser(new ECUser(obj.getJSONObject("user")));
 					ECUser.setUserToken(obj.getString("token"));
+                    ECUser.setCurrentUserSchool(obj.getJSONObject("user").getJSONObject("school").getString("school_name"));
 
 					ParseObject login = new ParseObject("Logins");
 					login.put("userid", ECUser.getCurrentUser().getObjectIdentifier());
