@@ -49,44 +49,24 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 		Picasso.with(activity).setLoggingEnabled(true);
 
 		ECObject currObj = mECObjects.get(position);
-		viewHolder.setMessages(currObj.toString());
 		viewHolder.setECObject(currObj);
 		String fileURL = null;
 		if (currObj instanceof ECUser) {
 			ECUser user = (ECUser) currObj;
+            viewHolder.setRowHeader(user.getFullName());
+            viewHolder.setUserText(user.getFirstName());
+            viewHolder.setMessageText(user.getMostRecentMessage().getMessageTitle());
 			fileURL = Constants.bitmapURL + user.getFileURL();
 		}
 		if (currObj instanceof ECCategory) {
 			ECCategory category = (ECCategory) currObj;
+            viewHolder.setRowHeader(category.getName());
+            viewHolder.setUserText(category.getMostRecentMessage().getAuthor().getFullName());
+            viewHolder.setUserText(category.getMostRecentMessage().getMessageTitle());
 			fileURL = Constants.bitmapURL + category.getFileURL();
 		}
-
-		Picasso.with(activity).load(fileURL).resize(Constants.globalImageSize, Constants.globalImageSize)
+        Picasso.with(activity).load(fileURL).resize(Constants.globalImageSize, Constants.globalImageSize)
 				.centerInside().into(viewHolder.img);
-
-//		final String finalFileURL = fileURL;
-//		new Thread(new Runnable() {
-//			public void run() {
-//				final Uri imageUri = Uri.parse(finalFileURL);
-//				Log.v(getClass().getSimpleName(), imageUri.toString());
-//				final InputStream in;
-//				try {
-//					in = new java.net.URL(imageUri.toString()).openStream();
-//					BitmapFactory.Options options = new BitmapFactory.Options();
-//					options.inSampleSize = 16;
-//					options.inJustDecodeBounds = false;
-//					final Bitmap bit = BitmapFactory.decodeStream(in, null, options);
-//					activity.runOnUiThread(new Runnable() {
-//						@Override
-//						public void run() {
-//							viewHolder.img.setImageBitmap(bit);
-//						}
-//					});
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}).start();
 
 	}
 
@@ -101,6 +81,8 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 		private final ImageView img;
 		private final TextView userText;
 		private ECObject ecObject;
+        private final TextView messageTextView;
+        private final TextView headerTextView;
 
 
 		public CategoryViewHolder (View view) {
@@ -109,11 +91,19 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 			view.setOnClickListener(this);
 			img = (ImageView) view.findViewById(R.id.profilePicture);
 			userText = (TextView) view.findViewById(R.id.userTextView);
+            messageTextView = (TextView)view.findViewById(R.id.messageTextView);
+            headerTextView = (TextView)view.findViewById(R.id.rowHeader);
 		}
 
-		public void setMessages (String messageTest) {
-			userText.setText(messageTest);
+		public void setMessageText(String messageTest) {
+			messageTextView.setText(messageTest);
 		}
+        public void setRowHeader(String rowHeader){
+            headerTextView.setText(rowHeader);
+        }
+        public void setUserText(String username){
+            userText.setText(username);
+        }
 
 		public void setECObject (ECObject ecObject) {
 			this.ecObject = ecObject;

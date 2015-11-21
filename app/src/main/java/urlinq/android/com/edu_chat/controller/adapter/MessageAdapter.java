@@ -45,8 +45,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 		viewHolder.setMessage(message.getMessageTitle());
 		viewHolder.setUsername(message.getAuthor().getFullName());
 		String path = Constants.bitmapURL + message.getAuthor().getFileURL();
-
-		Picasso.with(activity).load(path).resize(Constants.globalImageSize, Constants.globalImageSize)
+        Picasso.with(activity).load(path).resize(Constants.globalImageSize, Constants.globalImageSize)
 				.centerInside().into(viewHolder.userProfilePicture);
 
 
