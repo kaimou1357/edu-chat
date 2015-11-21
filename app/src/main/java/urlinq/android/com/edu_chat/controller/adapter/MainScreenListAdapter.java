@@ -62,7 +62,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 			ECCategory category = (ECCategory) currObj;
             viewHolder.setRowHeader(category.getName());
             viewHolder.setUserText(category.getMostRecentMessage().getAuthor().getFullName());
-            viewHolder.setUserText(category.getMostRecentMessage().getMessageTitle());
+            viewHolder.setMessageText(category.getMostRecentMessage().getMessageTitle());
 			fileURL = Constants.bitmapURL + category.getFileURL();
 		}
         Picasso.with(activity).load(fileURL).resize(Constants.globalImageSize, Constants.globalImageSize)

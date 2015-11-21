@@ -1,9 +1,12 @@
 package urlinq.android.com.edu_chat.controller;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,7 +32,7 @@ import java.util.List;
  * This activity will act as a container for the recycler views for the individual chats and classes.
  * Created by Kai on 10/16/2015.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 	private List<ECObject> ECCategoryGroupList = new ArrayList<>();
 	private List<ECObject> ECCategoryClassList = new ArrayList<>();
 	private List<ECObject> ECCategoryDepartmentList = new ArrayList<>();
@@ -63,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
 		getChatLoadOut();
 		//Check the populateRecyclerView() method. Will load after all objects are loaded.
 	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        return super.onOptionsItemSelected(item);
+    }
 
 	/**
 	 * This method will populate ecUserList with the users loaded in from the login call.
