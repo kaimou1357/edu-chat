@@ -46,7 +46,6 @@ public class ECUser extends ECObject {
 	private final Date lastActivity;
 	private final String department;
 	private final String[] subchannel = null;
-	private Bitmap profilePicture;
 
 
 	@Override
@@ -60,7 +59,6 @@ public class ECUser extends ECObject {
 				", mostRecentMessage=" + mostRecentMessage +
 				", lastActivity=" + lastActivity +
 				", subchannel=" + Arrays.toString(subchannel) +
-				", profilePicture=" + profilePicture +
 				'}' + super.toString();
 	}
 
@@ -140,32 +138,6 @@ public class ECUser extends ECObject {
 		return personList;
 	}
 
-	private void getProfilePicture (String fileURL) {
-
-		ECApiManager.get(fileURL, null, new BinaryHttpResponseHandler() {
-			Bitmap image;
-
-			@Override
-			public void onSuccess (int statusCode, Header[] headers, byte[] responseBody) {
-				image = BitmapFactory.decodeByteArray(responseBody, 0, responseBody.length);
-			}
-
-			@Override
-			public void onFailure (int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-			}
-
-			@Override
-			public void onFinish () {
-				setProfilePicture(image);
-			}
-		});
-
-	}
-
-	private void setProfilePicture (Bitmap img) {
-		this.profilePicture = img;
-	}
 
 	// Static
 	public static void setCurrentUser (ECUser user) {
@@ -215,9 +187,6 @@ public class ECUser extends ECObject {
     }
     public String getFirstName () {
 		return this.firstName;
-	}
-    public Bitmap getProfilePicture () {
-		return this.profilePicture;
 	}
 
 
