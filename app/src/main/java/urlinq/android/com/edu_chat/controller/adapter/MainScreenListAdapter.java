@@ -16,10 +16,10 @@ import java.util.List;
 
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.controller.ChatActivity;
-import urlinq.android.com.edu_chat.model.constants.Constants;
 import urlinq.android.com.edu_chat.model.ECCategory;
 import urlinq.android.com.edu_chat.model.ECObject;
 import urlinq.android.com.edu_chat.model.ECUser;
+import urlinq.android.com.edu_chat.model.constants.Constants;
 
 
 /**
@@ -53,19 +53,19 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 		String fileURL = null;
 		if (currObj instanceof ECUser) {
 			ECUser user = (ECUser) currObj;
-            viewHolder.setRowHeader(user.getFullName());
-            viewHolder.setUserText(user.getFirstName());
-            viewHolder.setMessageText(user.getMostRecentMessage().getMessageTitle());
+			viewHolder.setRowHeader(user.getFullName());
+			viewHolder.setUserText(user.getFirstName());
+			viewHolder.setMessageText(user.getMostRecentMessage().getMessageTitle());
 			fileURL = Constants.bitmapURL + user.getFileURL();
 		}
 		if (currObj instanceof ECCategory) {
 			ECCategory category = (ECCategory) currObj;
-            viewHolder.setRowHeader(category.getName());
-            viewHolder.setUserText(category.getMostRecentMessage().getAuthor().getFullName());
-            viewHolder.setMessageText(category.getMostRecentMessage().getMessageTitle());
+			viewHolder.setRowHeader(category.getName());
+			viewHolder.setUserText(category.getMostRecentMessage().getAuthor().getFullName());
+			viewHolder.setMessageText(category.getMostRecentMessage().getMessageTitle());
 			fileURL = Constants.bitmapURL + category.getFileURL();
 		}
-        Picasso.with(activity).load(fileURL).resize(Constants.globalImageSize, Constants.globalImageSize)
+		Picasso.with(activity).load(fileURL).resize(Constants.globalImageSize, Constants.globalImageSize)
 				.centerInside().into(viewHolder.img);
 
 	}
@@ -81,8 +81,8 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 		private final ImageView img;
 		private final TextView userText;
 		private ECObject ecObject;
-        private final TextView messageTextView;
-        private final TextView headerTextView;
+		private final TextView messageTextView;
+		private final TextView headerTextView;
 
 
 		public CategoryViewHolder (View view) {
@@ -91,19 +91,21 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 			view.setOnClickListener(this);
 			img = (ImageView) view.findViewById(R.id.profilePicture);
 			userText = (TextView) view.findViewById(R.id.userTextView);
-            messageTextView = (TextView)view.findViewById(R.id.messageTextView);
-            headerTextView = (TextView)view.findViewById(R.id.rowHeader);
+			messageTextView = (TextView) view.findViewById(R.id.messageTextView);
+			headerTextView = (TextView) view.findViewById(R.id.rowHeader);
 		}
 
-		public void setMessageText(String messageTest) {
+		public void setMessageText (String messageTest) {
 			messageTextView.setText(messageTest);
 		}
-        public void setRowHeader(String rowHeader){
-            headerTextView.setText(rowHeader);
-        }
-        public void setUserText(String username){
-            userText.setText(username);
-        }
+
+		public void setRowHeader (String rowHeader) {
+			headerTextView.setText(rowHeader);
+		}
+
+		public void setUserText (String username) {
+			userText.setText(username);
+		}
 
 		public void setECObject (ECObject ecObject) {
 			this.ecObject = ecObject;

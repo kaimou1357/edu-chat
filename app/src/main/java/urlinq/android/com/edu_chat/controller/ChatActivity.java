@@ -15,26 +15,28 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.parse.Parse;
 
-import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import urlinq.android.com.edu_chat.R;
-import urlinq.android.com.edu_chat.controller.adapter.MessageAdapter;
-import urlinq.android.com.edu_chat.manager.ECApiManager;
-import urlinq.android.com.edu_chat.model.constants.Constants;
-import urlinq.android.com.edu_chat.model.ECMessage;
-import urlinq.android.com.edu_chat.model.ECUser;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import cz.msebera.android.httpclient.Header;
+import urlinq.android.com.edu_chat.R;
+import urlinq.android.com.edu_chat.controller.adapter.MessageAdapter;
+import urlinq.android.com.edu_chat.manager.ECApiManager;
+import urlinq.android.com.edu_chat.model.ECMessage;
+import urlinq.android.com.edu_chat.model.ECUser;
+import urlinq.android.com.edu_chat.model.constants.Constants;
+
 
 /**
  * Created by Kai on 10/26/2015.
@@ -50,24 +52,24 @@ public class ChatActivity extends AppCompatActivity {
 	@Bind(R.id.nameTextView) TextView nameTextView;
 	private final Handler mTypingHandler = new Handler();
 	private boolean mTyping = false;
+
 	//Don't forget to set the username to something before we begin.
 	private String mUsername;
 	private final List<ECMessage> mMessages = new ArrayList<>();
 	private MessageAdapter mAdapter;
-	private String fileURL;
-    private String target_type;
-    private String target_id;
+	private String target_type;
+	private String target_id;
 
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat_fragment);
 		ButterKnife.bind(this);
 		//get extras from bundle.
 		updateRecyclerView();
-        target_type = getIntent().getStringExtra("target_type");
-        target_id = getIntent().getStringExtra("target_id");
+		target_type = getIntent().getStringExtra("target_type");
+		target_id = getIntent().getStringExtra("target_id");
 
 		updateChatRoom(target_type, target_id, ECUser.getUserToken());
 		mUsername = getIntent().getStringExtra("USER_NAME");
@@ -75,7 +77,7 @@ public class ChatActivity extends AppCompatActivity {
 
 		mInputMessageView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+			public boolean onEditorAction (TextView v, int actionId, KeyEvent event) {
 				if (actionId == R.id.send || actionId == EditorInfo.IME_NULL) {
 					attemptSend();
 					return true;
@@ -85,12 +87,12 @@ public class ChatActivity extends AppCompatActivity {
 		});
 		mInputMessageView.addTextChangedListener(new TextWatcher() {
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			public void beforeTextChanged (CharSequence s, int start, int count, int after) {
 
 			}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			public void onTextChanged (CharSequence s, int start, int before, int count) {
 				if (mUsername == null) return;
 				if (!mTyping) {
 					mTyping = true;
@@ -101,21 +103,21 @@ public class ChatActivity extends AppCompatActivity {
 			}
 
 			@Override
-			public void afterTextChanged(Editable s) {
+			public void afterTextChanged (Editable s) {
 
 			}
 		});
 
 		sendButton.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick (View v) {
 				attemptSend();
 			}
 		});
 
 	}
 
-	private void updateChatRoom(String targetType, String targetID, String token) {
+	private void updateChatRoom (String targetType, String targetID, String token) {
 		RequestParams params = new RequestParams();
 		params.add("target_type", targetType);
 		params.add("target_id", targetID);
@@ -126,7 +128,7 @@ public class ChatActivity extends AppCompatActivity {
 			JSONArray obj;
 
 			@Override
-			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+			public void onSuccess (int statusCode, Header[] headers, byte[] responseBody) {
 				String response = new String(responseBody);
 				Log.d("chatResponse", getRequestURI().toString());
 				try {
@@ -137,12 +139,12 @@ public class ChatActivity extends AppCompatActivity {
 			}
 
 			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+			public void onFailure (int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
 			}
 
 			@Override
-			public void onFinish() {
+			public void onFinish () {
 				makeObjects(obj);
 			}
 
@@ -150,7 +152,7 @@ public class ChatActivity extends AppCompatActivity {
 
 	}
 
-	private void makeObjects(JSONArray obj) {
+	private void makeObjects (JSONArray obj) {
 		try {
 			for (int i = 0; i < obj.length(); i++) {
 				JSONObject singleMessage = obj.getJSONObject(i);
@@ -163,7 +165,7 @@ public class ChatActivity extends AppCompatActivity {
 
 	}
 
-	private void updateRecyclerView() {
+	private void updateRecyclerView () {
 		mAdapter = new MessageAdapter(this, mMessages);
 		mMessagesView.setLayoutManager(new LinearLayoutManager(this));
 		mMessagesView.setAdapter(mAdapter);
@@ -174,72 +176,73 @@ public class ChatActivity extends AppCompatActivity {
 	/**
 	 * Private method to send message. Make sure to make the HTTP/Socket calls here.
 	 */
-	private void attemptSend() {
+	private void attemptSend () {
 
-        String message = mInputMessageView.getText().toString().trim();
+		String message = mInputMessageView.getText().toString().trim();
 		if (TextUtils.isEmpty(message)) {
 			mInputMessageView.requestFocus();
 			return;
 		}
-        mInputMessageView.setText("");
-        RequestParams params = new RequestParams();
-        params.add("text", message);
-        params.add("target_id", target_id);
-        params.add("target_type", target_type);
-        params.add("token", ECUser.getUserToken());
+		mInputMessageView.setText("");
+		RequestParams params = new RequestParams();
+		params.add("text", message);
+		params.add("target_id", target_id);
+		params.add("target_type", target_type);
+		params.add("token", ECUser.getUserToken());
 
-        ECApiManager.post(Constants.sendMessageURL, params, new AsyncHttpResponseHandler() {
-            JSONObject object;
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String response = new String(responseBody);
-                Log.d("send_msg_response", response);
-                try{
-                    object = new JSONObject(response);
-                }catch(JSONException e){e.printStackTrace();}
+		ECApiManager.post(Constants.sendMessageURL, params, new AsyncHttpResponseHandler() {
+			JSONObject object;
+
+			@Override
+			public void onSuccess (int statusCode, Header[] headers, byte[] responseBody) {
+				String response = new String(responseBody);
+				Log.d("send_msg_response", response);
+				try {
+					object = new JSONObject(response);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 
 
-            }
+			}
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+			@Override
+			public void onFailure (int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
-            }
+			}
 
-            @Override
-            public void onFinish(){
-                //Add message to the adapterview after sending.
-                try{
-                    addMessage(new ECMessage(object.getJSONObject("message")));
-                }catch(ParseException e){
-                    e.printStackTrace();
-                }catch(JSONException e){
-                    e.printStackTrace();
-                }
+			@Override
+			public void onFinish () {
+				//Add message to the adapterview after sending.
+				try {
+					addMessage(new ECMessage(object.getJSONObject("message")));
+				} catch (ParseException | JSONException e) {
+					e.printStackTrace();
+				}
 
-            }
-        });
-    }
+			}
+		});
+	}
 
 	/**
 	 * Adds message to the recyclerview.
 	 */
-	private void addMessage(ECMessage message) {
-        mMessages.add(message);
-        mAdapter.notifyItemInserted(mMessages.size() -1);
-        scrollToBottom();
+	private void addMessage (ECMessage message) {
+		mMessages.add(message);
+		mAdapter.notifyItemInserted(mMessages.size() - 1);
+		scrollToBottom();
 	}
 
 	/**
 	 * Method to scroll to the last position in an adapter.
 	 */
-	private void scrollToBottom() {
+	private void scrollToBottom () {
 		mMessagesView.scrollToPosition(mAdapter.getItemCount() - 1);
 	}
 
 	private final Runnable onTypingTimeOut = new Runnable() {
 		@Override
-		public void run() {
+		public void run () {
 			if (!mTyping) return;
 			mTyping = false;
 		}
