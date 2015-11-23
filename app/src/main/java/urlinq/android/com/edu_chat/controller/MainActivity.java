@@ -6,10 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +50,7 @@ public class MainActivity extends Activity {
 	@Bind(R.id.peopleList) RecyclerView peopleList;
 	@Bind(R.id.userFullName) TextView userFullName;
 	@Bind(R.id.userSchool) TextView userSchoolName;
+	@Bind(R.id.userProfilePicture)ImageView userProfilePicture;
 
 
 	@Override
@@ -125,6 +128,8 @@ public class MainActivity extends Activity {
 	private void loadCurrentUserText () {
 		userFullName.setText(String.format("%s %s", ECUser.getCurrentUser().getFirstName(), ECUser.getCurrentUser().getLastName()));
 		userSchoolName.setText(String.format("%s", ECUser.getCurrentUserSchool()));
+		Picasso.with(this).load(Constants.bitmapURL + ECUser.getCurrentUser().getFileURL()).resize(Constants.globalImageSize, Constants.globalImageSize).into(userProfilePicture);
+
 	}
 
 	private void populateRecyclerView () {
