@@ -3,6 +3,7 @@ package urlinq.android.com.edu_chat.controller.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,10 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import urlinq.android.com.edu_chat.R;
@@ -37,7 +42,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 	@Override
 	public CategoryViewHolder onCreateViewHolder (ViewGroup parent, int viewCase) {
 		//Shouldn't be item scroll chat. Change later to the appropriate layout.
-		int layout = R.layout.item_scroll_chat;
+		int layout = R.layout.main_list_scroll_item;
 		View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
 		return new CategoryViewHolder(v);
 
@@ -45,8 +50,6 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 
 	@Override
 	public void onBindViewHolder (final CategoryViewHolder viewHolder, int position) {
-		Picasso.with(activity).setIndicatorsEnabled(true);
-		Picasso.with(activity).setLoggingEnabled(true);
 
 		ECObject currObj = mECObjects.get(position);
 		viewHolder.setECObject(currObj);
@@ -61,6 +64,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 		if (currObj instanceof ECCategory) {
 			ECCategory category = (ECCategory) currObj;
 			viewHolder.setRowHeader(category.getName());
+			viewHolder.setLastActivityTextView(category.getMostRecentMessage().getMessageDate(), category.getColor());
 			viewHolder.setUserText(category.getMostRecentMessage().getAuthor().getFullName());
 			viewHolder.setMessageText(category.getMostRecentMessage().getMessageTitle());
 			fileURL = Constants.bitmapURL + category.getFileURL();
@@ -83,6 +87,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 		private ECObject ecObject;
 		private final TextView messageTextView;
 		private final TextView headerTextView;
+		private final TextView lastActivityTextView;
 
 
 		public CategoryViewHolder (View view) {
@@ -93,6 +98,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 			userText = (TextView) view.findViewById(R.id.userTextView);
 			messageTextView = (TextView) view.findViewById(R.id.messageTextView);
 			headerTextView = (TextView) view.findViewById(R.id.rowHeader);
+			lastActivityTextView = (TextView) view.findViewById(R.id.lastActivityTextView);
 		}
 
 		public void setMessageText (String messageTest) {
@@ -101,6 +107,16 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 
 		public void setRowHeader (String rowHeader) {
 			headerTextView.setText(rowHeader);
+		}
+
+		public void setLastActivityTextView(Date time, String color){
+			lastActivityTextView.setTextColor(Color.parseColor(color));
+			SimpleDateFormat localDateFormat = new SimpleDateFormat("hh:mm a");
+			String textTime = localDateFormat.format(time);
+			//TODO IF date is more than 24 hours in the past, put the date. If less than 24 hours , put the time.
+
+
+			lastActivityTextView.setText(textTime);
 		}
 
 		public void setUserText (String username) {

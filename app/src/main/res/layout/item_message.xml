@@ -8,7 +8,8 @@
 		android:layout_width="30dp"
 		android:layout_height="30dp"
 		android:id="@+id/userProfilePicture"
-		android:contentDescription="@string/user_profile_picture_content_description" />
+		android:contentDescription="@string/user_profile_picture_content_description"
+		android:scaleType="fitXY"/>
 
 	<Space
 		android:layout_width="20dp"
