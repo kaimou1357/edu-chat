@@ -8,10 +8,14 @@ import com.loopj.android.http.*;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import cz.msebera.android.httpclient.Header;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import urlinq.android.com.edu_chat.controller.ChatActivity;
 import urlinq.android.com.edu_chat.controller.MainActivity;
+import urlinq.android.com.edu_chat.model.ECMessage;
 import urlinq.android.com.edu_chat.model.ECUser;
 
 import java.text.ParseException;
@@ -24,6 +28,8 @@ public class ECApiManager {
 
 	public static final String loginAPI = "https://edu.chat/api/login/";
     public static final String loadoutAPI = "https://edu.chat/message/loadout";
+    public static final String sendMessageURL = "https://edu.chat/message/send/";
+    public static final String loadChatRoomURL = "https://edu.chat/message/load_chat";
 
 
 	// A SyncHttpClient is an AsyncHttpClient
@@ -56,7 +62,6 @@ public class ECApiManager {
 	private static class AllECApiCalls {
 		private String url;
 		private RequestParams params;
-        private MainActivity activity;
 
 		public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
@@ -111,13 +116,18 @@ public class ECApiManager {
 			});
 		}
 	}
-    public static class ChatLoadOutObject extends AllECApiCalls{
-        private JSONObject obj;
+
+
+    /**
+     * This class will load update the chatroom with new messages as soon as the user enters the chat room.
+     */
+    public static class LoadChatMessageObject extends AllECApiCalls{
+        private JSONArray obj;
         private String userHash;
-        private MainActivity activity;
-        public ChatLoadOutObject(RequestParams params, MainActivity context){
+        private ChatActivity activity;
+        public LoadChatMessageObject(RequestParams params, ChatActivity context){
             super.params = params;
-            super.url = loadoutAPI;
+            super.url = loadChatRoomURL;
             this.activity = context;
         }
         @Override
@@ -125,7 +135,7 @@ public class ECApiManager {
             super.onSuccess(statusCode, headers, responseBody);
             userHash = new String(responseBody);
             try {
-                obj = new JSONObject(userHash);
+                obj = new JSONObject(userHash).getJSONArray("messages");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -139,13 +149,14 @@ public class ECApiManager {
         @Override
         public void onFinish() {
             super.onFinish();
-            activity.makeObjectListsFromResponse(obj);
-            activity.populateRecyclerView();
+            activity.makeObjects(obj);
         }
-
     }
 
-	public static class LoginObject extends AllECApiCalls {
+    /**
+     * This class will set current user token, school, and will login the current user in.
+     */
+    public static class LoginObject extends AllECApiCalls {
 
 		private JSONObject obj;
 		private String userHash;
@@ -194,5 +205,83 @@ public class ECApiManager {
 
 		}
 	}
+
+    /**
+     * This class will build and populate each Recyclerview in the application's MainActivity.
+     */
+    public static class MainLoadOutObject extends AllECApiCalls{
+        private JSONObject obj;
+        private String userHash;
+        private MainActivity activity;
+        public MainLoadOutObject(RequestParams params, MainActivity context){
+            super.params = params;
+            super.url = loadoutAPI;
+            this.activity = context;
+        }
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            super.onSuccess(statusCode, headers, responseBody);
+            userHash = new String(responseBody);
+            try {
+                obj = new JSONObject(userHash);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            super.onFailure(statusCode, headers, responseBody, error);
+        }
+
+        @Override
+        public void onFinish() {
+            super.onFinish();
+            activity.makeObjectListsFromResponse(obj);
+            activity.populateRecyclerView();
+        }
+
+    }
+
+    /**
+     * This class will send messages for the user.
+     */
+    public static class SendMessageObject extends AllECApiCalls{
+        private JSONObject obj;
+        private String userHash;
+        private ChatActivity activity;
+        public SendMessageObject(RequestParams params, ChatActivity context){
+            super.params = params;
+            super.url = sendMessageURL;
+            this.activity = context;
+        }
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            super.onSuccess(statusCode, headers, responseBody);
+            userHash = new String(responseBody);
+            try {
+                obj = new JSONObject(userHash);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            super.onFailure(statusCode, headers, responseBody, error);
+        }
+
+        @Override
+        public void onFinish() {
+            super.onFinish();
+            try{
+                activity.addMessage(new ECMessage(obj.getJSONObject("message")));
+            }catch (ParseException | JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
 }
 

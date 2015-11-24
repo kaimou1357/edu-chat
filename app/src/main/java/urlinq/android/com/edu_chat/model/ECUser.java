@@ -99,32 +99,6 @@ public class ECUser extends ECObject {
         return personList;
     }
 
-//	/**
-//	 * Method that refreshes the state of the current user by calling the API again.
-//	 */
-//	public static void refreshCurrentUser () {
-//		RequestParams params = new RequestParams();
-//		params.put("token", ECUser.getUserToken());
-//		params.put("id", ECUser.getCurrentUser().getObjectIdentifier());
-//		ECApiManager.get(Constants.refreshUserAPI, params, new AsyncHttpResponseHandler() {
-//			@Override
-//			public void onSuccess (int statusCode, Header[] headers, byte[] responseBody) {
-//				String response = new String(responseBody);
-//				Log.d("refreshUser", response);
-//				try {
-//					JSONObject obj = new JSONObject(response);
-//					ECUser.setCurrentUser(new ECUser(obj));
-//				} catch (JSONException | ParseException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//
-//			@Override
-//			public void onFailure (int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-//
-//			}
-//		});
-//	}
 
 
     // Static

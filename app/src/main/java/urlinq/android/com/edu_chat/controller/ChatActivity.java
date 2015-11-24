@@ -124,36 +124,11 @@ public class ChatActivity extends AppCompatActivity {
 		params.add("target_id", targetID);
 		params.add("token", token);
 		params.add("limit", REQUEST_LENGTH);
-		ECApiManager.get(Constants.loadChatRoomURL, params, new AsyncHttpResponseHandler() {
+		ECApiManager.LoadChatMessageObject loadChatObj = new ECApiManager.LoadChatMessageObject(params, this);
+        loadChatObj.invokeGet();
+    }
 
-			JSONArray obj;
-
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-				String response = new String(responseBody);
-				Log.d("chatResponse", getRequestURI().toString());
-				try {
-					obj = new JSONObject(response).getJSONArray("messages");
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-			}
-
-			@Override
-			public void onFinish() {
-				makeObjects(obj);
-			}
-
-		});
-
-	}
-
-	private void makeObjects(JSONArray obj) {
+	public void makeObjects(JSONArray obj) {
 		try {
 			for (int i = 0; i < obj.length(); i++) {
 				JSONObject singleMessage = obj.getJSONObject(i);
@@ -185,50 +160,21 @@ public class ChatActivity extends AppCompatActivity {
 			return;
 		}
 		mInputMessageView.setText("");
-		RequestParams params = new RequestParams();
+
+        RequestParams params = new RequestParams();
 		params.add("text", message);
 		params.add("target_id", target_id);
 		params.add("target_type", target_type);
 		params.add("token", ECUser.getUserToken());
+        final ECApiManager.SendMessageObject sendMessageObject = new ECApiManager.SendMessageObject(params, this);
+        sendMessageObject.invokePost();
 
-		ECApiManager.post(Constants.sendMessageURL, params, new AsyncHttpResponseHandler() {
-			JSONObject object;
-
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-				String response = new String(responseBody);
-				Log.d("send_msg_response", response);
-				try {
-					object = new JSONObject(response);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-
-
-			}
-
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-			}
-
-			@Override
-			public void onFinish() {
-				//Add message to the adapterview after sending.
-				try {
-					addMessage(new ECMessage(object.getJSONObject("message")));
-				} catch (ParseException | JSONException e) {
-					e.printStackTrace();
-				}
-
-			}
-		});
 	}
 
 	/**
 	 * Adds message to the recyclerview.
 	 */
-	private void addMessage(ECMessage message) {
+	public void addMessage(ECMessage message) {
 		mMessages.add(message);
 		mAdapter.notifyItemInserted(mMessages.size() - 1);
 		scrollToBottom();
