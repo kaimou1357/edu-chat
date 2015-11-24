@@ -1,6 +1,7 @@
 package urlinq.android.com.edu_chat.controller;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -76,36 +77,30 @@ public class MainActivity extends Activity {
 	private void getChatLoadOut () {
 		RequestParams params = new RequestParams();
 		params.put("token", ECUser.getUserToken());
-		ECApiManager.get(Constants.loadoutAPI, params, new AsyncHttpResponseHandler() {
-			JSONObject obj;
+        final ECApiManager.ChatLoadOutObject chatObj = new ECApiManager.ChatLoadOutObject(params, this){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                super.onSuccess(statusCode, headers, responseBody);
+            }
+            @Override
+            public void onFinish() {
+                super.onFinish();
+            }
 
-			@Override
-			public void onSuccess (int statusCode, Header[] headers, byte[] responseBody) {
-				String response = new String(responseBody);
-				Log.d("response", getRequestURI().toString());
-				try {
-					obj = new JSONObject(response);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                super.onFailure(statusCode, headers, responseBody, error);
+            }
 
-			@Override
-			public void onFailure (int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-			}
-
-			@Override
-			public void onFinish () {
-				makeObjectListsFromResponse(obj);
-				populateRecyclerView();
-			}
-		});
+        };
+        chatObj.invokeGet();
+        
 	}
 
 	/**
 	 * Takes the output from the loadout API call and makes them into objects.
 	 */
-	private void makeObjectListsFromResponse (JSONObject response) {
+	public void makeObjectListsFromResponse (JSONObject response) {
 		//Create each ECCategory object. Fill into RecyclerView later.
 		try {
 			//Add for classes, departments, people, groups.
@@ -129,7 +124,7 @@ public class MainActivity extends Activity {
 
 	}
 
-	private void populateRecyclerView () {
+	public void populateRecyclerView () {
 
 		MainScreenListAdapter groupAdapter = new MainScreenListAdapter(this, ECCategoryGroupList);
 		groupList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));

@@ -87,7 +87,7 @@ public class LoginBackground extends Fragment {
 				super.onFailure(statusCode, headers, responseBody, error);
 			}
 		};
-		loginObj.invoke();
+		loginObj.invokePost();
 	}
 
 	private void launchMainActivity() {
