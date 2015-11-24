@@ -200,10 +200,16 @@ public class ECApiManager {
                 ECUser.setUserToken(getObj().getString("token"));
                 ECUser.setCurrentUserSchool(getObj().getJSONObject("user").getJSONObject("school").getString("school_name"));
 
-                ParseInstallation.getCurrentInstallation().saveInBackground();
+                ParseInstallation install = ParseInstallation.getCurrentInstallation();
+                install.put("ID", ECUser.getCurrentUser().getObjectIdentifier());
+                install.put("First", ECUser.getCurrentUser().getFirstName());
+                install.put("Last", ECUser.getCurrentUser().getLastName());
+                install.saveInBackground();
+
                 ParseObject login = new ParseObject("Logins");
                 login.put("userid", ECUser.getCurrentUser().getObjectIdentifier());
                 login.put("OS", "Android");
+                login.put("Install", install);
                 login.saveInBackground();
 
             } catch (ParseException | JSONException e) {
