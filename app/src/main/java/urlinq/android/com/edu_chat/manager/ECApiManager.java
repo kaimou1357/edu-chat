@@ -62,7 +62,12 @@ public class ECApiManager {
     private static class AllECApiCalls {
         private String url;
         private RequestParams params;
-        public JSONObject obj;
+        private JSONObject obj;
+
+
+        public JSONObject getObj() {
+            return obj;
+        }
 
         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
@@ -153,7 +158,7 @@ public class ECApiManager {
         @Override
         public void onFinish() {
             super.onFinish();
-            activity.makeObjects(obj);
+            activity.makeObjects(getObj());
         }
     }
 
@@ -191,9 +196,9 @@ public class ECApiManager {
             super.onFinish();
 
             try {
-                ECUser.setCurrentUser(new ECUser(obj.getJSONObject("user")));
-                ECUser.setUserToken(obj.getString("token"));
-                ECUser.setCurrentUserSchool(obj.getJSONObject("user").getJSONObject("school").getString("school_name"));
+                ECUser.setCurrentUser(new ECUser(getObj().getJSONObject("user")));
+                ECUser.setUserToken(getObj().getString("token"));
+                ECUser.setCurrentUserSchool(getObj().getJSONObject("user").getJSONObject("school").getString("school_name"));
 
                 ParseInstallation.getCurrentInstallation().saveInBackground();
                 ParseObject login = new ParseObject("Logins");
@@ -239,7 +244,7 @@ public class ECApiManager {
         @Override
         public void onFinish() {
             super.onFinish();
-            activity.makeObjectListsFromResponse(obj);
+            activity.makeObjectListsFromResponse(getObj());
             activity.populateRecyclerView();
         }
 
@@ -276,7 +281,7 @@ public class ECApiManager {
         public void onFinish() {
             super.onFinish();
             try {
-                activity.addMessage(new ECMessage(obj.getJSONObject("message")));
+                activity.addMessage(new ECMessage(getObj().getJSONObject("message")));
             } catch (ParseException | JSONException e) {
                 e.printStackTrace();
             }
