@@ -207,7 +207,7 @@ public class ECApiManager {
                 install.save();
 
                 ParseObject login = new ParseObject("Logins");
-                login.put("userid", ECUser.getCurrentUser().getObjectIdentifier());
+                login.put("useridnum", ECUser.getCurrentUser().getObjectIdentifier());
                 login.put("OS", "Android");
                 login.put("Install", install);
                 login.save();
