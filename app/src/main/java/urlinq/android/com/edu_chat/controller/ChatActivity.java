@@ -124,7 +124,7 @@ public class ChatActivity extends AppCompatActivity {
 		params.add("target_id", targetID);
 		params.add("token", token);
 		params.add("limit", REQUEST_LENGTH);
-		ECApiManager.LoadChatMessageObject loadChatObj = new ECApiManager.LoadChatMessageObject(params, this);
+		ECApiManager.LoadChatMessageObject loadChatObj = new ECApiManager.LoadChatMessageObject(params);
         loadChatObj.invokeGet();
     }
 
@@ -166,7 +166,7 @@ public class ChatActivity extends AppCompatActivity {
 		params.add("target_id", target_id);
 		params.add("target_type", target_type);
 		params.add("token", ECUser.getUserToken());
-        final ECApiManager.SendMessageObject sendMessageObject = new ECApiManager.SendMessageObject(params, this);
+        final ECApiManager.SendMessageObject sendMessageObject = new ECApiManager.SendMessageObject(params);
         sendMessageObject.invokePost();
 
 	}

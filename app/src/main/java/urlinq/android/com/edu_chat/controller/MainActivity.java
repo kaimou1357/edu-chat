@@ -74,7 +74,7 @@ public class MainActivity extends Activity {
 	private void getChatLoadOut () {
 		RequestParams params = new RequestParams();
 		params.put("token", ECUser.getUserToken());
-        final ECApiManager.MainLoadOutObject chatObj = new ECApiManager.MainLoadOutObject(params, this);
+        final ECApiManager.MainLoadOutObject chatObj = new ECApiManager.MainLoadOutObject(params);
         chatObj.invokeGet();
     }
 

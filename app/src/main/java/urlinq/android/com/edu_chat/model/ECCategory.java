@@ -43,7 +43,7 @@ public class ECCategory extends ECObject {
 	}
 
 	public ECCategory (JSONObject obj, ECCategoryType groupType) throws JSONException, ParseException {
-		super(obj.getString("id"), obj.getJSONObject("picture_file").getString("file_url"), obj.getString("color"));
+		super(obj.getInt("id"), obj.getJSONObject("picture_file").getString("file_url"), obj.getString("color"));
 		switch (groupType) {
 			case ECDepartmentCategoryType: {
 				this.typeOfCategory = ECCategoryType.ECDepartmentCategoryType;

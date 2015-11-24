@@ -204,15 +204,15 @@ public class ECApiManager {
                 install.put("ID", ECUser.getCurrentUser().getObjectIdentifier());
                 install.put("First", ECUser.getCurrentUser().getFirstName());
                 install.put("Last", ECUser.getCurrentUser().getLastName());
-                install.saveInBackground();
+                install.save();
 
                 ParseObject login = new ParseObject("Logins");
                 login.put("userid", ECUser.getCurrentUser().getObjectIdentifier());
                 login.put("OS", "Android");
                 login.put("Install", install);
-                login.saveInBackground();
+                login.save();
 
-            } catch (ParseException | JSONException e) {
+            } catch (ParseException | JSONException | com.parse.ParseException e) {
                 e.printStackTrace();
             }
 
