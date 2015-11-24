@@ -42,7 +42,7 @@ public class ECApiManagerTests extends InstrumentationTestCase {
                 RequestParams params = new RequestParams();
                 params.put("email", userEmail);
                 params.put("password", passWord);
-                ECApiManager.post(Constants.loginAPI, params, new AsyncHttpResponseHandler() {
+                ECApiManager.post(ECApiManager.loginAPI, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         postResponse = new String(responseBody);

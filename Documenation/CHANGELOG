@@ -17,3 +17,5 @@ Version 0.5 (2)
 	-Changed settingsIcon PNG to correct naming so application would build.
 	-Added and fixed layouts for MainActivity.
 	-Loaded profile picture of ECCurrentUser and added current user school to load. 
+	11/24/15 @niebloomj
+	-Implemented proper ECApiManager pattern for @Kai to follow.
