@@ -8,21 +8,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
-
+import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.solovyev.android.views.llm.LinearLayoutManager;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import cz.msebera.android.httpclient.Header;
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.controller.adapter.MainScreenListAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
@@ -31,6 +25,9 @@ import urlinq.android.com.edu_chat.model.ECObject;
 import urlinq.android.com.edu_chat.model.ECUser;
 import urlinq.android.com.edu_chat.model.constants.Constants;
 import urlinq.android.com.edu_chat.model.enums.ECCategoryType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**

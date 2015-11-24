@@ -15,14 +15,15 @@ import butterknife.ButterKnife;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.parse.ParseConfig;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
-import urlinq.android.com.edu_chat.model.constants.Constants;
 import urlinq.android.com.edu_chat.model.ECUser;
+import urlinq.android.com.edu_chat.model.constants.Constants;
 
 import java.text.ParseException;
 
@@ -35,10 +36,13 @@ public class LoginBackground extends Fragment {
 	private static String userHash;
 	private SharedPreferences prefs;
 	//@Bind(R.id.signUpToggle)  ImageButton signUpBtn;
-	@Bind(R.id.logInBlue) ImageButton logInBlue;
+	@Bind(R.id.logInBlue)
+	ImageButton logInBlue;
 	//@Bind(R.id.viewFlipper)  ViewFlipper flipper;
-	@Bind(R.id.emailTextView) EditText userEmail;
-	@Bind(R.id.passwordTextView) EditText userPass;
+	@Bind(R.id.emailTextView)
+	EditText userEmail;
+	@Bind(R.id.passwordTextView)
+	EditText userPass;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -107,8 +111,9 @@ public class LoginBackground extends Fragment {
 				try {
 					ECUser.setCurrentUser(new ECUser(obj.getJSONObject("user")));
 					ECUser.setUserToken(obj.getString("token"));
-                    ECUser.setCurrentUserSchool(obj.getJSONObject("user").getJSONObject("school").getString("school_name"));
+					ECUser.setCurrentUserSchool(obj.getJSONObject("user").getJSONObject("school").getString("school_name"));
 
+					ParseInstallation.getCurrentInstallation().saveInBackground();
 					ParseObject login = new ParseObject("Logins");
 					login.put("userid", ECUser.getCurrentUser().getObjectIdentifier());
 					login.put("OS", "Android");

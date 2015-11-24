@@ -48,5 +48,6 @@ dependencies {
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.parse:parse-android:1.+'
     compile 'io.socket:socket.io-client:0.6.2'
+    compile 'com.instabug.library:instabugsupport:1+'
     testCompile 'org.json:json:20150729'
 }

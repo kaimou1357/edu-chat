@@ -10,3 +10,6 @@ Version 0.5 (1)
 	-View your "buddy list" complete
 
 Version 0.5 (2)
+	11/23/15 @niebloomj
+	-Installed and Implemented Instabug bug reporting
+	-Logging device information to mobile server about device specific information on login.
