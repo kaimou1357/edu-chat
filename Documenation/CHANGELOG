@@ -13,3 +13,7 @@ Version 0.5 (2)
 	11/23/15 @niebloomj
 	-Installed and Implemented Instabug bug reporting
 	-Logging device information to mobile server about device specific information on login.
+	11/23/15 @Kai
+	-Changed settingsIcon PNG to correct naming so application would build.
+	-Added and fixed layouts for MainActivity.
+	-Loaded profile picture of ECCurrentUser and added current user school to load. 
