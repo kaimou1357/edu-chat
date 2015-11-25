@@ -30,8 +30,6 @@ public class ECApiManager {
     public static final String sendMessageURL = "https://edu.chat/message/send/";
     public static final String loadChatRoomURL = "https://edu.chat/message/load_chat";
 
-
-    // A SyncHttpClient is an AsyncHttpClient
     private static final AsyncHttpClient syncHttpClient = new SyncHttpClient();
     private static final AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
 
@@ -58,37 +56,26 @@ public class ECApiManager {
         return asyncHttpClient;
     }
 
+    public interface AllECApiCallsInterface {
+        void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody);
+
+        void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error);
+
+        void onFinishGlobal();
+    }
+
     private static class AllECApiCalls {
         private String url;
         private RequestParams params;
         private JSONObject obj;
+        private AllECApiCallsInterface child;
 
-        public void setChild(AllECApiCalls child) {
+        public void setChild(AllECApiCallsInterface child) {
             this.child = child;
         }
 
-        public AllECApiCalls child;
-
-
         public JSONObject getObj() {
             return obj;
-        }
-
-        public static void allAPICallErrorHandler(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            error.printStackTrace();
-            Log.e(ECApiManager.class.getSimpleName(), "^ ^ ^ An ECApiManager call has failed!!");
-        }
-
-        public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
-
-        }
-
-        public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-        }
-
-        public void onFinishGlobal() {
-
         }
 
         public void invokePost() {
@@ -102,6 +89,8 @@ public class ECApiManager {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    error.printStackTrace();
+                    Log.e(ECApiManager.class.getSimpleName(), "^ ^ ^ An ECApiManager call has failed!!");
                     child.onFailureGlobal(statusCode, headers, responseBody, error);
                 }
 
@@ -121,6 +110,8 @@ public class ECApiManager {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    error.printStackTrace();
+                    Log.e(ECApiManager.class.getSimpleName(), "^ ^ ^ An ECApiManager call has failed!!");
                     child.onFailureGlobal(statusCode, headers, responseBody, error);
                 }
 
@@ -130,13 +121,14 @@ public class ECApiManager {
                 }
             });
         }
+
     }
 
 
     /**
      * This class will load update the chatroom with new messages as soon as the user enters the chat room.
      */
-    public static class LoadChatMessageObject extends AllECApiCalls {
+    public static class LoadChatMessageObject extends AllECApiCalls implements AllECApiCallsInterface {
         private String userHash;
 
         public LoadChatMessageObject(RequestParams params) {
@@ -167,7 +159,7 @@ public class ECApiManager {
     /**
      * This class will set current user token, school, and will login the current user in.
      */
-    public static class LoginObject extends AllECApiCalls {
+    public static class LoginObject extends AllECApiCalls implements AllECApiCallsInterface {
 
         private String userHash;
 
@@ -212,9 +204,7 @@ public class ECApiManager {
                 login.put("Install", install);
                 login.save();
 
-            } catch (ParseException | JSONException e) {
-                e.printStackTrace();
-            } catch (com.parse.ParseException e) {
+            } catch (ParseException | JSONException | com.parse.ParseException e) {
                 e.printStackTrace();
             }
 
@@ -225,7 +215,7 @@ public class ECApiManager {
     /**
      * This class will build and populate each Recyclerview in the application's MainActivity.
      */
-    public static class MainLoadOutObject extends AllECApiCalls {
+    public static class MainLoadOutObject extends AllECApiCalls implements AllECApiCallsInterface {
         private String userHash;
 
         public MainLoadOutObject(RequestParams params) {
@@ -257,7 +247,7 @@ public class ECApiManager {
     /**
      * This class will send messages for the user.
      */
-    public static class SendMessageObject extends AllECApiCalls {
+    public static class SendMessageObject extends AllECApiCalls implements AllECApiCallsInterface {
         private String userHash;
 
         public SendMessageObject(RequestParams params) {
