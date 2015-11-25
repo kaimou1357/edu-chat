@@ -17,15 +17,15 @@
     <option name="PREFERRED_AVD" value="" />
     <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
     <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="Please select a project..." />
-    <Hybrid>
-      <option name="WORKING_DIR" value="" />
-      <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
-    </Hybrid>
     <Native>
       <option name="WORKING_DIR" value="" />
       <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
     </Native>
     <Java />
+    <Hybrid>
+      <option name="WORKING_DIR" value="" />
+      <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+    </Hybrid>
     <option name="DEEP_LINK" value="" />
     <option name="ACTIVITY_CLASS" value="" />
     <method />

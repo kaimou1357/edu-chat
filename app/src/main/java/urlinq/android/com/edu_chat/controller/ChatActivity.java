@@ -19,6 +19,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.parse.Parse;
+
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -124,7 +126,30 @@ public class ChatActivity extends AppCompatActivity {
 		params.add("target_id", targetID);
 		params.add("token", token);
 		params.add("limit", REQUEST_LENGTH);
-		ECApiManager.LoadChatMessageObject loadChatObj = new ECApiManager.LoadChatMessageObject(params);
+		ECApiManager.LoadChatMessageObject loadChatObj = new ECApiManager.LoadChatMessageObject(params){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                super.onSuccess(statusCode, headers, responseBody);
+
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                try{
+                    makeObjects(super.getObj().getJSONArray("messages"));
+                }catch(JSONException e){
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                super.onFailure(statusCode, headers, responseBody, error);
+            }
+        };
+
         loadChatObj.invokeGet();
     }
 
@@ -166,10 +191,29 @@ public class ChatActivity extends AppCompatActivity {
 		params.add("target_id", target_id);
 		params.add("target_type", target_type);
 		params.add("token", ECUser.getUserToken());
-        final ECApiManager.SendMessageObject sendMessageObject = new ECApiManager.SendMessageObject(params);
-        sendMessageObject.invokePost();
+        final ECApiManager.SendMessageObject sendMessageObject = new ECApiManager.SendMessageObject(params){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                super.onSuccess(statusCode, headers, responseBody);
 
-	}
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                try{
+                    addMessage(new ECMessage(super.getObj().getJSONObject("message")));
+                }catch(JSONException | ParseException e){
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                super.onFailure(statusCode, headers, responseBody, error);
+            }
+        };
+        sendMessageObject.invokePost();
+    }
 
 	/**
 	 * Adds message to the recyclerview.

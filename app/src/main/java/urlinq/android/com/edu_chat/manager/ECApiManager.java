@@ -158,7 +158,6 @@ public class ECApiManager {
         @Override
         public void onFinish() {
             super.onFinish();
-            activity.makeObjects(getObj());
         }
     }
 
@@ -250,8 +249,6 @@ public class ECApiManager {
         @Override
         public void onFinish() {
             super.onFinish();
-            activity.makeObjectListsFromResponse(getObj());
-            activity.populateRecyclerView();
         }
 
     }
@@ -286,12 +283,6 @@ public class ECApiManager {
         @Override
         public void onFinish() {
             super.onFinish();
-            try {
-                activity.addMessage(new ECMessage(getObj().getJSONObject("message")));
-            } catch (ParseException | JSONException e) {
-                e.printStackTrace();
-            }
-
         }
     }
 

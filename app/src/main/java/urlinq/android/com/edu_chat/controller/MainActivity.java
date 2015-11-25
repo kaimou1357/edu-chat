@@ -1,6 +1,7 @@
 package urlinq.android.com.edu_chat.controller;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -16,6 +17,8 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.solovyev.android.views.llm.LinearLayoutManager;
+
+import cz.msebera.android.httpclient.Header;
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.controller.adapter.MainScreenListAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
@@ -74,14 +77,32 @@ public class MainActivity extends Activity {
 	private void getChatLoadOut () {
 		RequestParams params = new RequestParams();
 		params.put("token", ECUser.getUserToken());
-        final ECApiManager.MainLoadOutObject chatObj = new ECApiManager.MainLoadOutObject(params);
+        final ECApiManager.MainLoadOutObject chatObj = new ECApiManager.MainLoadOutObject(params){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                super.onSuccess(statusCode, headers, responseBody);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                makeObjectListsFromResponse(super.getObj());
+                populateRecyclerView();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                super.onFailure(statusCode, headers, responseBody, error);
+            }
+        };
+
         chatObj.invokeGet();
     }
 
 	/**
 	 * Takes the output from the loadout API call and makes them into objects.
 	 */
-	public void makeObjectListsFromResponse (JSONObject response) {
+	private void makeObjectListsFromResponse (JSONObject response) {
 		//Create each ECCategory object. Fill into RecyclerView later.
 		try {
 			//Add for classes, departments, people, groups.

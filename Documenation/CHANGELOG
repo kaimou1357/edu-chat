@@ -20,4 +20,4 @@ Version 0.5 (2)
 	11/24/15 @niebloomj
 	-Implemented proper ECApiManager pattern for @Kai to follow.
 	11/24/15 @Kai
-	-Implemented ECApiManager for all AsyncHttpClient related activities. 
+	-Implemented ECApiManager for all AsyncHttpClient related activities.
