@@ -130,9 +130,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 super.onSuccess(statusCode, headers, responseBody);
-
             }
-
             @Override
             public void onFinish() {
                 super.onFinish();
