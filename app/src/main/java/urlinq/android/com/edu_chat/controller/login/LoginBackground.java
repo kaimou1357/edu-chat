@@ -66,8 +66,8 @@ public class LoginBackground extends Fragment {
 		params.put("password", userPass.getText().toString());
 		ECApiManager.LoginObject loginObj = new ECApiManager.LoginObject(params) {
 			@Override
-			public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
-				super.onSuccessGlobal(statusCode, headers, responseBody);
+			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+				super.onSuccess(statusCode, headers, responseBody);
 				SharedPreferences.Editor editPrefs = prefs.edit();
 				editPrefs.putBoolean("saveLogin", true);
 				editPrefs.putString("email", userEmail.getText().toString());
@@ -77,14 +77,14 @@ public class LoginBackground extends Fragment {
 			}
 
 			@Override
-			public void onFinishGlobal() {
-				super.onFinishGlobal();
+			public void onFinish() {
+				super.onFinish();
 				launchMainActivity();
 			}
 
 			@Override
-			public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				super.onFailureGlobal(statusCode, headers, responseBody, error);
+			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+				super.onFailure(statusCode, headers, responseBody, error);
 			}
 		};
 		loginObj.invokePost();

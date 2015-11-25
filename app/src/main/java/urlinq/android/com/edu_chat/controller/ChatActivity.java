@@ -123,27 +123,25 @@ public class ChatActivity extends AppCompatActivity {
 		params.add("target_id", targetID);
 		params.add("token", token);
 		params.add("limit", REQUEST_LENGTH);
-		ECApiManager.LoadChatMessageObject loadChatObj = new ECApiManager.LoadChatMessageObject(params){
-            @Override
-            public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
-                super.onSuccessGlobal(statusCode, headers, responseBody);
-            }
-            @Override
-            public void onFinishGlobal() {
-                super.onFinishGlobal();
-                try{
-                    makeObjects(super.getObj().getJSONArray("messages"));
-                }catch(JSONException e){
-                    e.printStackTrace();
-                }
+		ECApiManager.LoadChatMessages loadChatObj = new ECApiManager.LoadChatMessages(params){
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                super.onSuccess(statusCode, headers, responseBody);
 
             }
 
             @Override
-            public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                super.onFailureGlobal(statusCode, headers, responseBody, error);
+            public void onFinish() {
+                super.onFinish();
+                makeObjects(getJSONObject());
+
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                super.onFailure(statusCode, headers, responseBody, error);
             }
         };
+
+
 
         loadChatObj.invokeGet();
     }
@@ -186,29 +184,30 @@ public class ChatActivity extends AppCompatActivity {
 		params.add("target_id", target_id);
 		params.add("target_type", target_type);
 		params.add("token", ECUser.getUserToken());
-        final ECApiManager.SendMessageObject sendMessageObject = new ECApiManager.SendMessageObject(params){
-            @Override
-            public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
-                super.onSuccessGlobal(statusCode, headers, responseBody);
+        ECApiManager.SendMessageObject sendMessageObject = new ECApiManager.SendMessageObject(params){
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                super.onSuccess(statusCode, headers, responseBody);
 
             }
 
             @Override
-            public void onFinishGlobal() {
-                super.onFinishGlobal();
+            public void onFinish() {
+                super.onFinish();
                 try{
-                    addMessage(new ECMessage(super.getObj().getJSONObject("message")));
+                    addMessage(new ECMessage(getJSONObject().getJSONObject("message")));
                 }catch(JSONException | ParseException e){
                     e.printStackTrace();
                 }
             }
+
             @Override
-            public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                super.onFailureGlobal(statusCode, headers, responseBody, error);
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                super.onFailure(statusCode, headers, responseBody, error);
             }
         };
         sendMessageObject.invokePost();
-    }
+
+	}
 
 	/**
 	 * Adds message to the recyclerview.

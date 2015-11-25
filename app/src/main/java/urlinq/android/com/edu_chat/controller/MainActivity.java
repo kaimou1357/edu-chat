@@ -3,7 +3,6 @@ package urlinq.android.com.edu_chat.controller;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -58,7 +57,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.main_activity_container);
 		ButterKnife.bind(this);
 		loadCurrentUserText();
-		getChatLoadOut();
+		fillRecyclerViews();
 	}
 
 	@Override
@@ -74,36 +73,34 @@ public class MainActivity extends Activity {
 	/**
 	 * This method will populate ecUserList with the users loaded in from the login call.
 	 */
-	private void getChatLoadOut () {
+	private void fillRecyclerViews() {
 		RequestParams params = new RequestParams();
 		params.put("token", ECUser.getUserToken());
         final ECApiManager.MainLoadOutObject chatObj = new ECApiManager.MainLoadOutObject(params){
-            @Override
-            public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
-                super.onSuccessGlobal(statusCode, headers, responseBody);
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                super.onSuccess(statusCode, headers, responseBody);
+
             }
 
             @Override
-            public void onFinishGlobal() {
-                super.onFinishGlobal();
-                Log.e("JSONResponse", super.getObj().toString());
-                makeObjectListsFromResponse(super.getObj());
+            public void onFinish() {
+                super.onFinish();
+                makeObjectListsFromResponse(getJSONObject());
                 populateRecyclerView();
-            }
 
+            }
             @Override
-            public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                super.onFailureGlobal(statusCode, headers, responseBody, error);
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                super.onFailure(statusCode, headers, responseBody, error);
             }
         };
-
         chatObj.invokeGet();
     }
 
 	/**
 	 * Takes the output from the loadout API call and makes them into objects.
 	 */
-	private void makeObjectListsFromResponse (JSONObject response) {
+	public void makeObjectListsFromResponse (JSONObject response) {
 		//Create each ECCategory object. Fill into RecyclerView later.
 		try {
 			//Add for classes, departments, people, groups.
