@@ -68,10 +68,19 @@ public class ECApiManager {
         private String url;
         private RequestParams params;
         private JSONObject obj;
-        private AllECApiCallsInterface child;
+        private AllECApiCallsInterface adapter;
+        private String userHash;
 
-        public void setChild(AllECApiCallsInterface child) {
-            this.child = child;
+        public void setUserHash(String userHash) {
+            this.userHash = userHash;
+        }
+
+        public String getUserHash() {
+            return userHash;
+        }
+
+        public void setAdapter(AllECApiCallsInterface adapter) {
+            this.adapter = adapter;
         }
 
         public JSONObject getObj() {
@@ -83,7 +92,7 @@ public class ECApiManager {
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    child.onSuccessGlobal(statusCode, headers, responseBody);
+                    adapter.onSuccessGlobal(statusCode, headers, responseBody);
                 }
 
 
@@ -91,12 +100,12 @@ public class ECApiManager {
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     error.printStackTrace();
                     Log.e(ECApiManager.class.getSimpleName(), "^ ^ ^ An ECApiManager call has failed!!");
-                    child.onFailureGlobal(statusCode, headers, responseBody, error);
+                    adapter.onFailureGlobal(statusCode, headers, responseBody, error);
                 }
 
                 @Override
                 public void onFinish() {
-                    child.onFinishGlobal();
+                    adapter.onFinishGlobal();
                 }
             });
         }
@@ -105,19 +114,19 @@ public class ECApiManager {
             ECApiManager.get(url, params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    child.onSuccessGlobal(statusCode, headers, responseBody);
+                    adapter.onSuccessGlobal(statusCode, headers, responseBody);
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     error.printStackTrace();
                     Log.e(ECApiManager.class.getSimpleName(), "^ ^ ^ An ECApiManager call has failed!!");
-                    child.onFailureGlobal(statusCode, headers, responseBody, error);
+                    adapter.onFailureGlobal(statusCode, headers, responseBody, error);
                 }
 
                 @Override
                 public void onFinish() {
-                    child.onFinishGlobal();
+                    adapter.onFinishGlobal();
                 }
             });
         }
@@ -129,19 +138,18 @@ public class ECApiManager {
      * This class will load update the chatroom with new messages as soon as the user enters the chat room.
      */
     public static class LoadChatMessageObject extends AllECApiCalls implements AllECApiCallsInterface {
-        private String userHash;
 
         public LoadChatMessageObject(RequestParams params) {
+            super.setAdapter(this);
             super.params = params;
             super.url = loadChatRoomURL;
-            super.setChild(this);
         }
 
         @Override
         public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
-            userHash = new String(responseBody);
+            super.setUserHash(new String(responseBody));
             try {
-                super.obj = new JSONObject(userHash);
+                super.obj = new JSONObject(super.getUserHash());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -161,20 +169,18 @@ public class ECApiManager {
      */
     public static class LoginObject extends AllECApiCalls implements AllECApiCallsInterface {
 
-        private String userHash;
-
         public LoginObject(RequestParams params) {
+            super.setAdapter(this);
             super.params = params;
             super.url = loginAPI;
-            super.setChild(this);
         }
 
         @Override
         public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
-            userHash = new String(responseBody);
-            Log.d("login", userHash);
+            super.setUserHash(new String(responseBody));
+            Log.d("login", super.userHash);
             try {
-                super.obj = new JSONObject(userHash);
+                super.obj = new JSONObject(super.getUserHash());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -216,19 +222,18 @@ public class ECApiManager {
      * This class will build and populate each Recyclerview in the application's MainActivity.
      */
     public static class MainLoadOutObject extends AllECApiCalls implements AllECApiCallsInterface {
-        private String userHash;
 
         public MainLoadOutObject(RequestParams params) {
+            super.setAdapter(this);
             super.params = params;
             super.url = loadoutAPI;
-            super.setChild(this);
         }
 
         @Override
         public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
-            userHash = new String(responseBody);
+            super.setUserHash(new String(responseBody));
             try {
-                super.obj = new JSONObject(userHash);
+                super.obj = new JSONObject(super.getUserHash());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -248,19 +253,18 @@ public class ECApiManager {
      * This class will send messages for the user.
      */
     public static class SendMessageObject extends AllECApiCalls implements AllECApiCallsInterface {
-        private String userHash;
 
         public SendMessageObject(RequestParams params) {
+            super.setAdapter(this);
             super.params = params;
             super.url = sendMessageURL;
-            super.setChild(this);
         }
 
         @Override
         public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
-            userHash = new String(responseBody);
+            super.setUserHash(new String(responseBody));
             try {
-                super.obj = new JSONObject(userHash);
+                super.obj = new JSONObject(super.getUserHash());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
