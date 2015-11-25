@@ -58,7 +58,7 @@ public class ECUser extends ECObject {
      * @throws JSONException
      */
     public ECUser(JSONObject data) throws JSONException, ParseException {
-        super(data.getString("id"), data.getJSONObject("picture_file").getString("file_url"), null);
+        super(data.getInt("id"), data.getJSONObject("picture_file").getString("file_url"), null);
         this.firstName = data.getString("firstname");
         this.lastName = data.getString("lastname");
         //UserType needs to be fixed later. Keep it at student for now.
@@ -98,7 +98,7 @@ public class ECUser extends ECObject {
         }
         return personList;
     }
-    
+
 
 
     // Static

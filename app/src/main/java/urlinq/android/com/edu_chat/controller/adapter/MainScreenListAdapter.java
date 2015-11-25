@@ -58,15 +58,20 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 			ECUser user = (ECUser) currObj;
 			viewHolder.setRowHeader(user.getFullName());
 			viewHolder.setUserText(user.getFirstName());
-			viewHolder.setMessageText(user.getMostRecentMessage().getMessageTitle());
+			if (user.getMostRecentMessage() != null) {
+				viewHolder.setMessageText(user.getMostRecentMessage().getMessageTitle());
+			}
+
 			fileURL = Constants.bitmapURL + user.getFileURL();
 		}
 		if (currObj instanceof ECCategory) {
 			ECCategory category = (ECCategory) currObj;
 			viewHolder.setRowHeader(category.getName());
-			viewHolder.setLastActivityTextView(category.getMostRecentMessage().getMessageDate(), category.getColor());
-			viewHolder.setUserText(category.getMostRecentMessage().getAuthor().getFullName());
-			viewHolder.setMessageText(category.getMostRecentMessage().getMessageTitle());
+			if (category.getMostRecentMessage() != null) {
+				viewHolder.setLastActivityTextView(category.getMostRecentMessage().getMessageDate(), category.getColor());
+				viewHolder.setUserText(category.getMostRecentMessage().getAuthor().getFullName());
+				viewHolder.setMessageText(category.getMostRecentMessage().getMessageTitle());
+			}
 			fileURL = Constants.bitmapURL + category.getFileURL();
 		}
 		Picasso.with(activity).load(fileURL).resize(Constants.globalImageSize, Constants.globalImageSize)
@@ -134,13 +139,13 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 				ECCategory cat = (ECCategory) ecObject;
 				i.putExtra("USER_NAME", cat.getName());
 				i.putExtra("target_type", cat.getTypeOfCategory().getCategoryString());
-				i.putExtra("target_id", cat.getObjectIdentifier());
+				i.putExtra("target_id", Integer.toString(cat.getObjectIdentifier()));
 				i.putExtra("file_id", cat.getFileURL());
 			} else if (ecObject instanceof ECUser) {
 				ECUser user = (ECUser) ecObject;
 				i.putExtra("USER_NAME", user.getFirstName() + " " + user.getLastName());
 				i.putExtra("target_type", user.getUserType().getUserTypeString());
-				i.putExtra("target_id", user.getObjectIdentifier());
+				i.putExtra("target_id", Integer.toString(user.getObjectIdentifier()));
 				i.putExtra("file_id", user.getFileURL());
 			}
 			activity.startActivity(i);

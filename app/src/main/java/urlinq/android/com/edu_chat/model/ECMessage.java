@@ -37,7 +37,7 @@ public class ECMessage extends ECObject {
 	}
 
 	public ECMessage (JSONObject recentMessage) throws JSONException, ParseException {
-		super(recentMessage.getString("object_id"), null, null);
+		super(recentMessage.getInt("id"), null, null);
 		this.author = new ECUser(recentMessage.getJSONObject("user"));
 		this.messageTitle = recentMessage.getString("text");
 		this.messageType = ECMessageType.ECMessageTextType;
