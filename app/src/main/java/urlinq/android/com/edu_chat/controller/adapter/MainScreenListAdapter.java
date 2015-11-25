@@ -58,15 +58,20 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 			ECUser user = (ECUser) currObj;
 			viewHolder.setRowHeader(user.getFullName());
 			viewHolder.setUserText(user.getFirstName());
-			viewHolder.setMessageText(user.getMostRecentMessage().getMessageTitle());
+			if (user.getMostRecentMessage() != null) {
+				viewHolder.setMessageText(user.getMostRecentMessage().getMessageTitle());
+			}
+
 			fileURL = Constants.bitmapURL + user.getFileURL();
 		}
 		if (currObj instanceof ECCategory) {
 			ECCategory category = (ECCategory) currObj;
 			viewHolder.setRowHeader(category.getName());
-			viewHolder.setLastActivityTextView(category.getMostRecentMessage().getMessageDate(), category.getColor());
-			viewHolder.setUserText(category.getMostRecentMessage().getAuthor().getFullName());
-			viewHolder.setMessageText(category.getMostRecentMessage().getMessageTitle());
+			if (category.getMostRecentMessage() != null) {
+				viewHolder.setLastActivityTextView(category.getMostRecentMessage().getMessageDate(), category.getColor());
+				viewHolder.setUserText(category.getMostRecentMessage().getAuthor().getFullName());
+				viewHolder.setMessageText(category.getMostRecentMessage().getMessageTitle());
+			}
 			fileURL = Constants.bitmapURL + category.getFileURL();
 		}
 		Picasso.with(activity).load(fileURL).resize(Constants.globalImageSize, Constants.globalImageSize)
