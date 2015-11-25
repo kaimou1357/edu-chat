@@ -132,7 +132,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onFinishGlobal() {
                 super.onFinishGlobal();
                 try{
-                    makeObjects(super.getObj().getJSONArray("messages"));
+                    makeObjects(getObj().getJSONArray("messages"));
                 }catch(JSONException e){
                     e.printStackTrace();
                 }
