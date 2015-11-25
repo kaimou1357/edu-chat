@@ -17,7 +17,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 
 import cz.msebera.android.httpclient.Header;
-import urlinq.android.com.edu_chat.model.ECMessage;
 import urlinq.android.com.edu_chat.model.ECUser;
 
 
@@ -64,21 +63,15 @@ public class ECApiManager {
         private RequestParams params;
         private JSONObject obj;
 
+        public void setChild(AllECApiCalls child) {
+            this.child = child;
+        }
+
+        public AllECApiCalls child;
+
 
         public JSONObject getObj() {
             return obj;
-        }
-
-        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
-        }
-
-        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            allAPICallErrorHandler(statusCode, headers, responseBody, error);
-        }
-
-        public void onFinish() {
-
         }
 
         public static void allAPICallErrorHandler(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
@@ -86,23 +79,35 @@ public class ECApiManager {
             Log.e(ECApiManager.class.getSimpleName(), "^ ^ ^ An ECApiManager call has failed!!");
         }
 
+        public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
+
+        }
+
+        public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+        }
+
+        public void onFinishGlobal() {
+
+        }
+
         public void invokePost() {
             ECApiManager.post(url, params, new AsyncHttpResponseHandler() {
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    AllECApiCalls.this.onSuccess(statusCode, headers, responseBody);
+                    child.onSuccessGlobal(statusCode, headers, responseBody);
                 }
 
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    AllECApiCalls.this.onFailure(statusCode, headers, responseBody, error);
+                    child.onFailureGlobal(statusCode, headers, responseBody, error);
                 }
 
                 @Override
                 public void onFinish() {
-                    AllECApiCalls.this.onFinish();
+                    child.onFinishGlobal();
                 }
             });
         }
@@ -111,17 +116,17 @@ public class ECApiManager {
             ECApiManager.get(url, params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    AllECApiCalls.this.onSuccess(statusCode, headers, responseBody);
+                    child.onSuccessGlobal(statusCode, headers, responseBody);
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    AllECApiCalls.this.onFailure(statusCode, headers, responseBody, error);
+                    child.onFailureGlobal(statusCode, headers, responseBody, error);
                 }
 
                 @Override
                 public void onFinish() {
-                    AllECApiCalls.this.onFinish();
+                    child.onFinishGlobal();
                 }
             });
         }
@@ -137,11 +142,11 @@ public class ECApiManager {
         public LoadChatMessageObject(RequestParams params) {
             super.params = params;
             super.url = loadChatRoomURL;
+            super.setChild(this);
         }
 
         @Override
-        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-            super.onSuccess(statusCode, headers, responseBody);
+        public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
             userHash = new String(responseBody);
             try {
                 super.obj = new JSONObject(userHash).getJSONObject("messages");
@@ -151,13 +156,11 @@ public class ECApiManager {
         }
 
         @Override
-        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            super.onFailure(statusCode, headers, responseBody, error);
+        public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
         }
 
         @Override
-        public void onFinish() {
-            super.onFinish();
+        public void onFinishGlobal() {
         }
     }
 
@@ -171,11 +174,11 @@ public class ECApiManager {
         public LoginObject(RequestParams params) {
             super.params = params;
             super.url = loginAPI;
+            super.setChild(this);
         }
 
         @Override
-        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-            super.onSuccess(statusCode, headers, responseBody);
+        public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
             userHash = new String(responseBody);
             Log.d("login", userHash);
             try {
@@ -186,32 +189,32 @@ public class ECApiManager {
         }
 
         @Override
-        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            super.onFailure(statusCode, headers, responseBody, error);
+        public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
         }
 
         @Override
-        public void onFinish() {
-            super.onFinish();
+        public void onFinishGlobal() {
 
             try {
                 ECUser.setCurrentUser(new ECUser(getObj().getJSONObject("user")));
                 ECUser.setUserToken(getObj().getString("token"));
                 ECUser.setCurrentUserSchool(getObj().getJSONObject("user").getJSONObject("school").getString("school_name"));
 
-//                ParseInstallation install = ParseInstallation.getCurrentInstallation();
-//                install.put("ID", ECUser.getCurrentUser().getObjectIdentifier());
-//                install.put("First", ECUser.getCurrentUser().getFirstName());
-//                install.put("Last", ECUser.getCurrentUser().getLastName());
-//                install.save();
-//
-//                ParseObject login = new ParseObject("Logins");
-//                login.put("useridnum", ECUser.getCurrentUser().getObjectIdentifier());
-//                login.put("OS", "Android");
-//                login.put("Install", install);
-//                login.save();
+                ParseInstallation install = ParseInstallation.getCurrentInstallation();
+                install.put("ID", ECUser.getCurrentUser().getObjectIdentifier());
+                install.put("First", ECUser.getCurrentUser().getFirstName());
+                install.put("Last", ECUser.getCurrentUser().getLastName());
+                install.save();
+
+                ParseObject login = new ParseObject("Logins");
+                login.put("useridnum", ECUser.getCurrentUser().getObjectIdentifier());
+                login.put("OS", "Android");
+                login.put("Install", install);
+                login.save();
 
             } catch (ParseException | JSONException e) {
+                e.printStackTrace();
+            } catch (com.parse.ParseException e) {
                 e.printStackTrace();
             }
 
@@ -228,11 +231,11 @@ public class ECApiManager {
         public MainLoadOutObject(RequestParams params) {
             super.params = params;
             super.url = loadoutAPI;
+            super.setChild(this);
         }
 
         @Override
-        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-            super.onSuccess(statusCode, headers, responseBody);
+        public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
             userHash = new String(responseBody);
             try {
                 super.obj = new JSONObject(userHash);
@@ -242,13 +245,11 @@ public class ECApiManager {
         }
 
         @Override
-        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            super.onFailure(statusCode, headers, responseBody, error);
+        public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
         }
 
         @Override
-        public void onFinish() {
-            super.onFinish();
+        public void onFinishGlobal() {
         }
 
     }
@@ -262,11 +263,11 @@ public class ECApiManager {
         public SendMessageObject(RequestParams params) {
             super.params = params;
             super.url = sendMessageURL;
+            super.setChild(this);
         }
 
         @Override
-        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-            super.onSuccess(statusCode, headers, responseBody);
+        public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
             userHash = new String(responseBody);
             try {
                 super.obj = new JSONObject(userHash);
@@ -276,13 +277,11 @@ public class ECApiManager {
         }
 
         @Override
-        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            super.onFailure(statusCode, headers, responseBody, error);
+        public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
         }
 
         @Override
-        public void onFinish() {
-            super.onFinish();
+        public void onFinishGlobal() {
         }
     }
 

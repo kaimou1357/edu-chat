@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -17,9 +16,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import com.loopj.android.http.AsyncHttpResponseHandler;
+
 import com.loopj.android.http.RequestParams;
-import com.parse.Parse;
 
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
@@ -30,7 +28,6 @@ import urlinq.android.com.edu_chat.controller.adapter.MessageAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.ECMessage;
 import urlinq.android.com.edu_chat.model.ECUser;
-import urlinq.android.com.edu_chat.model.constants.Constants;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -128,12 +125,12 @@ public class ChatActivity extends AppCompatActivity {
 		params.add("limit", REQUEST_LENGTH);
 		ECApiManager.LoadChatMessageObject loadChatObj = new ECApiManager.LoadChatMessageObject(params){
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                super.onSuccess(statusCode, headers, responseBody);
+            public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
+                super.onSuccessGlobal(statusCode, headers, responseBody);
             }
             @Override
-            public void onFinish() {
-                super.onFinish();
+            public void onFinishGlobal() {
+                super.onFinishGlobal();
                 try{
                     makeObjects(super.getObj().getJSONArray("messages"));
                 }catch(JSONException e){
@@ -143,8 +140,8 @@ public class ChatActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                super.onFailure(statusCode, headers, responseBody, error);
+            public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                super.onFailureGlobal(statusCode, headers, responseBody, error);
             }
         };
 
@@ -191,14 +188,14 @@ public class ChatActivity extends AppCompatActivity {
 		params.add("token", ECUser.getUserToken());
         final ECApiManager.SendMessageObject sendMessageObject = new ECApiManager.SendMessageObject(params){
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                super.onSuccess(statusCode, headers, responseBody);
+            public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
+                super.onSuccessGlobal(statusCode, headers, responseBody);
 
             }
 
             @Override
-            public void onFinish() {
-                super.onFinish();
+            public void onFinishGlobal() {
+                super.onFinishGlobal();
                 try{
                     addMessage(new ECMessage(super.getObj().getJSONObject("message")));
                 }catch(JSONException | ParseException e){
@@ -206,8 +203,8 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                super.onFailure(statusCode, headers, responseBody, error);
+            public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                super.onFailureGlobal(statusCode, headers, responseBody, error);
             }
         };
         sendMessageObject.invokePost();
