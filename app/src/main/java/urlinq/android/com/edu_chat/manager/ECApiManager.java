@@ -199,19 +199,19 @@ public class ECApiManager {
                 ECUser.setUserToken(getObj().getString("token"));
                 ECUser.setCurrentUserSchool(getObj().getJSONObject("user").getJSONObject("school").getString("school_name"));
 
-                ParseInstallation install = ParseInstallation.getCurrentInstallation();
-                install.put("ID", ECUser.getCurrentUser().getObjectIdentifier());
-                install.put("First", ECUser.getCurrentUser().getFirstName());
-                install.put("Last", ECUser.getCurrentUser().getLastName());
-                install.save();
+//                ParseInstallation install = ParseInstallation.getCurrentInstallation();
+//                install.put("ID", ECUser.getCurrentUser().getObjectIdentifier());
+//                install.put("First", ECUser.getCurrentUser().getFirstName());
+//                install.put("Last", ECUser.getCurrentUser().getLastName());
+//                install.save();
+//
+//                ParseObject login = new ParseObject("Logins");
+//                login.put("useridnum", ECUser.getCurrentUser().getObjectIdentifier());
+//                login.put("OS", "Android");
+//                login.put("Install", install);
+//                login.save();
 
-                ParseObject login = new ParseObject("Logins");
-                login.put("useridnum", ECUser.getCurrentUser().getObjectIdentifier());
-                login.put("OS", "Android");
-                login.put("Install", install);
-                login.save();
-
-            } catch (ParseException | JSONException | com.parse.ParseException e) {
+            } catch (ParseException | JSONException e) {
                 e.printStackTrace();
             }
 
