@@ -77,31 +77,6 @@ public class ECApiManagerTests extends InstrumentationTestCase {
         /**
          * Now try retrieving user data with a GET Request with the token retrieved from the POST request.
          */
-        runTestOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                RequestParams params = new RequestParams();
-                params.put("token", userToken);
-                params.put("id", userID);
-                ECApiManager.get(Constants.refreshUserAPI, params, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        getResponse = new String(responseBody);
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        getSignal.countDown();
-                    }
-                });
-            }
-
-        });
 
         try {
             getSignal.await(5, TimeUnit.SECONDS); // wait for callback
