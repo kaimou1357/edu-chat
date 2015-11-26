@@ -29,6 +29,7 @@ public class ECApiManager {
     public static final String loadoutAPI = "https://edu.chat/message/loadout";
     public static final String sendMessageURL = "https://edu.chat/message/send/";
     public static final String loadChatRoomURL = "https://edu.chat/message/load_chat";
+    public static final String logoutURL = "https://edu.chat/api/logout/";
 
     private static final AsyncHttpClient syncHttpClient = new SyncHttpClient();
     private static final AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
@@ -227,6 +228,37 @@ public class ECApiManager {
             super.setAdapter(this);
             super.params = params;
             super.url = loadoutAPI;
+        }
+
+        @Override
+        public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
+            super.setUserHash(new String(responseBody));
+            try {
+                super.obj = new JSONObject(super.getUserHash());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+        }
+
+        @Override
+        public void onFinishGlobal() {
+        }
+
+    }
+
+    /**
+     * This class will log the user out.
+     */
+    public static class LogoutObject extends AllECApiCalls implements AllECApiCallsInterface {
+
+        public LogoutObject(RequestParams params) {
+            super.setAdapter(this);
+            super.params = params;
+            super.url = logoutURL;
         }
 
         @Override

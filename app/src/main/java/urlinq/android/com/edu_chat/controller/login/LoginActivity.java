@@ -20,7 +20,9 @@ public class LoginActivity extends InstabugAppCompatActivity implements LoginBac
 	protected void onCreate(Bundle savedInstanceState) {
 		Instabug.initialize(getApplication(), "4719bf1a7d10635f7c1520989f084d4c");
 
+
 		super.onCreate(savedInstanceState);
+
 
 		Parse.enableLocalDatastore(this);
 

@@ -1,10 +1,13 @@
 package urlinq.android.com.edu_chat.controller;
 
-import android.app.Activity;
+
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,7 +39,7 @@ import java.util.List;
  * This activity will act as a container for the recycler views for the individual chats and classes.
  * Created by Kai on 10/16/2015.
  */
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 	private List<ECObject> ECCategoryGroupList = new ArrayList<>();
 	private List<ECObject> ECCategoryClassList = new ArrayList<>();
 	private List<ECObject> ECCategoryDepartmentList = new ArrayList<>();
@@ -55,21 +58,66 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.main_activity_container);
 		ButterKnife.bind(this);
 		loadCurrentUserText();
 		getChatLoadOut();
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setCustomView(R.layout.custom_action_bar_view);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);
+
+
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu (Menu menu) {
-		return true;
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected (MenuItem item) {
-		return super.onOptionsItemSelected(item);
+
+        switch(item.getItemId()) {
+            case R.id.logout:
+                logOut();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 	}
+
+    /**
+     * Log the user out and return them back to the loginactivity.
+     */
+    private void logOut(){
+        RequestParams params = new RequestParams();
+        params.put("token", ECUser.getUserToken());
+        final ECApiManager.LogoutObject logoutObject = new ECApiManager.LogoutObject(params){
+            @Override
+            public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
+                super.onSuccessGlobal(statusCode, headers, responseBody);
+            }
+
+            @Override
+            public void onFinishGlobal() {
+                super.onFinishGlobal();
+                //Once done, return back to LoginActivity.
+                finish();
+
+            }
+
+            @Override
+            public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                super.onFailureGlobal(statusCode, headers, responseBody, error);
+            }
+        };
+        logoutObject.invokePost();
+    }
 
 	/**
 	 * This method will populate ecUserList with the users loaded in from the login call.

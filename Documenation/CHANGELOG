@@ -21,3 +21,8 @@ Version 0.5 (2)
 	-Implemented proper ECApiManager pattern for @Kai to follow.
 	11/24/15 @Kai
 	-Implemented ECApiManager for all AsyncHttpClient related activities.
+	11/25/15 @Kai
+	-Added icon to action bar
+	-Added settings menu to top of action bar.
+	-Added custom layout to center align the edu chat icon
+	-Implemented logout.
