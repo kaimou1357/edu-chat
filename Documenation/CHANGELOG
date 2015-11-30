@@ -30,3 +30,4 @@ Version 0.5 (2)
 	-Custom chat action bar implemented
 	-Added settings menu to ChatActivity
 	-Fixed layout with chat message items.
+	-ViewPager added back in.
