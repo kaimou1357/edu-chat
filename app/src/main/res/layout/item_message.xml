@@ -1,46 +1,57 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
 
-	<ImageView
-		android:layout_width="30dp"
-		android:layout_height="30dp"
-		android:id="@+id/userProfilePicture"
-		android:contentDescription="@string/user_profile_picture_content_description"
-		android:scaleType="fitXY"/>
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/userProfilePicture"
+        android:contentDescription="@string/user_profile_picture_content_description"
+        android:scaleType="fitXY"/>
 
-	<Space
-		android:layout_width="20dp"
-		android:layout_height="wrap_content"
-		android:layout_toEndOf="@id/userProfilePicture"
-		android:id="@+id/header_space"/>
+    <Space
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/userProfilePicture"
+        android:id="@+id/header_space"/>
 
-	<TextView
-		android:id="@+id/username"
-		style="?android:textAppearanceMedium"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_toEndOf="@id/header_space"
-		android:singleLine="true"
-		android:textColor="?android:textColorPrimary"
-		android:textStyle="bold" />
+    <TextView
+        android:id="@+id/username"
+        style="?android:textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/header_space"
+        android:singleLine="true"
+        android:textColor="?android:textColorPrimary"
+        android:textStyle="bold"
+        />
 
-	<TextView
-		android:id="@+id/message"
-		style="?android:textAppearanceMedium"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/userProfilePicture"
-		android:paddingStart="10dp"
-		android:paddingEnd="10dp"
-		android:textColor="?android:textColorPrimary" />
+    <TextView
+        android:id="@+id/message"
+        style="?android:textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userProfilePicture"
+        android:layout_alignLeft="@id/username"
+        android:textColor="?android:textColorPrimary"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        style="?android:textAppearanceMedium"
+        android:layout_height="wrap_content"
+        android:id="@+id/messageDate"
+        android:layout_marginLeft="5dp"
+        android:layout_alignBottom="@+id/username"
+        android:layout_toEndOf="@+id/username"/>
 
 
-	<Space
-		android:layout_width="match_parent"
-		android:layout_below="@id/message"
-		android:layout_height="30dp" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_below="@id/message"
+        android:layout_height="30dp" />
+
+
 
 </RelativeLayout>

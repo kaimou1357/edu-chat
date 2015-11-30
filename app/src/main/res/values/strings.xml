@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">edu_chat_lollipop</string>
+    <string name="app_name">Edu Chat</string>
     <string name="email">School Email</string>
     <string name="password">Password</string>
     <string name = "action_settings">Settings</string>
@@ -12,5 +12,6 @@
 	<string name="PARSE_CONFIG_AUTO_LOGIN">shouldAutoLogin</string>
 	<string name="user_profile_picture_content_description">the user\'s profile picture</string>
     <string name="logout_string">Logout</string>
+    <string name = "enter_message_hint">Type a Message Here</string>
 
 </resources>

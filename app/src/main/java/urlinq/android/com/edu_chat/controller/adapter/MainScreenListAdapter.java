@@ -116,7 +116,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 
 		public void setLastActivityTextView(Date time, String color){
 			lastActivityTextView.setTextColor(Color.parseColor(color));
-			SimpleDateFormat localDateFormat = new SimpleDateFormat("hh:mm a");
+			SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm a");
 			String textTime = localDateFormat.format(time);
 			//TODO IF date is more than 24 hours in the past, put the date. If less than 24 hours , put the time.
 

@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 		loadCurrentUserText();
 		getChatLoadOut();
         final ActionBar actionBar = getSupportActionBar();
-        actionBar.setCustomView(R.layout.custom_action_bar_view);
+        actionBar.setCustomView(R.layout.main_custom_action_bar_view);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
 

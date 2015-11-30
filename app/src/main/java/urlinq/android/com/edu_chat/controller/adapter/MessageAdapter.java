@@ -11,11 +11,12 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.model.ECMessage;
-import urlinq.android.com.edu_chat.model.ECUser;
 import urlinq.android.com.edu_chat.model.constants.Constants;
 
 
@@ -44,6 +45,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 		ECMessage message = mMessages.get(position);
 		viewHolder.setMessage(message.getMessageTitle());
 		viewHolder.setUsername(message.getAuthor().getFullName());
+        //parse the time and return the time as a String.
+
+        viewHolder.setMessageDateView(message.getMessageDate());
 		String path = Constants.bitmapURL + message.getAuthor().getFileURL();
         Picasso.with(activity).load(path).resize(Constants.globalImageSize, Constants.globalImageSize)
 				.centerInside().into(viewHolder.userProfilePicture);
@@ -71,15 +75,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 	public class ViewHolder extends RecyclerView.ViewHolder {
 		private final TextView mUserNameView;
 		private final TextView mMessageView;
+        private final TextView mMessageDateView;
 		private final ImageView userProfilePicture;
 
 		public ViewHolder (View itemView) {
 			super(itemView);
 			mUserNameView = (TextView) itemView.findViewById(R.id.username);
+            mMessageDateView = (TextView) itemView.findViewById(R.id.messageDate);
 			userProfilePicture = (ImageView) itemView.findViewById(R.id.userProfilePicture);
 			mMessageView = (TextView) itemView.findViewById(R.id.message);
 
 		}
+        public void setMessageDateView(Date messageDate){
+            SimpleDateFormat formatter = new SimpleDateFormat("h:mm a");
+            mMessageDateView.setText(formatter.format(messageDate));
+        }
 
 		public void setUsername (String username) {
 			if (mUserNameView == null) return;

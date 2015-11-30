@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/profileDark</item>
         <item name = "android:icon">@drawable/educhat</item>
         <item name="android:actionBarSize">40dp</item>
+        <item name="colorPrimaryDark">@color/profileDark</item>
     </style>
     <style name="AppTheme.NoActionBar" parent = "Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>

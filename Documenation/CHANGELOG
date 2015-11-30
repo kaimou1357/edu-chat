@@ -26,3 +26,7 @@ Version 0.5 (2)
 	-Added settings menu to top of action bar.
 	-Added custom layout to center align the edu chat icon
 	-Implemented logout.
+	11/29/15 @Kai
+	-Custom chat action bar implemented
+	-Added settings menu to ChatActivity
+	-Fixed layout with chat message items.

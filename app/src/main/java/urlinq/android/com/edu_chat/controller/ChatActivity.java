@@ -2,6 +2,7 @@ package urlinq.android.com.edu_chat.controller;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,9 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -39,41 +43,46 @@ import java.util.List;
  */
 public class ChatActivity extends AppCompatActivity {
 
-	private static final int TYPING_TIMER_LENGTH = 600;
 	private static final String REQUEST_LENGTH = "40";
 
 	@Bind(R.id.messages)
 	RecyclerView mMessagesView;
 	@Bind(R.id.message_input)
 	EditText mInputMessageView;
-	@Bind(R.id.send_button)
-	ImageButton sendButton;
-	@Bind(R.id.nameTextView)
-	TextView nameTextView;
-	private final Handler mTypingHandler = new Handler();
+	@Bind(R.id.send_button)ImageButton sendButton;
 	private boolean mTyping = false;
 
 	//Don't forget to set the username to something before we begin.
-	private String mUsername;
 	private final List<ECMessage> mMessages = new ArrayList<>();
 	private MessageAdapter mAdapter;
 	private String target_type;
+    private String chatTitle;
 	private String target_id;
+    private TextView actionBarTitleTextView;
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.chat_fragment);
+		setContentView(R.layout.chat_layout);
 		ButterKnife.bind(this);
+        final ActionBar actionBar = getSupportActionBar();
+        View cView = getLayoutInflater().inflate(R.layout.chat_custom_action_bar_view, null);
+        actionBar.setCustomView(cView);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);
 		//get extras from bundle.
 		updateRecyclerView();
 		target_type = getIntent().getStringExtra("target_type");
 		target_id = getIntent().getStringExtra("target_id");
+        chatTitle = getIntent().getStringExtra("USER_NAME");
 
 		updateChatRoom(target_type, target_id, ECUser.getUserToken());
-		mUsername = getIntent().getStringExtra("USER_NAME");
-		nameTextView.setText(mUsername);
+        //Set the title of the chat room.
+        //This needs to be declared here after Butterknife binds.
+        actionBarTitleTextView = (TextView)cView.findViewById(R.id.actionBarTitleText);
+		actionBarTitleTextView.setText(chatTitle);
+
 
 		mInputMessageView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
@@ -93,13 +102,11 @@ public class ChatActivity extends AppCompatActivity {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (mUsername == null) return;
 				if (!mTyping) {
 					mTyping = true;
 
 				}
-				mTypingHandler.removeCallbacks(onTypingTimeOut);
-				mTypingHandler.postDelayed(onTypingTimeOut, TYPING_TIMER_LENGTH);
+
 			}
 
 			@Override
@@ -116,6 +123,19 @@ public class ChatActivity extends AppCompatActivity {
 		});
 
 	}
+
+    @Override
+    public boolean onCreateOptionsMenu (Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item) {
+        return true;
+    }
 
 	private void updateChatRoom(String targetType, String targetID, String token) {
 		RequestParams params = new RequestParams();
