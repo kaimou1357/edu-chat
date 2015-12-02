@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +22,9 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.loopj.android.http.RequestParams;
 
 import cz.msebera.android.httpclient.Header;
@@ -33,6 +37,7 @@ import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.ECMessage;
 import urlinq.android.com.edu_chat.model.ECUser;
 
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +64,8 @@ public class ChatActivity extends AppCompatActivity {
     private String chatTitle;
 	private String target_id;
     private TextView actionBarTitleTextView;
+    private Socket mSocket;
+
 
 
 	@Override
@@ -66,6 +73,13 @@ public class ChatActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat_layout);
 		ButterKnife.bind(this);
+        try{
+            mSocket = IO.socket("http://edu.chat:3001");
+            Log.d("Socket IO", "Socket IO Connected successfully");
+
+        }catch(URISyntaxException e){}
+        mSocket.on("message", onNewMessage);
+        mSocket.connect();
         final ActionBar actionBar = getSupportActionBar();
         View cView = getLayoutInflater().inflate(R.layout.chat_custom_action_bar_view, null);
         actionBar.setCustomView(cView);
@@ -123,6 +137,12 @@ public class ChatActivity extends AppCompatActivity {
 		});
 
 	}
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        mSocket.disconnect();
+        mSocket.off("message", onNewMessage);
+    }
 
     @Override
     public boolean onCreateOptionsMenu (Menu menu) {
@@ -253,5 +273,28 @@ public class ChatActivity extends AppCompatActivity {
 			mTyping = false;
 		}
 	};
+
+    private Emitter.Listener onNewMessage = new Emitter.Listener(){
+        @Override
+        public void call(final Object... args){
+            runOnUiThread(new Runnable(){
+                @Override
+                public void run(){
+                    JSONObject data = (JSONObject) args[0];
+                    ECMessage message;
+                    Log.d("Socket IO Data", data.toString());
+                    try{
+                        message = new ECMessage(data);
+                    }catch(JSONException | ParseException e){
+                        e.printStackTrace();
+                        return;
+                    }
+                    addMessage(message);
+
+
+                }
+            });
+        }
+    };
 
 }
