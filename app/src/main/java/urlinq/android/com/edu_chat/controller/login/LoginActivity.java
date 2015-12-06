@@ -11,7 +11,8 @@ import com.parse.ConfigCallback;
 import com.parse.Parse;
 import com.parse.ParseConfig;
 import com.parse.ParseException;
-import urlinq.android.com.edu_chat.R;
+import com.urlinq.edu_chat.R;
+
 import urlinq.android.com.edu_chat.controller.MainActivity;
 
 public class LoginActivity extends InstabugAppCompatActivity implements LoginBackground.OnLoginListener {

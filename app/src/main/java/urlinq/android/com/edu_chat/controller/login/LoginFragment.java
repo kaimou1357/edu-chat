@@ -7,12 +7,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import urlinq.android.com.edu_chat.R;
+
+import com.urlinq.edu_chat.R;
 
 /**
  * Created by Kai on 9/4/2015.
@@ -23,13 +23,13 @@ public class LoginFragment extends Fragment {
     private ViewPager mViewPager;
 
 
-	@Override
-	/**
-	 * Load the login_main.xml layout.
-	 * In addition, load the ViewPager.
-	 */
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		//initialize viewpager object.
+    @Override
+    /**
+     * Load the login_main.xml layout.
+     * In addition, load the ViewPager.
+     */
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //initialize viewpager object.
         View v = inflater.inflate(R.layout.login_main, container, false);
 
         mViewPager = (ViewPager) v.findViewById(R.id.loginPager);
@@ -61,13 +61,13 @@ public class LoginFragment extends Fragment {
             }
         });
 
-		return v;
-	}
+        return v;
+    }
 
 
-	/**
-	 * Adapter created for the ViewPager to flip through all the fragments.
-	 */
+    /**
+     * Adapter created for the ViewPager to flip through all the fragments.
+     */
     class LoginAdapter extends FragmentStatePagerAdapter {
         public LoginAdapter(FragmentManager fm) {
             super(fm);

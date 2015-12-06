@@ -13,8 +13,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.loopj.android.http.RequestParams;
 import com.parse.ParseConfig;
+import com.urlinq.edu_chat.R;
+
 import cz.msebera.android.httpclient.Header;
-import urlinq.android.com.edu_chat.R;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.ECUser;
 

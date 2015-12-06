@@ -1,7 +1,5 @@
 package urlinq.android.com.edu_chat.model.enums;
 
-import urlinq.android.com.edu_chat.model.ECCategory;
-
 /**
  * Created by Jacob on 10/29/15.
  */

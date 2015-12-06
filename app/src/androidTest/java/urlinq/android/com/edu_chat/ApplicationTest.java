@@ -1,7 +1,6 @@
 package urlinq.android.com.edu_chat;
 
 import android.app.Application;
-import android.content.Context;
 import android.test.ApplicationTestCase;
 
 /**

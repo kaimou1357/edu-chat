@@ -6,7 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import urlinq.android.com.edu_chat.R;
+import com.urlinq.edu_chat.R;
+
 
 /**
  * Created by Kai on 9/7/2015.
