@@ -43,9 +43,12 @@ public class ChatActivity extends AppCompatActivity {
 
 	private static final String REQUEST_LENGTH = "40";
 
-	@Bind(R.id.messages) RecyclerView mMessagesView;
-	@Bind(R.id.message_input) EditText mInputMessageView;
-	@Bind(R.id.send_button) ImageButton sendButton;
+	@Bind(R.id.messages)
+	RecyclerView mMessagesView;
+	@Bind(R.id.message_input)
+	EditText mInputMessageView;
+	@Bind(R.id.send_button)
+	ImageButton sendButton;
 	private boolean mTyping = false;
 
 	//Don't forget to set the username to something before we begin.
@@ -55,18 +58,62 @@ public class ChatActivity extends AppCompatActivity {
 	private String target_id;
 
 	private Socket mSocket;
+
 	{
 		try {
-			mSocket = IO.socket("https://edu.chat:443");
+			IO.Options opts = new IO.Options();
+			opts.forceNew = true;
+			opts.reconnection = false;
+			opts.secure = true;
+			mSocket = IO.socket("https://edu.chat:443", opts);
 			Log.d("Socket IO", "Socket IO Connected successfully");
-		} catch (URISyntaxException ignored) {}
+		} catch (URISyntaxException ignored) {
+		}
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mSocket.on("message", onNewMessage);
-//		mSocket.connect();
+		mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+
+			@Override
+			public void call(Object... args) {
+				Log.d(getClass().getSimpleName(), "Socket IO Event Connect");
+				mSocket.emit("foo", "hi");
+				mSocket.disconnect();
+			}
+
+		}).on("event", new Emitter.Listener() {
+
+			@Override
+			public void call(final Object... args) {
+				Log.d(getClass().getSimpleName(), "Socket IO Data");
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						Log.d(getClass().getSimpleName(), "Socket IO Data");
+						JSONObject data = (JSONObject) args[0];
+						ECMessage message;
+
+						try {
+							message = new ECMessage(data);
+						} catch (JSONException | ParseException e) {
+							e.printStackTrace();
+							return;
+						}
+						addMessage(message);
+					}
+				});
+			}
+
+		}).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+
+			@Override
+			public void call(Object... args) {
+			}
+
+		});
+		mSocket.connect();
 
 		setContentView(R.layout.chat_layout);
 		ButterKnife.bind(this);
@@ -136,7 +183,7 @@ public class ChatActivity extends AppCompatActivity {
 	public void onDestroy() {
 		super.onDestroy();
 		mSocket.disconnect();
-		mSocket.off("message", onNewMessage);
+		mSocket.off(Socket.EVENT_MESSAGE);
 	}
 
 	@Override
@@ -210,6 +257,8 @@ public class ChatActivity extends AppCompatActivity {
 	 */
 	private void attemptSend() {
 
+		mSocket.emit("foo", "hi");
+
 		String message = mInputMessageView.getText().toString().trim();
 		if (TextUtils.isEmpty(message)) {
 			mInputMessageView.requestFocus();
@@ -270,27 +319,5 @@ public class ChatActivity extends AppCompatActivity {
 //			mTyping = false;
 //		}
 //	};
-
-	private Emitter.Listener onNewMessage = new Emitter.Listener() {
-		@Override
-		public void call(final Object... args) {
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					Log.d(getClass().getSimpleName(), "Socket IO Data");
-					JSONObject data = (JSONObject) args[0];
-					ECMessage message;
-
-					try {
-						message = new ECMessage(data);
-					} catch (JSONException | ParseException e) {
-						e.printStackTrace();
-						return;
-					}
-					addMessage(message);
-				}
-			});
-		}
-	};
 
 }
