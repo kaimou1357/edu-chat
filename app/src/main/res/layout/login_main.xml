@@ -1,39 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mainLoginFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_alignParentEnd="true"
-    android:layout_alignParentStart="true"
-    android:layout_alignParentTop="true">
+<RelativeLayout android:id="@+id/mainLoginFragment"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_alignParentEnd="true"
+	android:layout_alignParentStart="true"
+	android:layout_alignParentTop="true">
 
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/loginPager"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:background="@drawable/login_drawable" />
+	<!--<android.support.v4.view.ViewPager-->
+		<!--android:id="@+id/loginPager"-->
+		<!--android:layout_width="match_parent"-->
+		<!--android:layout_height="350dp"-->
+		<!--android:layout_alignParentEnd="true"-->
+		<!--android:layout_alignParentStart="true"-->
+		<!--android:background="@drawable/login_drawable" />-->
 
-    <!--<ImageView-->
-        <!--android:scaleType="centerInside"-->
-        <!--android:id="@+id/eduChatLogo"-->
-        <!--android:layout_width="150dp"-->
-        <!--android:layout_height="65dp"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:background="@drawable/chatlogo" />-->
+	<!--<ImageView-->
+	<!--android:scaleType="centerInside"-->
+	<!--android:id="@+id/eduChatLogo"-->
+	<!--android:layout_width="150dp"-->
+	<!--android:layout_height="65dp"-->
+	<!--android:layout_alignParentTop="true"-->
+	<!--android:layout_centerHorizontal="true"-->
+	<!--android:layout_marginTop="20dp"-->
+	<!--android:background="@drawable/chatlogo" />-->
 
 
-    <FrameLayout
-        android:id="@+id/loginFormFragmentContainer"
-        android:layout_width="match_parent"
-        android:layout_height="256dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+	<FrameLayout
+		android:id="@+id/loginFormFragmentContainer"
+		android:layout_width="match_parent"
+		android:layout_height="256dp"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

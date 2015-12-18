@@ -1,17 +1,16 @@
 package urlinq.android.com.edu_chat.model;
 
+import android.os.Parcel;
 import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import urlinq.android.com.edu_chat.model.enums.ECCategoryType;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import urlinq.android.com.edu_chat.model.enums.ECCategoryType;
 
 
 /**
@@ -28,8 +27,9 @@ public class ECCategory extends ECObject {
 	private final ECCategoryType typeOfCategory;
 	private final String[] subchannels = null;
 
+
 	@Override
-	public String toString () {
+	public String toString() {
 		return "ECCategory{" +
 				"departmentTag='" + departmentTag + '\'' +
 				", name='" + name + '\'' +
@@ -42,7 +42,7 @@ public class ECCategory extends ECObject {
 				'}' + super.toString();
 	}
 
-	public ECCategory (JSONObject obj, ECCategoryType groupType) throws JSONException, ParseException {
+	public ECCategory(JSONObject obj, ECCategoryType groupType) throws JSONException, ParseException {
 		super(obj.getInt("id"), obj.getJSONObject("picture_file").getString("file_url"), obj.getString("color"));
 		switch (groupType) {
 			case ECDepartmentCategoryType: {
@@ -116,7 +116,7 @@ public class ECCategory extends ECObject {
 
 	}
 
-	public static List<ECObject> buildManyWithJSON (JSONArray response, ECCategoryType groupType) {
+	public static List<ECObject> buildManyWithJSON(JSONArray response, ECCategoryType groupType) {
 		ArrayList<ECObject> objects = new ArrayList<>();
 		switch (groupType) {
 			case ECDepartmentCategoryType: {
@@ -163,31 +163,70 @@ public class ECCategory extends ECObject {
 		return null;
 	}
 
-	public String getName () {
+	public String getName() {
 		return name;
 	}
 
-	public String getProfessorFirstName () {
+	public String getProfessorFirstName() {
 		return professorFirstName;
 	}
 
-	public String getProfessorLastName () {
+	public String getProfessorLastName() {
 		return professorLastName;
 	}
 
-	public String getProfessorID () {
+	public String getProfessorID() {
 		return professorID;
 	}
 
-	public String getDepartmentTag () {
+	public String getDepartmentTag() {
 		return departmentTag;
 	}
 
-	public ECCategoryType getTypeOfCategory () {
+	public ECCategoryType getTypeOfCategory() {
 		return typeOfCategory;
 	}
 
-	public ECMessage getMostRecentMessage () {
+	public ECMessage getMostRecentMessage() {
 		return mostRecentMessage;
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		super.writeToParcel(dest, flags);
+		dest.writeString(this.name);
+		dest.writeString(this.professorFirstName);
+		dest.writeString(this.professorLastName);
+		dest.writeString(this.professorID);
+		dest.writeString(this.departmentTag);
+		dest.writeParcelable(this.mostRecentMessage, 0);
+		dest.writeInt(this.typeOfCategory == null ? -1 : this.typeOfCategory.ordinal());
+	}
+
+	protected ECCategory(Parcel in) {
+		super(in);
+		this.name = in.readString();
+		this.professorFirstName = in.readString();
+		this.professorLastName = in.readString();
+		this.professorID = in.readString();
+		this.departmentTag = in.readString();
+		this.mostRecentMessage = in.readParcelable(ECMessage.class.getClassLoader());
+		int tmpTypeOfCategory = in.readInt();
+		this.typeOfCategory = tmpTypeOfCategory == -1 ? null : ECCategoryType.values()[tmpTypeOfCategory];
+	}
+
+	public static final Creator<ECCategory> CREATOR = new Creator<ECCategory>() {
+		public ECCategory createFromParcel(Parcel source) {
+			return new ECCategory(source);
+		}
+
+		public ECCategory[] newArray(int size) {
+			return new ECCategory[size];
+		}
+	};
 }
