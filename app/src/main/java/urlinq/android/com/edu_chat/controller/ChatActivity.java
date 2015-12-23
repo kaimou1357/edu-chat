@@ -74,16 +74,21 @@ public class ChatActivity extends AppCompatActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+		mSocket.on("connect", new Emitter.Listener() {
 
-			@Override
-			public void call(Object... args) {
-				Log.d(getClass().getSimpleName(), "Socket IO Event Connect");
-				mSocket.emit("foo", "hi");
-				mSocket.disconnect();
-			}
+				@Override
+				public void call(Object... args) {
+					runOnUiThread(new Runnable(){
+						@Override
+						public void run(){
+							Log.d("socket io", "There is data");
+						}
+					});
 
-		}).on("event", new Emitter.Listener() {
+				}
+
+
+		}).on("join", new Emitter.Listener() {
 
 			@Override
 			public void call(final Object... args) {
@@ -113,6 +118,7 @@ public class ChatActivity extends AppCompatActivity {
 			}
 
 		});
+
 		mSocket.connect();
 
 		setContentView(R.layout.chat_layout);
