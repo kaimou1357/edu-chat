@@ -71,54 +71,32 @@ public class ChatActivity extends AppCompatActivity {
 		}
 	}
 
-	@Override
+	private Emitter.Listener onNewMessage = new Emitter.Listener(){
+		@Override
+		public void call(final Object... args){
+			runOnUiThread(new Runnable(){
+				@Override
+				public void run(){
+					Log.d(getClass().getSimpleName(), "Socket IO Data");
+					JSONObject data = (JSONObject) args[0];
+					ECMessage message;
+
+					try {
+						message = new ECMessage(data);
+					} catch (JSONException | ParseException e) {
+						e.printStackTrace();
+						return;
+					}
+					addMessage(message);
+				}
+			});
+		}
+	};
+
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mSocket.on("connect", new Emitter.Listener() {
-
-				@Override
-				public void call(Object... args) {
-					runOnUiThread(new Runnable(){
-						@Override
-						public void run(){
-							Log.d("socket io", "There is data");
-						}
-					});
-
-				}
-
-
-		}).on("join", new Emitter.Listener() {
-
-			@Override
-			public void call(final Object... args) {
-				Log.d(getClass().getSimpleName(), "Socket IO Data");
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						Log.d(getClass().getSimpleName(), "Socket IO Data");
-						JSONObject data = (JSONObject) args[0];
-						ECMessage message;
-
-						try {
-							message = new ECMessage(data);
-						} catch (JSONException | ParseException e) {
-							e.printStackTrace();
-							return;
-						}
-						addMessage(message);
-					}
-				});
-			}
-
-		}).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-
-			@Override
-			public void call(Object... args) {
-			}
-
-		});
-
+		mSocket.on("user_" + ECUser.getCurrentUser().getObjectIdentifier(), onNewMessage);
 		mSocket.connect();
 
 		setContentView(R.layout.chat_layout);
@@ -318,12 +296,6 @@ public class ChatActivity extends AppCompatActivity {
 		mMessagesView.scrollToPosition(mAdapter.getItemCount() - 1);
 	}
 
-//	private final Runnable onTypingTimeOut = new Runnable() {
-//		@Override
-//		public void run() {
-//			if (!mTyping) return;
-//			mTyping = false;
-//		}
-//	};
+
 
 }
