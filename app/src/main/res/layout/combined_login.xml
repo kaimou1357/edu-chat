@@ -44,13 +44,14 @@
             android:background="@drawable/signuptoggle"
             android:paddingTop="20dp" />
 
-        <ImageButton
+        <Button
             android:id="@+id/logInBlue"
+            style = "@style/loginButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:text = "Login"
             android:layout_alignEnd="@+id/linearLayout"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/loginbtn" />
+            android:layout_alignParentBottom="true" />
 
 
 

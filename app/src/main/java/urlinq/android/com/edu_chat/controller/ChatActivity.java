@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -21,6 +22,8 @@ import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import com.loopj.android.http.RequestParams;
 import com.urlinq.edu_chat.R;
+
+import butterknife.OnItemClick;
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,12 +46,9 @@ public class ChatActivity extends AppCompatActivity {
 
 	private static final String REQUEST_LENGTH = "40";
 
-	@Bind(R.id.messages)
-	RecyclerView mMessagesView;
-	@Bind(R.id.message_input)
-	EditText mInputMessageView;
-	@Bind(R.id.send_button)
-	ImageButton sendButton;
+	@Bind(R.id.messages) RecyclerView mMessagesView;
+	@Bind(R.id.message_input) EditText mInputMessageView;
+	@Bind(R.id.send_button) Button sendButton;
 	private boolean mTyping = false;
 
 	//Don't forget to set the username to something before we begin.
@@ -68,39 +68,30 @@ public class ChatActivity extends AppCompatActivity {
 			mSocket = IO.socket("https://edu.chat:443", opts);
 			Log.d("Socket IO", "Socket IO Connected successfully");
 		} catch (URISyntaxException ignored) {
+			throw new RuntimeException(ignored);
 		}
 	}
 
-	private Emitter.Listener onNewMessage = new Emitter.Listener(){
-		@Override
-		public void call(final Object... args){
-			runOnUiThread(new Runnable(){
-				@Override
-				public void run(){
-					Log.d(getClass().getSimpleName(), "Socket IO Data");
-					JSONObject data = (JSONObject) args[0];
-					ECMessage message;
 
-					try {
-						message = new ECMessage(data);
-					} catch (JSONException | ParseException e) {
-						e.printStackTrace();
-						return;
-					}
-					addMessage(message);
-				}
-			});
-		}
-	};
 
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mSocket.on("user_" + ECUser.getCurrentUser().getObjectIdentifier(), onNewMessage);
-		mSocket.connect();
-
 		setContentView(R.layout.chat_layout);
 		ButterKnife.bind(this);
+
+
+		mAdapter = new MessageAdapter(this, mMessages);
+		mMessagesView.setLayoutManager(new LinearLayoutManager(this));
+		mMessagesView.setAdapter(mAdapter);
+		String userID = "user_" + ECUser.getCurrentUser().getObjectIdentifier();
+		mSocket.on("connect", onConnect);
+		mSocket.on(userID, onNewMessage);
+		Log.d("ECUSER ID", userID);
+		mSocket.connect();
+
+
+
 
 		final ActionBar actionBar = getSupportActionBar();
 		View cView = getLayoutInflater().inflate(R.layout.chat_custom_action_bar_view, null);
@@ -111,16 +102,14 @@ public class ChatActivity extends AppCompatActivity {
 		}
 
 		//get extras from bundle.
-		updateRecyclerView();
 		target_type = getIntent().getStringExtra("target_type");
 		target_id = getIntent().getStringExtra("target_id");
 		String chatTitle = getIntent().getStringExtra("USER_NAME");
-
-		updateChatRoom(target_type, target_id, ECUser.getUserToken());
-		//Set the title of the chat room.
-		//This needs to be declared here after Butterknife binds.
 		TextView actionBarTitleTextView = (TextView) cView.findViewById(R.id.actionBarTitleText);
 		actionBarTitleTextView.setText(chatTitle);
+
+		updateChatRoom(target_type, target_id, ECUser.getUserToken());
+
 
 
 		mInputMessageView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -193,16 +182,18 @@ public class ChatActivity extends AppCompatActivity {
 			@Override
 			public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
 				super.onSuccessGlobal(statusCode, headers, responseBody);
-			}
 
-			@Override
-			public void onFinishGlobal() {
-				super.onFinishGlobal();
 				try {
 					makeObjects(getObj().getJSONArray("messages"));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
+			}
+
+			@Override
+			public void onFinishGlobal() {
+				super.onFinishGlobal();
+				updateRecyclerView();
 
 			}
 
@@ -224,16 +215,47 @@ public class ChatActivity extends AppCompatActivity {
 		} catch (JSONException | ParseException e) {
 			e.printStackTrace();
 		}
-		updateRecyclerView();
 
 	}
 
 	private void updateRecyclerView() {
-		mAdapter = new MessageAdapter(this, mMessages);
-		mMessagesView.setLayoutManager(new LinearLayoutManager(this));
-		mMessagesView.setAdapter(mAdapter);
+		mAdapter.notifyItemInserted(mMessages.size()-1);
 		scrollToBottom();
 	}
+
+	private Emitter.Listener onNewMessage = new Emitter.Listener(){
+		@Override
+		public void call(final Object... args){
+			runOnUiThread(new Runnable(){
+				@Override
+				public void run(){
+					Log.d(getClass().getSimpleName(), "Socket IO Data");
+					JSONObject data = (JSONObject) args[0];
+					ECMessage message;
+
+					try {
+						message = new ECMessage(data);
+					} catch (JSONException | ParseException e) {
+						e.printStackTrace();
+						return;
+					}
+					addMessage(message);
+				}
+			});
+		}
+	};
+	private Emitter.Listener onConnect = new Emitter.Listener(){
+		@Override
+		public void call(final Object... args){
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+
+					Log.d("Socket IO", "There is data");
+				}
+			});
+		}
+	};
 
 
 	/**

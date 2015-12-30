@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import butterknife.Bind;
@@ -27,7 +28,8 @@ import urlinq.android.com.edu_chat.model.ECUser;
 public class LoginBackground extends Fragment {
 	private SharedPreferences prefs;
 	//@Bind(R.id.signUpToggle)  ImageButton signUpBtn;
-	@Bind(R.id.logInBlue) ImageButton logInBlue;
+	@Bind(R.id.logInBlue)
+	Button logInBlue;
 	//@Bind(R.id.viewFlipper)  ViewFlipper flipper;
 	@Bind(R.id.emailTextView) EditText userEmail;
 	@Bind(R.id.passwordTextView) EditText userPass;

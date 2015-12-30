@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 	@Bind(R.id.departmentList) RecyclerView departmentList;
 	@Bind(R.id.labList) RecyclerView labList;
 	@Bind(R.id.peopleList) RecyclerView peopleList;
+
 	@Bind(R.id.userFullName) TextView userFullName;
 	@Bind(R.id.userSchool) TextView userSchoolName;
 	@Bind(R.id.userProfilePicture) ImageView userProfilePicture;
