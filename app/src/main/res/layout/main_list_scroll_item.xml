@@ -6,15 +6,17 @@
 
 	<ImageView
 		android:id="@+id/profilePicture"
-		android:layout_width="75dp"
-		android:layout_height="75dp"
+		android:layout_width="65dp"
+		android:layout_height="65dp"
 		android:layout_marginStart="10dp"
         android:scaleType="fitXY" />
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginLeft = "20dp"
+		android:layout_marginLeft = "10dp"
         android:layout_toRightOf="@id/profilePicture"
+		android:layout_toLeftOf="@+id/lastActivityTextView"
+		android:paddingRight = "7dp"
 		android:layout_alignTop="@id/profilePicture"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:id="@+id/rowHeader"
@@ -24,9 +26,10 @@
 
 	<TextView
 		android:id="@+id/userTextView"
-		android:layout_marginLeft = "20dp"
+		android:layout_marginLeft = "10dp"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_toLeftOf="@+id/lastActivityTextView"
         android:layout_toRightOf="@id/profilePicture"
 		android:layout_gravity="center_horizontal"
 		android:layout_marginStart="10dp"
@@ -39,8 +42,9 @@
 	<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-		android:layout_marginLeft = "20dp"
+		android:layout_marginLeft = "10dp"
         android:id="@+id/messageTextView"
+		android:layout_toLeftOf="@+id/lastActivityTextView"
         android:lines="1"
         android:ellipsize="end"
         android:layout_below="@+id/userTextView"

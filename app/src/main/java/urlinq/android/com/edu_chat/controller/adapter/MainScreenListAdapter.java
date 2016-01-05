@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,11 +39,30 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 
 	@Override
 	public CategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewCase) {
-		//Shouldn't be item scroll chat. Change later to the appropriate layout.
-		int layout = R.layout.main_list_scroll_item;
-		View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-		return new CategoryViewHolder(v);
+		int layout;
+		switch(viewCase){
+			case 0:{
+				layout = R.layout.empty_category;
+				View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
+				return new CategoryViewHolder(v);
+			}
+			default:{
+				layout = R.layout.main_list_scroll_item;
+				View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
+				return new CategoryViewHolder(v);
+			}
 
+		}
+
+
+	}
+	@Override
+	public int getItemViewType(int position){
+		//Swaps RecyclerViews between 0 and 1 here.
+		if(mECObjects == null){
+			return 0;
+		}
+		return 1;
 	}
 
 	@Override
