@@ -57,8 +57,6 @@ public class ChatActivity extends AppCompatActivity {
 	private String target_type;
 	private String target_id;
 
-	private Socket mSocket;
-
 
 
 

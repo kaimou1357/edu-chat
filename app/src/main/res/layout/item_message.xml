@@ -5,8 +5,8 @@
 
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/userProfilePicture"
         android:contentDescription="@string/user_profile_picture_content_description"
         android:scaleType="fitXY"/>
@@ -23,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/header_space"
+        android:layout_alignTop="@id/userProfilePicture"
         android:singleLine="true"
         android:textColor="?android:textColorPrimary"
         android:textStyle="bold"
@@ -33,15 +34,15 @@
         style="?android:textAppearanceMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/userProfilePicture"
-        android:layout_alignLeft="@id/username"
         android:textColor="?android:textColorPrimary"
-        />
+        android:layout_alignBottom="@+id/userProfilePicture"
+        android:layout_toEndOf="@+id/header_space" />
     <TextView
         android:layout_width="wrap_content"
         style="?android:textAppearanceMedium"
         android:layout_height="wrap_content"
         android:id="@+id/messageDate"
+        android:textSize="12sp"
         android:layout_marginLeft="5dp"
         android:layout_alignBottom="@+id/username"
         android:layout_toEndOf="@+id/username"/>
