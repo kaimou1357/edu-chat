@@ -59,24 +59,18 @@ public class ChatActivity extends AppCompatActivity {
 
 	private Socket mSocket;
 
-	{
-		try {
-			IO.Options opts = new IO.Options();
-			opts.forceNew = true;
-			opts.reconnection = false;
-			opts.secure = true;
-			mSocket = IO.socket("https://edu.chat:443", opts);
-			Log.d("Socket IO", "Socket IO Connected successfully");
-		} catch (URISyntaxException ignored) {
-			throw new RuntimeException(ignored);
-		}
-	}
-
 
 
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		try {
+
+			mSocket = IO.socket("https://edu.chat:443");
+			Log.d("Socket IO", "Socket IO Connected successfully");
+		} catch (URISyntaxException ignored) {
+			throw new RuntimeException(ignored);
+		}
 		setContentView(R.layout.chat_layout);
 		ButterKnife.bind(this);
 
@@ -85,9 +79,24 @@ public class ChatActivity extends AppCompatActivity {
 		mMessagesView.setLayoutManager(new LinearLayoutManager(this));
 		mMessagesView.setAdapter(mAdapter);
 		String userID = "user_" + ECUser.getCurrentUser().getObjectIdentifier();
-		mSocket.on("connect", onConnect);
-		mSocket.on(userID, onNewMessage);
-		Log.d("ECUSER ID", userID);
+		//socket IO stuff
+		mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener(){
+			@Override
+			public void call(Object... args){
+				Log.d("socket","Connected to chats");
+			}
+
+		}).on(userID, new Emitter.Listener(){
+			public void call(Object... args){
+				Log.d("socket", "I received data!");
+			}
+		}).on(Socket.EVENT_DISCONNECT, new Emitter.Listener(){
+			public void call(Object... args){
+				Log.d("socket", "disconnected");
+			}
+
+		});
+
 		mSocket.connect();
 
 
