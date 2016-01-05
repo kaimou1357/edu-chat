@@ -17,9 +17,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
 import com.loopj.android.http.RequestParams;
 import com.urlinq.edu_chat.R;
 
@@ -28,6 +25,11 @@ import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import io.socket.client.Ack;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 import urlinq.android.com.edu_chat.controller.adapter.MessageAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.ECMessage;
@@ -56,27 +58,22 @@ public class ChatActivity extends AppCompatActivity {
 	private MessageAdapter mAdapter;
 	private String target_type;
 	private String target_id;
+	private Socket mSocket;
 
 
 
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		try {
-
-			mSocket = IO.socket("https://edu.chat:443");
-			Log.d("Socket IO", "Socket IO Connected successfully");
-		} catch (URISyntaxException ignored) {
-			throw new RuntimeException(ignored);
+		try{
+			mSocket = IO.socket("https://edu.chat");
+			Log.d("Socket", "Socket successfully connected");
+		}catch(URISyntaxException ignored){
+			ignored.printStackTrace();
+			Log.e("Socket", "Socket connections has failed");
 		}
-		setContentView(R.layout.chat_layout);
-		ButterKnife.bind(this);
+		String userID = "#user_" + ECUser.getCurrentUser().getObjectIdentifier();
 
-
-		mAdapter = new MessageAdapter(this, mMessages);
-		mMessagesView.setLayoutManager(new LinearLayoutManager(this));
-		mMessagesView.setAdapter(mAdapter);
-		String userID = "user_" + ECUser.getCurrentUser().getObjectIdentifier();
 		//socket IO stuff
 		mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener(){
 			@Override
@@ -84,8 +81,10 @@ public class ChatActivity extends AppCompatActivity {
 				Log.d("socket","Connected to chats");
 			}
 
-		}).on(userID, new Emitter.Listener(){
+		}).on("event", new Emitter.Listener(){
 			public void call(Object... args){
+				Ack ack = (Ack) args[args.length - 1];
+				ack.call();
 				Log.d("socket", "I received data!");
 			}
 		}).on(Socket.EVENT_DISCONNECT, new Emitter.Listener(){
@@ -96,6 +95,15 @@ public class ChatActivity extends AppCompatActivity {
 		});
 
 		mSocket.connect();
+
+		setContentView(R.layout.chat_layout);
+		ButterKnife.bind(this);
+
+
+		mAdapter = new MessageAdapter(this, mMessages);
+		mMessagesView.setLayoutManager(new LinearLayoutManager(this));
+		mMessagesView.setAdapter(mAdapter);
+
 
 
 
