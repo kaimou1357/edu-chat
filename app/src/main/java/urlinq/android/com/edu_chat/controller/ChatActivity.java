@@ -66,7 +66,9 @@ public class ChatActivity extends AppCompatActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		try{
-			mSocket = IO.socket("https://edu.chat");
+			IO.Options opts = new IO.Options();
+			opts.port = 443;
+			mSocket = IO.socket("http://54.208.114.222:443");
 			Log.d("Socket", "Socket successfully connected");
 		}catch(URISyntaxException ignored){
 			ignored.printStackTrace();
@@ -81,10 +83,12 @@ public class ChatActivity extends AppCompatActivity {
 				Log.d("socket","Connected to chats");
 			}
 
-		}).on("event", new Emitter.Listener(){
+		}).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener(){
 			public void call(Object... args){
-				Ack ack = (Ack) args[args.length - 1];
-				ack.call();
+				Log.d("socket", "connection failed");
+			}
+		}).on(userID, new Emitter.Listener() {
+			public void call(Object... args) {
 				Log.d("socket", "I received data!");
 			}
 		}).on(Socket.EVENT_DISCONNECT, new Emitter.Listener(){
