@@ -16,6 +16,17 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name = "loginbutton">
+        <item name="android:textColor">@color/White</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:minWidth">88dp</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:elevation">1dp</item>
+        <item name="android:translationZ">1dp</item>
+        <item name="android:background">@drawable/primary_round</item>
+    </style>
+
 
     <color name = "background">#e5e5e5</color>
     <color name = "darkestText">#333333</color>
@@ -24,7 +35,9 @@
     <color name = "nav">#333333</color>
     <color name = "profileDark">#252525</color>
     <color name = "blueRow">#408bc1</color>
+    <color name = "loginbuttoncolor">#2196f3</color>
     <color name="White">#FFFFFF</color>
+
 
 
 
