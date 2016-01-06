@@ -23,6 +23,7 @@
 		<activity
 			android:name="urlinq.android.com.edu_chat.controller.MainActivity"
 			android:icon="@drawable/educhat"
+
 			android:label=""
 			android:theme="@style/AppTheme" />
 
@@ -30,6 +31,7 @@
 			android:name="urlinq.android.com.edu_chat.controller.ChatActivity"
 			android:icon="@drawable/educhat"
 			android:label=""
+			android:windowSoftInputMode="stateVisible|adjustResize"
 			android:parentActivityName="urlinq.android.com.edu_chat.controller.MainActivity"
 			android:theme="@style/AppTheme">
 			<meta-data

@@ -71,57 +71,12 @@ public class ChatActivity extends AppCompatActivity {
 	private MessageAdapter mAdapter;
 	private String target_type;
 	private String target_id;
-	private Socket mSocket;
-
-
-//	private Emitter.Listener onNewMessageX = new Emitter.Listener() {
-//		@Override
-//		public void call(final Object... args) {
-//			runOnUiThread(new Runnable() {
-//				@Override
-//				public void run() {
-//					Log.d("Socket", "inside on new message");
-//					JSONObject data = (JSONObject) args[0];
-//
-//					try {
-//						Log.d("Socket", args[0].toString());
-//					} catch (Exception e) {
-//						Log.d("Socket", "ERROR PARSING MESSAGE ON NEW MESSAGE");
-//						return;
-//					}
-//
-//				}
-//			});
-//		}
-//	};
-
-	static {
-
-		javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
-				new javax.net.ssl.HostnameVerifier() {
-					public boolean verify(String hostname,
-										  javax.net.ssl.SSLSession sslSession) {
-
-						return true;
-//						if (hostname.equals("localhost")) {
-//							return true;
-//						}
-//						return false;
-					}
-				});
-	}
-
-
-
-	
-
-
 
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-
+		target_type = getIntent().getStringExtra("target_type");
+		target_id = getIntent().getStringExtra("target_id");
 		try{
 			//http://www.mkyong.com/webservices/jax-ws/java-security-cert-certificateexception-no-name-matching-localhost-found/
 			SocketIO.setDefaultSSLSocketFactory(SSLContext.getInstance("Default"));
@@ -163,117 +118,30 @@ public class ChatActivity extends AppCompatActivity {
 				@Override
 				public void on(String event, IOAcknowledge ack, Object... args) {
 					System.out.println("Server triggered event " + event);
-
-
-					if(event.equals("user_2")){
+					if(event.equals("user_" + ECUser.getCurrentUser().getObjectIdentifier())){
 						try{
 							JSONObject message_json = new JSONObject(args[0].toString());
+							if(message_json.getString("type").equals("text") && message_json.getString("user_id").equals(target_id)){
+								final ECMessage message = new ECMessage(message_json);
+								runOnUiThread(new Runnable(){
+									public void run(){
+										addMessage(message);
+									}
+								});
+							}
 
-							Log.d("Socket", "Received message json: " + message_json.toString());
-
-
+							Log.d("Socket", "Socket IO JSON: " + message_json.toString());
 						}catch(Exception e){
 							Log.d("Socket", e.getMessage());
 						}
-
 					}
-
-
 				}
 			});
 
 
 		}catch(Exception e){
 			Log.d("Socket", e.getMessage());
-
 		}
-
-//
-//		// This line is cached until the connection is establisched.
-//		socket.send("Hello Server!");
-//
-//
-//
-//		IO.Options opts = new IO.Options();
-//		opts.forceNew = true;
-//		opts.reconnection = false;
-
-		//this library might work w/ this enabled
-//		//opts.sslContext = SSLContext.getInstance("Default");
-//		//opts.secure=true;
-//		opts.secure=false;
-//
-//		try{
-//			mSocket = IO.socket("https://edu.chat", opts);
-//			Log.d("Socket", "Socket successfully connected");
-//		}catch(URISyntaxException ignored){
-//			ignored.printStackTrace();
-//			Log.e("Socket", "Socket connections has failed");
-//		}
-//		String userID = "#user_" + ECUser.getCurrentUser().getObjectIdentifier();
-//
-//
-//		Log.d("Socket", "111111111111111111?");
-//		Log.d("Socket", "Connected to socket io. Listening on user_2");
-//
-//		mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener(){
-//			@Override
-//			public void call(Object... args){
-//				Log.d("Socket","Connected to chats");
-//			}
-//
-//		}).on("event", new Emitter.Listener() {
-//			public void call(Object... args) {
-//				Ack ack = (Ack) args[args.length - 1];
-//				ack.call();
-//				Log.d("Socket", "I received data!");
-//			}
-//		}).on("user_2", new Emitter.Listener(){
-//			public void call(Object... args){
-//
-//				Log.d("socket", "RECEIVED ON user_2");
-//				Ack ack = (Ack) args[args.length - 1];
-//				ack.call();
-//				Log.d("Socket", "I received data!");
-//			}
-//		}).on("user_2", onNewMessageX)
-//		.on(Socket.EVENT_ERROR, new Emitter.Listener() {
-//			public void call(Object... args) {
-//				Log.d("Socket", "SOCKET EVENT ERROR");
-//				Log.d("Socket", args[0].toString());
-//				Log.d("Socket", ((EngineIOException) args[0]).getMessage());
-//			}
-//
-//		}).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
-//			public void call(Object... args) {
-//				Log.d("Socket", "EVENT_CONNECT_ERROR");
-//				Log.d("Socket", args[0].toString());
-//				Log.d("Socket", ((EngineIOException) args[0]).getMessage());
-//				//Log.d("Socket", ((EngineIOException) args[0]).transport);
-//				Log.d("Socket", ((EngineIOException) args[0]).code.toString());
-//				Log.d("Socket", ((EngineIOException) args[0]).getLocalizedMessage());
-//			}
-//
-//		}).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-//			public void call(Object... args) {
-//				Log.d("Socket", "disconnected");
-//			}
-//
-//		});
-//
-//
-//		mSocket.connect();
-//
-//
-//		if(mSocket.connected()){
-//			Log.d("Socket", "SOCKET IS CONNECTED");
-//		}else{
-//			Log.d("Socket", "SOCKET NOT CONNECTED");
-//		}
-//
-//
-
-
 
 		setContentView(R.layout.chat_layout);
 		ButterKnife.bind(this);
@@ -296,8 +164,7 @@ public class ChatActivity extends AppCompatActivity {
 		}
 
 		//get extras from bundle.
-		target_type = getIntent().getStringExtra("target_type");
-		target_id = getIntent().getStringExtra("target_id");
+
 		String chatTitle = getIntent().getStringExtra("USER_NAME");
 		TextView actionBarTitleTextView = (TextView) cView.findViewById(R.id.actionBarTitleText);
 		actionBarTitleTextView.setText(chatTitle);
@@ -417,47 +284,13 @@ public class ChatActivity extends AppCompatActivity {
 		scrollToBottom();
 	}
 
-//	private Emitter.Listener onNewMessage = new Emitter.Listener(){
-//		@Override
-//		public void call(final Object... args){
-//			runOnUiThread(new Runnable(){
-//				@Override
-//				public void run(){
-//					Log.d(getClass().getSimpleName(), "Socket IO Data");
-//					JSONObject data = (JSONObject) args[0];
-//					ECMessage message;
-//
-//					try {
-//						message = new ECMessage(data);
-//					} catch (JSONException | ParseException e) {
-//						e.printStackTrace();
-//						return;
-//					}
-//					addMessage(message);
-//				}
-//			});
-//		}
-//	};
-//	private Emitter.Listener onConnect = new Emitter.Listener(){
-//		@Override
-//		public void call(final Object... args){
-//			runOnUiThread(new Runnable() {
-//				@Override
-//				public void run() {
-//
-//					Log.d("Socket IO", "There is data");
-//				}
-//			});
-//		}
-//	};
+
 
 
 	/**
 	 * Private method to send message. Make sure to make the HTTP/Socket calls here.
 	 */
 	private void attemptSend() {
-
-		//mSocket.emit("foo", "hi");
 
 		String message = mInputMessageView.getText().toString().trim();
 		if (TextUtils.isEmpty(message)) {

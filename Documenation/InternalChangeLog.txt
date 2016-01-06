@@ -31,3 +31,7 @@ Version 0.5 (2)
 	-Added settings menu to ChatActivity
 	-Fixed layout with chat message items.
 	-ViewPager added back in.
+	1/6/16 @Kai
+	-Socket IO working with receiving custom user messages. Will need to look into receiving messages for classes/departments
+	-Fixed layout issues with the ChatActivity
+	-Material Design on EditText of the Login Screen. 
