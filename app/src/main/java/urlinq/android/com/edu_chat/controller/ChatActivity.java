@@ -26,19 +26,32 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import io.socket.client.Ack;
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
+//import io.socket.client.Ack;
+//import io.socket.client.IO;
+//import io.socket.client.Socket;
+//
+//import io.socket.emitter.Emitter;
+//import io.socket.engineio.client.EngineIOException;
 import urlinq.android.com.edu_chat.controller.adapter.MessageAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.ECMessage;
 import urlinq.android.com.edu_chat.model.ECUser;
 
+import java.net.Socket;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+
+////
+import javax.net.ssl.SSLContext;
+
+import io.socket.IOAcknowledge;
+import io.socket.IOCallback;
+import io.socket.SocketIO;
+import io.socket.SocketIOException;
+
 
 
 /**
@@ -61,40 +74,204 @@ public class ChatActivity extends AppCompatActivity {
 	private Socket mSocket;
 
 
+//	private Emitter.Listener onNewMessageX = new Emitter.Listener() {
+//		@Override
+//		public void call(final Object... args) {
+//			runOnUiThread(new Runnable() {
+//				@Override
+//				public void run() {
+//					Log.d("Socket", "inside on new message");
+//					JSONObject data = (JSONObject) args[0];
+//
+//					try {
+//						Log.d("Socket", args[0].toString());
+//					} catch (Exception e) {
+//						Log.d("Socket", "ERROR PARSING MESSAGE ON NEW MESSAGE");
+//						return;
+//					}
+//
+//				}
+//			});
+//		}
+//	};
+
+	static {
+
+		javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
+				new javax.net.ssl.HostnameVerifier() {
+					public boolean verify(String hostname,
+										  javax.net.ssl.SSLSession sslSession) {
+
+						return true;
+//						if (hostname.equals("localhost")) {
+//							return true;
+//						}
+//						return false;
+					}
+				});
+	}
+
+
+
+
 
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+
 		try{
-			mSocket = IO.socket("https://edu.chat");
-			Log.d("Socket", "Socket successfully connected");
-		}catch(URISyntaxException ignored){
-			ignored.printStackTrace();
-			Log.e("Socket", "Socket connections has failed");
+			//http://www.mkyong.com/webservices/jax-ws/java-security-cert-certificateexception-no-name-matching-localhost-found/
+			SocketIO.setDefaultSSLSocketFactory(SSLContext.getInstance("Default"));
+			SocketIO socket = new SocketIO("https://edu.chat/");
+
+			//SocketIO socket = new SocketIO("https://edu.chat");
+
+			socket.connect(new IOCallback() {
+				@Override
+				public void onMessage(JSONObject json, IOAcknowledge ack) {
+					try {
+						System.out.println("Server said:" + json.toString(2));
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+
+				@Override
+				public void onMessage(String data, IOAcknowledge ack) {
+					System.out.println("Server said: " + data);
+				}
+
+				@Override
+				public void onError(SocketIOException socketIOException) {
+					System.out.println("an Error occured");
+					socketIOException.printStackTrace();
+				}
+
+				@Override
+				public void onDisconnect() {
+					System.out.println("Connection terminated.");
+				}
+
+				@Override
+				public void onConnect() {
+					System.out.println("Connection established");
+				}
+
+				@Override
+				public void on(String event, IOAcknowledge ack, Object... args) {
+					System.out.println("Server triggered event " + event);
+
+
+					if(event.equals("user_2")){
+						try{
+							JSONObject message_json = new JSONObject(args[0].toString());
+
+							Log.d("Socket", "Received message json: " + message_json.toString());
+
+
+						}catch(Exception e){
+							Log.d("Socket", e.getMessage());
+						}
+
+					}
+
+
+				}
+			});
+
+
+		}catch(Exception e){
+			Log.d("Socket", e.getMessage());
 		}
-		String userID = "#user_" + ECUser.getCurrentUser().getObjectIdentifier();
 
-		//socket IO stuff
-		mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener(){
-			@Override
-			public void call(Object... args){
-				Log.d("socket","Connected to chats");
-			}
+//
+//		// This line is cached until the connection is establisched.
+//		socket.send("Hello Server!");
+//
+//
+//
+//		IO.Options opts = new IO.Options();
+//		opts.forceNew = true;
+//		opts.reconnection = false;
 
-		}).on("event", new Emitter.Listener(){
-			public void call(Object... args){
-				Ack ack = (Ack) args[args.length - 1];
-				ack.call();
-				Log.d("socket", "I received data!");
-			}
-		}).on(Socket.EVENT_DISCONNECT, new Emitter.Listener(){
-			public void call(Object... args){
-				Log.d("socket", "disconnected");
-			}
+		//this library might work w/ this enabled
+//		//opts.sslContext = SSLContext.getInstance("Default");
+//		//opts.secure=true;
+//		opts.secure=false;
+//
+//		try{
+//			mSocket = IO.socket("https://edu.chat", opts);
+//			Log.d("Socket", "Socket successfully connected");
+//		}catch(URISyntaxException ignored){
+//			ignored.printStackTrace();
+//			Log.e("Socket", "Socket connections has failed");
+//		}
+//		String userID = "#user_" + ECUser.getCurrentUser().getObjectIdentifier();
+//
+//
+//		Log.d("Socket", "111111111111111111?");
+//		Log.d("Socket", "Connected to socket io. Listening on user_2");
+//
+//		mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener(){
+//			@Override
+//			public void call(Object... args){
+//				Log.d("Socket","Connected to chats");
+//			}
+//
+//		}).on("event", new Emitter.Listener() {
+//			public void call(Object... args) {
+//				Ack ack = (Ack) args[args.length - 1];
+//				ack.call();
+//				Log.d("Socket", "I received data!");
+//			}
+//		}).on("user_2", new Emitter.Listener(){
+//			public void call(Object... args){
+//
+//				Log.d("socket", "RECEIVED ON user_2");
+//				Ack ack = (Ack) args[args.length - 1];
+//				ack.call();
+//				Log.d("Socket", "I received data!");
+//			}
+//		}).on("user_2", onNewMessageX)
+//		.on(Socket.EVENT_ERROR, new Emitter.Listener() {
+//			public void call(Object... args) {
+//				Log.d("Socket", "SOCKET EVENT ERROR");
+//				Log.d("Socket", args[0].toString());
+//				Log.d("Socket", ((EngineIOException) args[0]).getMessage());
+//			}
+//
+//		}).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
+//			public void call(Object... args) {
+//				Log.d("Socket", "EVENT_CONNECT_ERROR");
+//				Log.d("Socket", args[0].toString());
+//				Log.d("Socket", ((EngineIOException) args[0]).getMessage());
+//				//Log.d("Socket", ((EngineIOException) args[0]).transport);
+//				Log.d("Socket", ((EngineIOException) args[0]).code.toString());
+//				Log.d("Socket", ((EngineIOException) args[0]).getLocalizedMessage());
+//			}
+//
+//		}).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+//			public void call(Object... args) {
+//				Log.d("Socket", "disconnected");
+//			}
+//
+//		});
+//
+//
+//		mSocket.connect();
+//
+//
+//		if(mSocket.connected()){
+//			Log.d("Socket", "SOCKET IS CONNECTED");
+//		}else{
+//			Log.d("Socket", "SOCKET NOT CONNECTED");
+//		}
+//
+//
 
-		});
 
-		mSocket.connect();
+
 
 		setContentView(R.layout.chat_layout);
 		ButterKnife.bind(this);
@@ -170,8 +347,8 @@ public class ChatActivity extends AppCompatActivity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		mSocket.disconnect();
-		mSocket.off(Socket.EVENT_MESSAGE);
+//		mSocket.disconnect();
+//		mSocket.off(Socket.EVENT_MESSAGE);
 	}
 
 	@Override
@@ -238,39 +415,39 @@ public class ChatActivity extends AppCompatActivity {
 		scrollToBottom();
 	}
 
-	private Emitter.Listener onNewMessage = new Emitter.Listener(){
-		@Override
-		public void call(final Object... args){
-			runOnUiThread(new Runnable(){
-				@Override
-				public void run(){
-					Log.d(getClass().getSimpleName(), "Socket IO Data");
-					JSONObject data = (JSONObject) args[0];
-					ECMessage message;
-
-					try {
-						message = new ECMessage(data);
-					} catch (JSONException | ParseException e) {
-						e.printStackTrace();
-						return;
-					}
-					addMessage(message);
-				}
-			});
-		}
-	};
-	private Emitter.Listener onConnect = new Emitter.Listener(){
-		@Override
-		public void call(final Object... args){
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-
-					Log.d("Socket IO", "There is data");
-				}
-			});
-		}
-	};
+//	private Emitter.Listener onNewMessage = new Emitter.Listener(){
+//		@Override
+//		public void call(final Object... args){
+//			runOnUiThread(new Runnable(){
+//				@Override
+//				public void run(){
+//					Log.d(getClass().getSimpleName(), "Socket IO Data");
+//					JSONObject data = (JSONObject) args[0];
+//					ECMessage message;
+//
+//					try {
+//						message = new ECMessage(data);
+//					} catch (JSONException | ParseException e) {
+//						e.printStackTrace();
+//						return;
+//					}
+//					addMessage(message);
+//				}
+//			});
+//		}
+//	};
+//	private Emitter.Listener onConnect = new Emitter.Listener(){
+//		@Override
+//		public void call(final Object... args){
+//			runOnUiThread(new Runnable() {
+//				@Override
+//				public void run() {
+//
+//					Log.d("Socket IO", "There is data");
+//				}
+//			});
+//		}
+//	};
 
 
 	/**
@@ -278,7 +455,7 @@ public class ChatActivity extends AppCompatActivity {
 	 */
 	private void attemptSend() {
 
-		mSocket.emit("foo", "hi");
+		//mSocket.emit("foo", "hi");
 
 		String message = mInputMessageView.getText().toString().trim();
 		if (TextUtils.isEmpty(message)) {

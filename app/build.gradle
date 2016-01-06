@@ -53,8 +53,32 @@ dependencies {
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.parse:parse-android:1.+'
     compile 'com.instabug.library:instabugsupport:1.7.1'
-    compile ('io.socket:socket.io-client:0.6.3') {
-        // excluding org.json which is provided by Android
-        exclude group: 'org.json', module: 'json'
-    }
+    //compile 'lib/socketio.jar'
+    compile files('libs/socketio.jar')
+
+
+
+//    compile ('io.socket:socket.io-client:0.6.3') {
+//        // excluding org.json which is provided by Android
+//        exclude group: 'org.json', module: 'json'
+//    }
 }
+
+
+
+
+//add local jar as library
+// http://stackoverflow.com/questions/16608135/android-studio-add-jar-as-library
+
+//*to get libs directory to show in left panel, use the top left directory navigator
+
+//1. Create a 'libs' folder in the top level of the module directory (the same directory that contains the 'src' directory)
+
+//2. In the build.gradle file add the following so that your dependencies closure has:
+//
+//dependencies {
+//    // ... other dependencies
+//    compile files('libs/<your jar's name here>')
+//}
+
+//3. Run ./gradlew assemble in top level directory of project
