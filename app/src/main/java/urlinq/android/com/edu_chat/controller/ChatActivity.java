@@ -82,8 +82,6 @@ public class ChatActivity extends AppCompatActivity {
 			SocketIO.setDefaultSSLSocketFactory(SSLContext.getInstance("Default"));
 			SocketIO socket = new SocketIO("https://edu.chat/");
 
-			//SocketIO socket = new SocketIO("https://edu.chat");
-
 			socket.connect(new IOCallback() {
 				@Override
 				public void onMessage(JSONObject json, IOAcknowledge ack) {
@@ -118,10 +116,29 @@ public class ChatActivity extends AppCompatActivity {
 				@Override
 				public void on(String event, IOAcknowledge ack, Object... args) {
 					System.out.println("Server triggered event " + event);
-					if(event.equals("user_" + ECUser.getCurrentUser().getObjectIdentifier())){
+
+					if(event.equals("user_"+ECUser.getCurrentUser().getObjectIdentifier())){
 						try{
 							JSONObject message_json = new JSONObject(args[0].toString());
 							if(message_json.getString("type").equals("text") && message_json.getString("user_id").equals(target_id)){
+								final ECMessage message = new ECMessage(message_json);
+								runOnUiThread(new Runnable(){
+									public void run(){
+										addMessage(message);
+									}
+								});
+							}
+
+							Log.d("Socket", "Socket IO JSON: " + message_json.toString());
+						}catch(Exception e){
+							Log.d("Socket", e.getMessage());
+						}
+					}
+
+					if(event.equals(target_type+"_" + target_id)){
+						try{
+							JSONObject message_json = new JSONObject(args[0].toString());
+							if(message_json.getString("type").equals("text")){
 								final ECMessage message = new ECMessage(message_json);
 								runOnUiThread(new Runnable(){
 									public void run(){
