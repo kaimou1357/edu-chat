@@ -183,6 +183,7 @@ public class ChatActivity extends AppCompatActivity {
 
 		}catch(Exception e){
 			Log.d("Socket", e.getMessage());
+
 		}
 
 //
@@ -269,7 +270,6 @@ public class ChatActivity extends AppCompatActivity {
 //		}
 //
 //
-
 
 
 
