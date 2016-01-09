@@ -26,12 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-//import io.socket.client.Ack;
-//import io.socket.client.IO;
-//import io.socket.client.Socket;
-//
-//import io.socket.emitter.Emitter;
-//import io.socket.engineio.client.EngineIOException;
+
 import urlinq.android.com.edu_chat.controller.adapter.MessageAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.ECMessage;
@@ -75,6 +70,89 @@ public class ChatActivity extends AppCompatActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		socketSetup();
+		setContentView(R.layout.chat_layout);
+		ButterKnife.bind(this);
+		mAdapter = new MessageAdapter(this, mMessages);
+		mMessagesView.setLayoutManager(new LinearLayoutManager(this));
+		mMessagesView.setAdapter(mAdapter);
+		final ActionBar actionBar = getSupportActionBar();
+		View cView = getLayoutInflater().inflate(R.layout.chat_custom_action_bar_view, null);
+		if (actionBar != null) {
+			actionBar.setCustomView(cView);
+			actionBar.setDisplayShowTitleEnabled(false);
+			actionBar.setDisplayShowCustomEnabled(true);
+		}
+
+		//get extras from bundle.
+
+		String chatTitle = getIntent().getStringExtra("USER_NAME");
+		TextView actionBarTitleTextView = (TextView) cView.findViewById(R.id.actionBarTitleText);
+		actionBarTitleTextView.setText(chatTitle);
+
+		updateChatRoom(target_type, target_id, ECUser.getUserToken());
+
+
+
+		mInputMessageView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == R.id.send || actionId == EditorInfo.IME_NULL) {
+					attemptSend();
+					return true;
+				}
+				return false;
+			}
+		});
+		mInputMessageView.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				if (!mTyping) {
+					mTyping = true;
+
+				}
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+
+			}
+		});
+
+		sendButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				attemptSend();
+			}
+		});
+
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+//		mSocket.disconnect();
+//		mSocket.off(Socket.EVENT_MESSAGE);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_menu, menu);
+		return true;
+	}
+
+	/**
+	 * Method to setup socket to listen on specific channel.
+	 */
+	private void socketSetup(){
 		target_type = getIntent().getStringExtra("target_type");
 		target_id = getIntent().getStringExtra("target_id");
 		try{
@@ -159,90 +237,6 @@ public class ChatActivity extends AppCompatActivity {
 		}catch(Exception e){
 			Log.d("Socket", e.getMessage());
 		}
-
-		setContentView(R.layout.chat_layout);
-		ButterKnife.bind(this);
-
-
-		mAdapter = new MessageAdapter(this, mMessages);
-		mMessagesView.setLayoutManager(new LinearLayoutManager(this));
-		mMessagesView.setAdapter(mAdapter);
-
-
-
-
-
-		final ActionBar actionBar = getSupportActionBar();
-		View cView = getLayoutInflater().inflate(R.layout.chat_custom_action_bar_view, null);
-		if (actionBar != null) {
-			actionBar.setCustomView(cView);
-			actionBar.setDisplayShowTitleEnabled(false);
-			actionBar.setDisplayShowCustomEnabled(true);
-		}
-
-		//get extras from bundle.
-
-		String chatTitle = getIntent().getStringExtra("USER_NAME");
-		TextView actionBarTitleTextView = (TextView) cView.findViewById(R.id.actionBarTitleText);
-		actionBarTitleTextView.setText(chatTitle);
-
-		updateChatRoom(target_type, target_id, ECUser.getUserToken());
-
-
-
-		mInputMessageView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if (actionId == R.id.send || actionId == EditorInfo.IME_NULL) {
-					attemptSend();
-					return true;
-				}
-				return false;
-			}
-		});
-		mInputMessageView.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (!mTyping) {
-					mTyping = true;
-
-				}
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-
-			}
-		});
-
-		sendButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				attemptSend();
-			}
-		});
-
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-//		mSocket.disconnect();
-//		mSocket.off(Socket.EVENT_MESSAGE);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main_menu, menu);
-		return true;
 	}
 
 	@Override
@@ -260,18 +254,23 @@ public class ChatActivity extends AppCompatActivity {
 			@Override
 			public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
 				super.onSuccessGlobal(statusCode, headers, responseBody);
-
-				try {
-					makeObjects(getObj().getJSONArray("messages"));
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
 			}
 
 			@Override
 			public void onFinishGlobal() {
 				super.onFinishGlobal();
-				updateRecyclerView();
+				try {
+					makeObjects(getObj().getJSONArray("messages"));
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						updateRecyclerView();
+					}
+				});
+
 
 			}
 
@@ -331,11 +330,6 @@ public class ChatActivity extends AppCompatActivity {
 			@Override
 			public void onFinishGlobal() {
 				super.onFinishGlobal();
-				try {
-					addMessage(new ECMessage(super.getObj().getJSONObject("message")));
-				} catch (JSONException | ParseException e) {
-					e.printStackTrace();
-				}
 			}
 
 			@Override

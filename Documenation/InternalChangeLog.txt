@@ -35,3 +35,6 @@ Version 0.5 (2)
 	-Socket IO working with receiving custom user messages. Will need to look into receiving messages for classes/departments
 	-Fixed layout issues with the ChatActivity
 	-Material Design on EditText of the Login Screen.
+	1/9/2016 @Kai
+	-Fixed some layout issues with the chat.
+	- Fixed time zones so now properly displays time of messages.

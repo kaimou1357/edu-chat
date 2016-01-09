@@ -58,6 +58,7 @@
             android:layout_height="50dp"
             android:layout_alignEnd="@+id/linearLayout"
             android:text = "LOGIN"
+            android:background="@drawable/primary_round"
             android:layout_alignParentBottom="true" />
 
 

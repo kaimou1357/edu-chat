@@ -16,7 +16,7 @@
         android:ellipsize="end"
         android:focusable="false"
         android:textColor = "#fff"
-        android:layout_marginLeft = "10dp"
+        android:layout_marginLeft = "50dp"
         android:longClickable="false"/>
 
 </LinearLayout>

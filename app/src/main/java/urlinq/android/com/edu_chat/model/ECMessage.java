@@ -9,6 +9,7 @@ import urlinq.android.com.edu_chat.model.enums.ECMessageType;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 
 /**
@@ -41,6 +42,7 @@ public class ECMessage extends ECObject {
 		this.messageTitle = recentMessage.getString("text");
 		this.messageType = ECMessageType.ECMessageTextType;
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		format.setTimeZone(TimeZone.getTimeZone("UTC"));
 		this.messageDate = format.parse(recentMessage.getString("sent_at").replace("T", " "));
 		Log.v(String.format("EDU.CHAT %s", getClass().getSimpleName()), this.toString());
 

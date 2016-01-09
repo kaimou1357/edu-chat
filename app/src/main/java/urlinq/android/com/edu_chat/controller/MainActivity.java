@@ -126,14 +126,20 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
 				super.onSuccessGlobal(statusCode, headers, responseBody);
+				makeObjectListsFromResponse(super.getObj());
 			}
 
 			@Override
 			public void onFinishGlobal() {
 				super.onFinishGlobal();
 				Log.e("JSONResponse", super.getObj().toString());
-				makeObjectListsFromResponse(super.getObj());
-				populateRecyclerView();
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						populateRecyclerView();
+					}
+				});
+
 			}
 
 			@Override

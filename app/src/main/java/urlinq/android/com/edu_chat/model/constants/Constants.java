@@ -1,5 +1,8 @@
 package urlinq.android.com.edu_chat.model.constants;
 
+import java.util.Calendar;
+import java.util.TimeZone;
+
 /**
  * Created by Kai on 9/16/2015.
  */
@@ -8,10 +11,7 @@ public class Constants {
 
     public static final String bitmapURL = "https://edu.chat/static";
     public static final int globalImageSize = 256;
-
-
-
-
+    //double to account for half hour time zone differences.
 
     /**
      * Signup form.
