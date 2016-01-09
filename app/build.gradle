@@ -5,10 +5,11 @@ android {
         unitTests.returnDefaultValues = true
     }
 
-    compileSdkVersion 23
+    compileSdkVersion 21
     buildToolsVersion '23.0.2'
     defaultConfig {
         applicationId "com.urlinq.edu_chat"
+        multiDexEnabled true
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 2
