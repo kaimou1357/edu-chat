@@ -100,8 +100,8 @@
     <orderEntry type="library" exported="" name="library-2.1.4" level="project" />
     <orderEntry type="library" exported="" name="multidex-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="parse-android-1.12.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
     <orderEntry type="library" exported="" name="android-async-http-1.4.9" level="project" />
+    <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
     <orderEntry type="library" exported="" name="instabugcore-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="bolts-tasks-1.3.1-SNAPSHOT" level="project" />
     <orderEntry type="library" exported="" name="instabugsupport-1.7.1" level="project" />

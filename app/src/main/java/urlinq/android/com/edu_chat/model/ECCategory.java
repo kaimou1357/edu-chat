@@ -243,7 +243,7 @@ public class ECCategory extends ECObject {
 		dest.writeString(this.departmentTag);
 		dest.writeParcelable(this.mostRecentMessage, 0);
 		dest.writeInt(this.typeOfCategory == null ? -1 : this.typeOfCategory.ordinal());
-		dest.writeList(this.subchannels);
+		dest.writeTypedList(this.subchannels);
 	}
 
 	protected ECCategory(Parcel in) {
@@ -257,7 +257,7 @@ public class ECCategory extends ECObject {
 		int tmpTypeOfCategory = in.readInt();
 		this.typeOfCategory = tmpTypeOfCategory == -1 ? null : ECCategoryType.values()[tmpTypeOfCategory];
 		//TODO Add Parcelable ArrayList.
-		this.subchannels = null;
+		this.subchannels = in.createTypedArrayList(ECSubchat.CREATOR);
 	}
 
 	public static final Creator<ECCategory> CREATOR = new Creator<ECCategory>() {
