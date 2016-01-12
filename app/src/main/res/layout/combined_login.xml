@@ -36,7 +36,7 @@
             android:layout_below="@id/input_school_email"
             android:ems="8"
             android:gravity="center_horizontal"
-            android:layout_height="wrap_content">
+            android:layout_height="50dp">
             <EditText
                 android:id="@+id/passwordTextView"
                 android:layout_width="match_parent"
