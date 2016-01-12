@@ -29,7 +29,9 @@ import org.json.JSONObject;
 
 import urlinq.android.com.edu_chat.controller.adapter.MessageAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
+import urlinq.android.com.edu_chat.model.ECCategory;
 import urlinq.android.com.edu_chat.model.ECMessage;
+import urlinq.android.com.edu_chat.model.ECObject;
 import urlinq.android.com.edu_chat.model.ECUser;
 
 import java.net.Socket;
@@ -66,6 +68,7 @@ public class ChatActivity extends AppCompatActivity {
 	private MessageAdapter mAdapter;
 	private String target_type;
 	private String target_id;
+	private String chatTitle;
 
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,20 @@ public class ChatActivity extends AppCompatActivity {
 		socketSetup();
 		setContentView(R.layout.chat_layout);
 		ButterKnife.bind(this);
+		ECObject passedObject = getIntent().getParcelableExtra("PARCEL");
+		if(passedObject instanceof ECCategory) {
+			ECCategory cat = (ECCategory) passedObject;
+			chatTitle = cat.getName();
+			target_id = Integer.toString(cat.getObjectIdentifier());
+			target_type = cat.getTypeOfCategory().getCategoryString();
+		}
+		if(passedObject instanceof ECUser){
+			ECUser user = (ECUser) passedObject;
+			chatTitle = user.getFullName();
+			target_id = Integer.toString(user.getObjectIdentifier());
+			target_type = "user";
+
+		}
 		mAdapter = new MessageAdapter(this, mMessages);
 		mMessagesView.setLayoutManager(new LinearLayoutManager(this));
 		mMessagesView.setAdapter(mAdapter);
@@ -86,7 +103,6 @@ public class ChatActivity extends AppCompatActivity {
 
 		//get extras from bundle.
 
-		String chatTitle = getIntent().getStringExtra("USER_NAME");
 		TextView actionBarTitleTextView = (TextView) cView.findViewById(R.id.actionBarTitleText);
 		actionBarTitleTextView.setText(chatTitle);
 

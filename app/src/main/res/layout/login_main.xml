@@ -5,17 +5,15 @@
 	android:layout_height="match_parent"
 	android:layout_alignParentEnd="true"
 	android:layout_alignParentStart="true"
-	android:background = "@color/lightestText"
 	android:layout_alignParentTop="true">
 
 	<ImageView
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		android:layout_height="375dp"
 		android:background = "@drawable/welcome"
 		android:adjustViewBounds = "true"
 		android:scaleType = "centerCrop"
-		android:id="@+id/imageView3"
-		android:layout_above="@+id/loginFormFragmentContainer" />
+		android:id="@+id/imageView3" />
 
 	<ImageView
 	android:scaleType="centerInside"
@@ -33,7 +31,7 @@
 	<FrameLayout
 		android:id="@+id/loginFormFragmentContainer"
 		android:layout_width="match_parent"
-		android:layout_height="200dp"
+		android:layout_height="250dp"
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentStart="true" />
 

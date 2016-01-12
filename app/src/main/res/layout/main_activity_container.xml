@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layoutExternal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background = "@color/background"
     android:orientation="vertical" >
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:id = "@+id/currentUserFrame"
@@ -46,23 +48,29 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background = "@color/background"
-    android:layout_below = "@id/currentUserFrame" android:id = "@+id/mainMenuContainer">
+        android:id = "@+id/mainMenuContainer">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:paddingTop = "20dp"
         android:layout_height="wrap_content"
-        android:paddingLeft = "16dp"
-        android:paddingRight = "16dp"
         android:background = "@color/background"
         android:orientation="vertical">
 
+
+        <Button style = "@style/loginbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:background="@drawable/primary_round"
+            android:id="@+id/chatsUnreadButton"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="CLASSES"
-            android:layout_marginLeft = "10dp"
+            android:layout_marginLeft ="16dp"
             android:id="@+id/classesText"/>
 
         <android.support.v7.widget.RecyclerView
@@ -77,7 +85,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="GROUPS"
-            android:layout_marginLeft = "10dp"
+            android:layout_marginLeft = "16dp"
             android:id="@+id/groupText"/>
 
         <android.support.v7.widget.RecyclerView
@@ -91,7 +99,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="DEPARTMENTS"
-            android:layout_marginLeft = "10dp"
+            android:layout_marginLeft = "16dp"
             android:id="@+id/departmentText"/>
 
         <android.support.v7.widget.RecyclerView
@@ -105,7 +113,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="PEOPLE"
-            android:layout_marginLeft = "10dp"
+            android:layout_marginLeft = "16dp"
             android:id="@+id/peopleText"/>
 
         <android.support.v7.widget.RecyclerView
@@ -119,7 +127,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="LABS"
-            android:layout_marginLeft = "10dp"
+            android:layout_marginLeft = "16dp"
             android:id="@+id/labText"/>
 
         <android.support.v7.widget.RecyclerView
@@ -129,4 +137,4 @@
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>
     </ScrollView>
-</RelativeLayout>
+</LinearLayout>

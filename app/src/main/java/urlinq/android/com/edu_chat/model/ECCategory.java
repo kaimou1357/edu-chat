@@ -25,11 +25,18 @@ public class ECCategory extends ECObject {
 	private final String departmentTag;
 	private final ECMessage mostRecentMessage;
 	private final ECCategoryType typeOfCategory;
-	private final String[] subchannels = null;
+	private final ArrayList<ECSubchat> subchannels;
 
 
 	@Override
 	public String toString() {
+		String subchatText;
+		if(subchannels == null){
+			subchatText = null;
+		}
+		else{
+			subchatText = subchannels.toString();
+		}
 		return "ECCategory{" +
 				"departmentTag='" + departmentTag + '\'' +
 				", name='" + name + '\'' +
@@ -38,7 +45,7 @@ public class ECCategory extends ECObject {
 				", professorID='" + professorID + '\'' +
 				", mostRecentMessage=" + mostRecentMessage +
 				", typeOfCategory=" + typeOfCategory +
-				", subchannels=" + Arrays.toString(subchannels) +
+				", # subchannels=" + subchatText +
 				'}' + super.toString();
 	}
 
@@ -61,6 +68,18 @@ public class ECCategory extends ECObject {
 									toString()));
 				}
 
+				JSONArray subchatJson = obj.getJSONArray("subchannels");
+				subchannels = new ArrayList<ECSubchat>();
+				//loop through and generate subchannels.
+				if(subchatJson!=null){
+					for(int i = 0; i<subchatJson.length(); i++){
+						subchannels.add(new ECSubchat(subchatJson.getJSONObject(i)));
+					}
+					Log.d("subchats", "# of subchats " + subchannels.size());
+				}
+
+
+
 			}
 			break;
 			case ECClassCategoryType: {
@@ -78,6 +97,15 @@ public class ECCategory extends ECObject {
 					Log.e(getClass().getSimpleName(),
 							String.format("CREATED A CATEGORY THAT HAS NO COLOR!!! Category = %s",
 									toString()));
+				}
+				JSONArray subchatJson = obj.getJSONArray("subchannels");
+				subchannels = new ArrayList<ECSubchat>();
+				//loop through and generate subchannels.
+				if(subchatJson!=null){
+					for(int i = 0; i<subchatJson.length(); i++){
+						subchannels.add(new ECSubchat(subchatJson.getJSONObject(i)));
+					}
+					Log.d("subchats", "# of subchats " + subchannels.size());
 				}
 
 			}
@@ -97,6 +125,15 @@ public class ECCategory extends ECObject {
 							String.format("CREATED A CATEGORY THAT HAS NO COLOR!!! Category = %s",
 									toString()));
 				}
+				JSONArray subchatJson = obj.getJSONArray("subchannels");
+				subchannels = new ArrayList<ECSubchat>();
+				//loop through and generate subchannels.
+				if(subchatJson!=null){
+					for(int i = 0; i<subchatJson.length(); i++){
+						subchannels.add(new ECSubchat(subchatJson.getJSONObject(i)));
+					}
+					Log.d("subchats", "# of subchats " + subchannels.size());
+				}
 			}
 			break;
 			//Should never reach the default case.
@@ -109,6 +146,7 @@ public class ECCategory extends ECObject {
 				this.professorID = null;
 				this.departmentTag = null;
 				this.mostRecentMessage = null;
+				this.subchannels = null;
 			}
 
 		}
@@ -195,7 +233,6 @@ public class ECCategory extends ECObject {
 	public int describeContents() {
 		return 0;
 	}
-
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		super.writeToParcel(dest, flags);
@@ -206,6 +243,7 @@ public class ECCategory extends ECObject {
 		dest.writeString(this.departmentTag);
 		dest.writeParcelable(this.mostRecentMessage, 0);
 		dest.writeInt(this.typeOfCategory == null ? -1 : this.typeOfCategory.ordinal());
+		dest.writeList(this.subchannels);
 	}
 
 	protected ECCategory(Parcel in) {
@@ -218,6 +256,8 @@ public class ECCategory extends ECObject {
 		this.mostRecentMessage = in.readParcelable(ECMessage.class.getClassLoader());
 		int tmpTypeOfCategory = in.readInt();
 		this.typeOfCategory = tmpTypeOfCategory == -1 ? null : ECCategoryType.values()[tmpTypeOfCategory];
+		//TODO Add Parcelable ArrayList.
+		this.subchannels = null;
 	}
 
 	public static final Creator<ECCategory> CREATOR = new Creator<ECCategory>() {

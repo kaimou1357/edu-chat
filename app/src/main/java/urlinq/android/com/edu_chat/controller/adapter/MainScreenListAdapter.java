@@ -138,7 +138,6 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 			SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm a");
 			localDateFormat.setTimeZone(TimeZone.getDefault());
 			String textTime = localDateFormat.format(time);
-			// TODO: IF date is more than 24 hours in the past, put the date. If less than 24 hours , put the time.
 
 			lastActivityTextView.setText(textTime);
 		}
@@ -154,21 +153,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 		@Override
 		public void onClick(View v) {
 			Intent i = new Intent(activity, ChatActivity.class);
-			if (ecObject instanceof ECCategory) {
-				ECCategory cat = (ECCategory) ecObject;
-				i.putExtra("PARCEL_TEST", cat);
-				i.putExtra("USER_NAME", cat.getName());
-				i.putExtra("target_type", cat.getTypeOfCategory().getCategoryString());
-				i.putExtra("target_id", Integer.toString(cat.getObjectIdentifier()));
-				i.putExtra("file_id", cat.getFileURL());
-			} else if (ecObject instanceof ECUser) {
-				ECUser user = (ECUser) ecObject;
-				i.putExtra("PARCEL_TEST", user);
-				i.putExtra("USER_NAME", user.getFirstName() + " " + user.getLastName());
-				i.putExtra("target_type", user.getUserType().getUserTypeString());
-				i.putExtra("target_id", Integer.toString(user.getObjectIdentifier()));
-				i.putExtra("file_id", user.getFileURL());
-			}
+			i.putExtra("PARCEL", ecObject);
 			activity.startActivity(i);
 		}
 

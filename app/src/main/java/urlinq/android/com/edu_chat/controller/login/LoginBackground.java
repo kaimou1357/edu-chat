@@ -73,7 +73,6 @@ public class LoginBackground extends Fragment {
 				SharedPreferences.Editor editPrefs = prefs.edit();
 				editPrefs.putBoolean("saveLogin", true);
 				editPrefs.putString("email", userEmail.getText().toString());
-				// TODO: Fix this once alex lets us hash! This is bad!!
 				editPrefs.putString("pass", userPass.getText().toString());
 				editPrefs.apply();
 			}

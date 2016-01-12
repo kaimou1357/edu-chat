@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.Bind;
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 	private List<ECObject> ECCategoryDepartmentList = new ArrayList<>();
 	private List<ECObject> recentList = new ArrayList<>();
 
+	int totalNumOfChats;
+
 	@Bind(R.id.classList) RecyclerView classList;
 	@Bind(R.id.groupList) RecyclerView groupList;
 	@Bind(R.id.departmentList) RecyclerView departmentList;
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 	@Bind(R.id.userFullName) TextView userFullName;
 	@Bind(R.id.userSchool) TextView userSchoolName;
 	@Bind(R.id.userProfilePicture) ImageView userProfilePicture;
+	@Bind(R.id.chatsUnreadButton)Button chatsUnreadButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
 			actionBar.setDisplayShowTitleEnabled(false);
 			actionBar.setDisplayShowCustomEnabled(true);
 		}
+		//given the number of unread messages, change update the chatsunreadtextview to reflect unread messages.
+
+
 	}
 
 	@Override
@@ -132,11 +139,12 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onFinishGlobal() {
 				super.onFinishGlobal();
-				Log.e("JSONResponse", super.getObj().toString());
+				Log.d("JSONResponse", super.getObj().toString());
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
 						populateRecyclerView();
+						chatsUnreadButton.setText("CHATS (" + totalNumOfChats + ")");
 					}
 				});
 
@@ -162,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
 			ECCategoryClassList = ECCategory.buildManyWithJSON(response.getJSONArray("classes"), ECCategoryType.ECClassCategoryType);
 			ECCategoryDepartmentList = ECCategory.buildManyWithJSON(response.getJSONArray("departments"), ECCategoryType.ECDepartmentCategoryType);
 			recentList = ECUser.buildManyWithJSON(response.getJSONArray("recent"));
+			totalNumOfChats = recentList.size() + ECCategoryClassList.size() + ECCategoryDepartmentList.size() + ECCategoryGroupList.size();
 
 		} catch (JSONException e) {
 			e.printStackTrace();

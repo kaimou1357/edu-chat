@@ -14,10 +14,6 @@ import com.urlinq.edu_chat.R;
  * Created by Kai on 9/4/2015.
  */
 public class LoginFragment extends Fragment {
-	int numberOfViewPagerChildren = 3;
-	int lastIndexOfViewPagerChildren = numberOfViewPagerChildren;
-
-
 	/**
 	 * Load the login_main.xml layout.
 	 * In addition, load the ViewPager.
