@@ -25,7 +25,7 @@
 			android:icon="@drawable/educhat"
 
 			android:label=""
-			android:theme="@style/AppTheme" />
+			android:theme="@style/AppTheme.NoActionBar" />
 
 		<activity
 			android:name="urlinq.android.com.edu_chat.controller.ChatActivity"
@@ -33,7 +33,7 @@
 			android:label=""
 			android:windowSoftInputMode="adjustPan"
 			android:parentActivityName="urlinq.android.com.edu_chat.controller.MainActivity"
-			android:theme="@style/AppTheme">
+			android:theme="@style/AppTheme.NoActionBar">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="urlinq.android.com.edu_chat.controller.ChatActivity" />

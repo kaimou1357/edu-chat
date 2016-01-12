@@ -3,8 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="urlinq.android.com.edu_chat.controller.MainActivity">
+    android:orientation="vertical">
+    <include
+        android:id="@+id/chatToolBar"
+        layout="@layout/chat_toolbar"
+        ></include>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/messages"

@@ -1,10 +1,14 @@
 package urlinq.android.com.edu_chat.controller;
 
+import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -61,6 +65,8 @@ public class ChatActivity extends AppCompatActivity {
 	@Bind(R.id.messages) RecyclerView mMessagesView;
 	@Bind(R.id.message_input) EditText mInputMessageView;
 	@Bind(R.id.send_button) Button sendButton;
+	@Bind(R.id.chatToolBar) Toolbar toolbar;
+	@Bind(R.id.actionBarTextView) TextView actionBarTextView;
 	private boolean mTyping = false;
 
 	//Don't forget to set the username to something before we begin.
@@ -93,23 +99,26 @@ public class ChatActivity extends AppCompatActivity {
 		mAdapter = new MessageAdapter(this, mMessages);
 		mMessagesView.setLayoutManager(new LinearLayoutManager(this));
 		mMessagesView.setAdapter(mAdapter);
-		final ActionBar actionBar = getSupportActionBar();
-		View cView = getLayoutInflater().inflate(R.layout.chat_custom_action_bar_view, null);
-		if (actionBar != null) {
-			actionBar.setCustomView(cView);
-			actionBar.setDisplayShowTitleEnabled(false);
-			actionBar.setDisplayShowCustomEnabled(true);
-		}
 
-		//get extras from bundle.
+		setSupportActionBar(toolbar);
+		actionBarTextView.setText(chatTitle);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v){
+				finish();
+			}
+		});
 
-		TextView actionBarTitleTextView = (TextView) cView.findViewById(R.id.actionBarTitleText);
-		actionBarTitleTextView.setText(chatTitle);
 
+
+
+
+
+
+		//update chat room with token. Make GET request.
 		updateChatRoom(target_type, target_id, ECUser.getUserToken());
-
-
-
+		//handle edittext functions here.
 		mInputMessageView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -153,8 +162,6 @@ public class ChatActivity extends AppCompatActivity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-//		mSocket.disconnect();
-//		mSocket.off(Socket.EVENT_MESSAGE);
 	}
 
 	@Override

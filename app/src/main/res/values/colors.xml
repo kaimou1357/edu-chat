@@ -3,4 +3,15 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name ="toolbarBlack">#333333</color>
+    <color name = "background">#e5e5e5</color>
+    <color name = "darkestText">#333333</color>
+    <color name = "middleText">#595959</color>
+    <color name = "lightestText">#8b8b8b</color>
+    <color name = "nav">#333333</color>
+    <color name = "profileDark">#252525</color>
+    <color name = "blueRow">#408bc1</color>
+    <color name = "loginbuttoncolor">#2196f3</color>
+    <color name = "loginbuttonpressed">#21f3e7</color>
+    <color name="White">#FFFFFF</color>
 </resources>

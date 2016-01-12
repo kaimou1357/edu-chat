@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 	@Bind(R.id.userSchool) TextView userSchoolName;
 	@Bind(R.id.userProfilePicture) ImageView userProfilePicture;
 	@Bind(R.id.chatsUnreadButton)Button chatsUnreadButton;
+	@Bind(R.id.tool_bar)Toolbar toolbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +66,7 @@ public class MainActivity extends AppCompatActivity {
 		ButterKnife.bind(this);
 		loadCurrentUserText();
 		getChatLoadOut();
-		final ActionBar actionBar = getSupportActionBar();
-		if (actionBar != null) {
-			actionBar.setCustomView(R.layout.main_custom_action_bar_view);
-			actionBar.setDisplayShowTitleEnabled(false);
-			actionBar.setDisplayShowCustomEnabled(true);
-		}
-		//given the number of unread messages, change update the chatsunreadtextview to reflect unread messages.
+		setSupportActionBar(toolbar);
 
 
 	}

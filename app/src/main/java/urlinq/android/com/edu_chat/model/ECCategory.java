@@ -256,7 +256,6 @@ public class ECCategory extends ECObject {
 		this.mostRecentMessage = in.readParcelable(ECMessage.class.getClassLoader());
 		int tmpTypeOfCategory = in.readInt();
 		this.typeOfCategory = tmpTypeOfCategory == -1 ? null : ECCategoryType.values()[tmpTypeOfCategory];
-		//TODO Add Parcelable ArrayList.
 		this.subchannels = in.createTypedArrayList(ECSubchat.CREATOR);
 	}
 
