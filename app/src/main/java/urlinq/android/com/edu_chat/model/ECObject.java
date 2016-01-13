@@ -14,15 +14,6 @@ public class ECObject implements Parcelable {
 	private final String fileURL;
 	private final String color;
 
-	@Override
-	public String toString() {
-		return "ECObject{" +
-				"color='" + color + '\'' +
-				", objectIdentifier=" + objectIdentifier +
-				", fileURL='" + fileURL + '\'' +
-				'}';
-	}
-
 	public ECObject(int objectIdentifier, String fileURL, String color) {
 		this.color = color;
 		this.objectIdentifier = objectIdentifier;
@@ -61,6 +52,24 @@ public class ECObject implements Parcelable {
 		this.objectIdentifier = in.readInt();
 		this.fileURL = in.readString();
 		this.color = in.readString();
+	}
+
+	public static final Creator<ECObject> CREATOR = new Creator<ECObject>() {
+		public ECObject createFromParcel(Parcel source) {
+			return new ECObject(source);
+		}
+		public ECObject[] newArray(int size) {
+			return new ECObject[size];
+		}
+	};
+
+	@Override
+	public String toString() {
+		return "ECObject{" +
+				"color='" + color + '\'' +
+				", objectIdentifier=" + objectIdentifier +
+				", fileURL='" + fileURL + '\'' +
+				'}';
 	}
 
 }

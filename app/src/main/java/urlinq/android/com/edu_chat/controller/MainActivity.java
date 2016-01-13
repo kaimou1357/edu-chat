@@ -43,8 +43,7 @@ public class MainActivity extends AppCompatActivity {
 	private List<ECObject> ECCategoryClassList = new ArrayList<>();
 	private List<ECObject> ECCategoryDepartmentList = new ArrayList<>();
 	private List<ECObject> recentList = new ArrayList<>();
-
-	int totalNumOfChats;
+	private int totalNumOfChats;
 
 	@Bind(R.id.classList) RecyclerView classList;
 	@Bind(R.id.groupList) RecyclerView groupList;
@@ -102,15 +101,12 @@ public class MainActivity extends AppCompatActivity {
 			public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
 				super.onSuccessGlobal(statusCode, headers, responseBody);
 			}
-
 			@Override
 			public void onFinishGlobal() {
 				super.onFinishGlobal();
 				//Once done, return back to LoginActivity.
 				finish();
-
 			}
-
 			@Override
 			public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				super.onFailureGlobal(statusCode, headers, responseBody, error);
@@ -118,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
 		};
 		logoutObject.invokePost();
 	}
-
 	/**
 	 * This method will populate ecUserList with the users loaded in from the login call.
 	 */
@@ -131,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
 				super.onSuccessGlobal(statusCode, headers, responseBody);
 				makeObjectListsFromResponse(super.getObj());
 			}
-
 			@Override
 			public void onFinishGlobal() {
 				super.onFinishGlobal();
@@ -143,15 +137,12 @@ public class MainActivity extends AppCompatActivity {
 						chatsUnreadButton.setText("CHATS (" + totalNumOfChats + ")");
 					}
 				});
-
 			}
-
 			@Override
 			public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				super.onFailureGlobal(statusCode, headers, responseBody, error);
 			}
 		};
-
 		chatObj.invokeGet();
 	}
 

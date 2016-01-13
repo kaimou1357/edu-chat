@@ -53,14 +53,12 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 				View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
 				return new CategoryViewHolder(v);
 			}
-
 		}
-
-
 	}
 	@Override
 	public int getItemViewType(int position){
 		//Swaps RecyclerViews between 0 and 1 here.
+		//TODO Implement View if one of the categories is null.
 		if(mECObjects == null){
 			return 0;
 		}
@@ -69,18 +67,19 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 
 	@Override
 	public void onBindViewHolder(final CategoryViewHolder viewHolder, int position) {
-
 		ECObject currObj = mECObjects.get(position);
 		viewHolder.setECObject(currObj);
 		String fileURL = null;
+
 		if (currObj instanceof ECUser) {
+			//Cast currObj to ECUser and then fill in headers.
 			ECUser user = (ECUser) currObj;
 			viewHolder.setRowHeader(user.getFullName());
 			viewHolder.setUserText(user.getFirstName());
+
 			if (user.getMostRecentMessage() != null) {
 				viewHolder.setMessageText(user.getMostRecentMessage().getMessageTitle());
 			}
-
 			fileURL = Constants.bitmapURL + user.getFileURL();
 		}
 		if (currObj instanceof ECCategory) {
@@ -95,7 +94,6 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 		}
 		Picasso.with(activity).load(fileURL).resize(Constants.globalImageSize, Constants.globalImageSize)
 				.centerInside().into(viewHolder.img);
-
 	}
 
 	@Override
@@ -105,7 +103,6 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 
 
 	public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
 		private final ImageView img;
 		private final TextView userText;
 		private ECObject ecObject;
@@ -136,9 +133,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 		public void setLastActivityTextView(Date time, String color) {
 			lastActivityTextView.setTextColor(Color.parseColor(color));
 			SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm a");
-			localDateFormat.setTimeZone(TimeZone.getDefault());
 			String textTime = localDateFormat.format(time);
-
 			lastActivityTextView.setText(textTime);
 		}
 

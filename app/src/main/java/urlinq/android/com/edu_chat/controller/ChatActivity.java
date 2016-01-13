@@ -64,9 +64,7 @@ public class ChatActivity extends AppCompatActivity {
 	@Bind(R.id.send_button) Button sendButton;
 	@Bind(R.id.chatToolBar) Toolbar toolbar;
 	@Bind(R.id.subChatSpinner) Spinner subChatSpinner;
-	private boolean mTyping = false;
 
-	//Don't forget to set the username to something before we begin.
 	private final List<ECMessage> mMessages = new ArrayList<>();
 	private MessageAdapter mAdapter;
 	private String target_type;
@@ -81,16 +79,15 @@ public class ChatActivity extends AppCompatActivity {
 		socketSetup();
 		setContentView(R.layout.chat_layout);
 		ButterKnife.bind(this);
-		//update chat room with token. Make GET request.
-
+		/**
+		 * Handle Passed Object in this section of the code.
+		 */
 		ECObject passedObject = getIntent().getParcelableExtra("PARCEL");
-
 		if(passedObject instanceof ECCategory) {
 			ECCategory cat = (ECCategory) passedObject;
 			chatTitle = cat.getName();
 			target_id = Integer.toString(cat.getObjectIdentifier());
 			target_type = cat.getTypeOfCategory().getCategoryString();
-			isCategory = true;
 			subchats = cat.getSubchannels();
 		}
 		if(passedObject instanceof ECUser){
@@ -104,10 +101,12 @@ public class ChatActivity extends AppCompatActivity {
 		mMessagesView.setLayoutManager(new LinearLayoutManager(this));
 		mMessagesView.setAdapter(mAdapter);
 
+		/**
+		 * Handle ToolBar setup in this section of the code.
+		 */
 		setSupportActionBar(toolbar);
-
-		//if it's a user chat, just use the main
 		ArrayList<String> nameOfSubChats = new ArrayList<>();
+		//If subchats = null, no need for a drop down spinner button, so disable the spinner.
 		if(subchats == null){
 			nameOfSubChats.add(chatTitle);
 			subChatSpinner.setEnabled(false);
@@ -120,18 +119,11 @@ public class ChatActivity extends AppCompatActivity {
 				for(int i = 0; i<subchats.size(); i++)
 				{
 					nameOfSubChats.add(subchats.get(i).getName());
-
 				}
 			}
-
 		}
-
-
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item_list, nameOfSubChats);
 		subChatSpinner.setAdapter(adapter);
-
-
-
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		//Configure the activity to end once user clicks back button.
@@ -143,10 +135,9 @@ public class ChatActivity extends AppCompatActivity {
 		});
 
 
-
-
-
-		//handle edittext functions here.
+		/**
+		 * Handle EditText Functions here.
+		 */
 		mInputMessageView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -159,25 +150,12 @@ public class ChatActivity extends AppCompatActivity {
 		});
 		mInputMessageView.addTextChangedListener(new TextWatcher() {
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-			}
-
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (!mTyping) {
-					mTyping = true;
-
-				}
-
-			}
-
+			public void onTextChanged(CharSequence s, int start, int before, int count) {}
 			@Override
-			public void afterTextChanged(Editable s) {
-
-			}
+			public void afterTextChanged(Editable s) {}
 		});
-
 		sendButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -207,45 +185,35 @@ public class ChatActivity extends AppCompatActivity {
 		target_type = getIntent().getStringExtra("target_type");
 		target_id = getIntent().getStringExtra("target_id");
 		try{
-			//http://www.mkyong.com/webservices/jax-ws/java-security-cert-certificateexception-no-name-matching-localhost-found/
 			SocketIO.setDefaultSSLSocketFactory(SSLContext.getInstance("Default"));
 			SocketIO socket = new SocketIO("https://edu.chat/");
-
 			socket.connect(new IOCallback() {
 				@Override
 				public void onMessage(JSONObject json, IOAcknowledge ack) {
-					try {
-						System.out.println("Server said:" + json.toString(2));
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
+					Log.d("Socket", "The server sent a message");
 				}
 
 				@Override
 				public void onMessage(String data, IOAcknowledge ack) {
-					System.out.println("Server said: " + data);
 				}
 
 				@Override
 				public void onError(SocketIOException socketIOException) {
-					System.out.println("an Error occured");
+					Log.d("Socket", "Connection error with Socket");
 					socketIOException.printStackTrace();
 				}
-
 				@Override
 				public void onDisconnect() {
-					System.out.println("Connection terminated.");
+					Log.d("Socket", "Socket Disconnected");
 				}
 
 				@Override
 				public void onConnect() {
-					System.out.println("Connection established");
+					Log.d("Socket", "Connection Established");
 				}
 
 				@Override
 				public void on(String event, IOAcknowledge ack, Object... args) {
-					System.out.println("Server triggered event " + event);
-
 					if(event.equals("user_"+ECUser.getCurrentUser().getObjectIdentifier())){
 						try{
 							JSONObject message_json = new JSONObject(args[0].toString());
@@ -257,13 +225,12 @@ public class ChatActivity extends AppCompatActivity {
 									}
 								});
 							}
-
-							Log.d("Socket", "Socket IO JSON: " + message_json.toString());
+							//Reenable in the future to see Socket JSON output.
+							//Log.d("Socket", "Socket IO JSON: " + message_json.toString());
 						}catch(Exception e){
 							Log.d("Socket", e.getMessage());
 						}
 					}
-
 					if(event.equals(target_type+"_" + target_id)){
 						try{
 							JSONObject message_json = new JSONObject(args[0].toString());
@@ -275,16 +242,12 @@ public class ChatActivity extends AppCompatActivity {
 									}
 								});
 							}
-
-							Log.d("Socket", "Socket IO JSON: " + message_json.toString());
 						}catch(Exception e){
 							Log.d("Socket", e.getMessage());
 						}
 					}
 				}
 			});
-
-
 		}catch(Exception e){
 			Log.d("Socket", e.getMessage());
 		}
@@ -306,7 +269,6 @@ public class ChatActivity extends AppCompatActivity {
 			public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
 				super.onSuccessGlobal(statusCode, headers, responseBody);
 			}
-
 			@Override
 			public void onFinishGlobal() {
 				super.onFinishGlobal();
@@ -321,16 +283,12 @@ public class ChatActivity extends AppCompatActivity {
 						updateRecyclerView();
 					}
 				});
-
-
 			}
-
 			@Override
 			public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				super.onFailureGlobal(statusCode, headers, responseBody, error);
 			}
 		};
-
 		loadChatObj.invokeGet();
 	}
 
@@ -343,29 +301,22 @@ public class ChatActivity extends AppCompatActivity {
 		} catch (JSONException | ParseException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	private void updateRecyclerView() {
 		mAdapter.notifyItemInserted(mMessages.size()-1);
 		scrollToBottom();
 	}
-
-
-
-
 	/**
 	 * Private method to send message. Make sure to make the HTTP/Socket calls here.
 	 */
 	private void attemptSend() {
-
 		String message = mInputMessageView.getText().toString().trim();
 		if (TextUtils.isEmpty(message)) {
 			mInputMessageView.requestFocus();
 			return;
 		}
 		mInputMessageView.setText("");
-
 		RequestParams params = new RequestParams();
 		params.add("text", message);
 		params.add("target_id", target_id);
@@ -375,7 +326,6 @@ public class ChatActivity extends AppCompatActivity {
 			@Override
 			public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
 				super.onSuccessGlobal(statusCode, headers, responseBody);
-
 			}
 
 			@Override
@@ -390,7 +340,6 @@ public class ChatActivity extends AppCompatActivity {
 		};
 		sendMessageObject.invokePost();
 	}
-
 	/**
 	 * Adds message to the recyclerview.
 	 */
@@ -406,7 +355,5 @@ public class ChatActivity extends AppCompatActivity {
 	private void scrollToBottom() {
 		mMessagesView.scrollToPosition(mAdapter.getItemCount() - 1);
 	}
-
-
 
 }

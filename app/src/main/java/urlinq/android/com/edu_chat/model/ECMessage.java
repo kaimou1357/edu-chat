@@ -24,18 +24,6 @@ public class ECMessage extends ECObject {
 	private final int subchannelID = 0;
 	private final String subchannelName = null;
 
-	@Override
-	public String toString() {
-		return "ECMessage{" +
-				"author='" + author + '\'' +
-				", messageTitle='" + messageTitle + '\'' +
-				", messageDate=" + messageDate +
-				", messageType=" + messageType +
-				", subchannelID=" + subchannelID +
-				", subchannelName='" + subchannelName + '\'' +
-				'}' + super.toString();
-	}
-
 	public ECMessage(JSONObject recentMessage) throws JSONException, ParseException {
 		super(recentMessage.getInt("id"), null, null);
 		this.author = new ECUser(recentMessage.getJSONObject("user"));
@@ -47,8 +35,6 @@ public class ECMessage extends ECObject {
 		Log.v(String.format("EDU.CHAT %s", getClass().getSimpleName()), this.toString());
 
 	}
-
-
 	public String getMessageTitle() {
 		return messageTitle;
 	}
@@ -65,6 +51,10 @@ public class ECMessage extends ECObject {
 		return messageType;
 	}
 
+	/**
+	 * Handle Parcelable Stuff under here.
+	 * @return
+	 */
 	@Override
 	public int describeContents() {
 		return 0;
@@ -98,4 +88,16 @@ public class ECMessage extends ECObject {
 			return new ECMessage[size];
 		}
 	};
+
+	@Override
+	public String toString() {
+		return "ECMessage{" +
+				"author='" + author + '\'' +
+				", messageTitle='" + messageTitle + '\'' +
+				", messageDate=" + messageDate +
+				", messageType=" + messageType +
+				", subchannelID=" + subchannelID +
+				", subchannelName='" + subchannelName + '\'' +
+				'}' + super.toString();
+	}
 }

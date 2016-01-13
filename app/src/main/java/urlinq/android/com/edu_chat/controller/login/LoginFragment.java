@@ -15,16 +15,16 @@ import com.urlinq.edu_chat.R;
  */
 public class LoginFragment extends Fragment {
 	/**
-	 * Load the login_main.xml layout.
-	 * In addition, load the ViewPager.
+	 * Fragment to load the LoginMain Layout.
+	 * @param inflater
+	 * @param container
+	 * @param savedInstanceState
+	 * @return
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		//initialize viewpager object.
 		View v = inflater.inflate(R.layout.login_main, container, false);
-
-
-
 		return v;
 	}
 

@@ -27,16 +27,12 @@ import urlinq.android.com.edu_chat.model.ECUser;
  */
 public class LoginBackground extends Fragment {
 	private SharedPreferences prefs;
-	//@Bind(R.id.signUpToggle)  ImageButton signUpBtn;
 	@Bind(R.id.logInBlue) Button logInBlue;
-	//@Bind(R.id.viewFlipper)  ViewFlipper flipper;
 	@Bind(R.id.emailTextView) EditText userEmail;
 	@Bind(R.id.passwordTextView) EditText userPass;
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.combined_login, container, false);
-		//get reference to other fragment
 		ButterKnife.bind(this, v);
 		prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
 		if (prefs.getBoolean("saveLogin", false)) {
@@ -49,12 +45,9 @@ public class LoginBackground extends Fragment {
 		}
 		logInBlue.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				//This will delay the spinner circle a bit so it's  not too fast.
 				attemptLogin();
 			}
 		});
-		//You need to pass the data from here via an intent to the MainActivity.
-
 		return v;
 	}
 
@@ -62,7 +55,6 @@ public class LoginBackground extends Fragment {
 	 * Attempt to login separated into another method.
 	 */
 	private void attemptLogin() {
-		//final CountDownLatch latch = new CountDownLatch(1);
 		RequestParams params = new RequestParams();
 		params.put("email", userEmail.getText().toString());
 		params.put("password", userPass.getText().toString());

@@ -27,28 +27,6 @@ public class ECCategory extends ECObject {
 	private final ECCategoryType typeOfCategory;
 	private final ArrayList<ECSubchat> subchannels = new ArrayList<ECSubchat>();
 
-
-	@Override
-	public String toString() {
-		String subchatText;
-		if(subchannels == null){
-			subchatText = null;
-		}
-		else{
-			subchatText = subchannels.toString();
-		}
-		return "ECCategory{" +
-				"departmentTag='" + departmentTag + '\'' +
-				", name='" + name + '\'' +
-				", professorFirstName='" + professorFirstName + '\'' +
-				", professorLastName='" + professorLastName + '\'' +
-				", professorID='" + professorID + '\'' +
-				", mostRecentMessage=" + mostRecentMessage +
-				", typeOfCategory=" + typeOfCategory +
-				", # subchannels=" + subchatText +
-				'}' + super.toString();
-	}
-
 	public ECCategory(JSONObject obj, ECCategoryType groupType) throws JSONException, ParseException {
 		super(obj.getInt("id"), obj.getJSONObject("picture_file").getString("file_url"), obj.getString("color"));
 		switch (groupType) {
@@ -67,7 +45,6 @@ public class ECCategory extends ECObject {
 							String.format("CREATED A CATEGORY THAT HAS NO COLOR!!! Category = %s",
 									toString()));
 				}
-
 				JSONArray subchatJson = obj.getJSONArray("subchannels");
 
 				//loop through and generate subchannels.
@@ -77,9 +54,6 @@ public class ECCategory extends ECObject {
 					}
 					Log.d("subchats", "# of subchats " + subchannels.size());
 				}
-
-
-
 			}
 			break;
 			case ECClassCategoryType: {
@@ -106,7 +80,6 @@ public class ECCategory extends ECObject {
 					}
 					Log.d("subchats", "# of subchats " + subchannels.size());
 				}
-
 			}
 			break;
 			case ECGroupCategoryType: {
@@ -147,9 +120,8 @@ public class ECCategory extends ECObject {
 				this.mostRecentMessage = null;
 
 			}
-
 		}
-		//It should never reach this point....
+		//Code should never reach the default case.
 
 	}
 
@@ -232,6 +204,10 @@ public class ECCategory extends ECObject {
 		return this.subchannels;
 	}
 
+	/**
+	 * Handle Parcelable stuff under here.
+	 * @return
+	 */
 	@Override
 	public int describeContents() {
 		return 0;
@@ -261,14 +237,33 @@ public class ECCategory extends ECObject {
 		this.typeOfCategory = tmpTypeOfCategory == -1 ? null : ECCategoryType.values()[tmpTypeOfCategory];
 		in.readTypedList(subchannels, ECSubchat.CREATOR);
 	}
-
 	public static final Creator<ECCategory> CREATOR = new Creator<ECCategory>() {
 		public ECCategory createFromParcel(Parcel source) {
 			return new ECCategory(source);
 		}
-
 		public ECCategory[] newArray(int size) {
 			return new ECCategory[size];
 		}
 	};
+
+	@Override
+	public String toString() {
+		String subchatText;
+		if(subchannels == null){
+			subchatText = null;
+		}
+		else{
+			subchatText = subchannels.toString();
+		}
+		return "ECCategory{" +
+				"departmentTag='" + departmentTag + '\'' +
+				", name='" + name + '\'' +
+				", professorFirstName='" + professorFirstName + '\'' +
+				", professorLastName='" + professorLastName + '\'' +
+				", professorID='" + professorID + '\'' +
+				", mostRecentMessage=" + mostRecentMessage +
+				", typeOfCategory=" + typeOfCategory +
+				", # subchannels=" + subchatText +
+				'}' + super.toString();
+	}
 }

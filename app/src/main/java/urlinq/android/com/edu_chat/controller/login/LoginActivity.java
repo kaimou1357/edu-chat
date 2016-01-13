@@ -20,15 +20,9 @@ public class LoginActivity extends InstabugAppCompatActivity implements LoginBac
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		Instabug.initialize(getApplication(), "4719bf1a7d10635f7c1520989f084d4c");
-
-
 		super.onCreate(savedInstanceState);
-
-
 		Parse.enableLocalDatastore(this);
-
 		Parse.initialize(this, "8HRtau0wTVMAJCL6QAb0qVi1iI661qsdy7CT9xnN", "Bd4rgDMBk5OIHbYB9wdlyA75Ys2QckhhtQpZmvxO");
-
 		ParseConfig.getInBackground(new ConfigCallback() {
 			@Override
 			public void done(ParseConfig config, ParseException e) {
@@ -40,9 +34,7 @@ public class LoginActivity extends InstabugAppCompatActivity implements LoginBac
 				}
 			}
 		});
-
 		setContentView(R.layout.content_main);
-
 		ButterKnife.bind(this);
 
 		//Start the LoginFragment. This Activity will act as a container for the fragment.
@@ -56,7 +48,6 @@ public class LoginActivity extends InstabugAppCompatActivity implements LoginBac
 			ft.add(R.id.loginFormFragmentContainer, loginForm);
 			ft.commit();
 		}
-
 	}
 
 

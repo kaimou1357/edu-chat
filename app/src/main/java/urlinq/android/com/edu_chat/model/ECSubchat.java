@@ -35,15 +35,6 @@ public class ECSubchat extends ECObject {
         return this.name;
     }
 
-    public String toString(){
-
-        return "ECSubChat{" +
-                " name='" + name + '\'' +
-                " privacysetting='" + privacy + '\'' +
-                " subchat description='" + description + '\'' +
-                '}' + super.toString();
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -72,4 +63,13 @@ public class ECSubchat extends ECObject {
             return new ECSubchat[size];
         }
     };
+
+    public String toString(){
+
+        return "ECSubChat{" +
+                " name='" + name + '\'' +
+                " privacysetting='" + privacy + '\'' +
+                " subchat description='" + description + '\'' +
+                '}' + super.toString();
+    }
 }

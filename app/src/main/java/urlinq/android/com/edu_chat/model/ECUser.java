@@ -35,21 +35,6 @@ public class ECUser extends ECObject {
 	private final String department;
 	private final String[] subchannel = null;
 
-
-	@Override
-	public String toString() {
-		return "ECUser{" +
-				"department='" + department + '\'' +
-				", firstName='" + firstName + '\'' +
-				", lastName='" + lastName + '\'' +
-				", email='" + email + '\'' +
-				", userType=" + userType +
-				", mostRecentMessage=" + mostRecentMessage +
-				", lastActivity=" + lastActivity +
-				", subchannel=" + Arrays.toString(subchannel) +
-				'}' + super.toString();
-	}
-
 	/**
 	 * This constructor will be for the current user using the application.
 	 *
@@ -194,4 +179,18 @@ public class ECUser extends ECObject {
 			return new ECUser[size];
 		}
 	};
+
+	@Override
+	public String toString() {
+		return "ECUser{" +
+				"department='" + department + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", email='" + email + '\'' +
+				", userType=" + userType +
+				", mostRecentMessage=" + mostRecentMessage +
+				", lastActivity=" + lastActivity +
+				", subchannel=" + Arrays.toString(subchannel) +
+				'}' + super.toString();
+	}
 }
