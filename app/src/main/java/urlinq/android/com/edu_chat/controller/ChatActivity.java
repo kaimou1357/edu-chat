@@ -1,10 +1,6 @@
 package urlinq.android.com.edu_chat.controller;
 
-import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,16 +11,16 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
-import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.Bind;
 import com.loopj.android.http.RequestParams;
 import com.urlinq.edu_chat.R;
 
-import butterknife.OnItemClick;
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +32,7 @@ import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.ECCategory;
 import urlinq.android.com.edu_chat.model.ECMessage;
 import urlinq.android.com.edu_chat.model.ECObject;
+import urlinq.android.com.edu_chat.model.ECSubchat;
 import urlinq.android.com.edu_chat.model.ECUser;
 
 import java.net.Socket;
@@ -66,7 +63,7 @@ public class ChatActivity extends AppCompatActivity {
 	@Bind(R.id.message_input) EditText mInputMessageView;
 	@Bind(R.id.send_button) Button sendButton;
 	@Bind(R.id.chatToolBar) Toolbar toolbar;
-	@Bind(R.id.actionBarTextView) TextView actionBarTextView;
+	@Bind(R.id.subChatSpinner) Spinner subChatSpinner;
 	private boolean mTyping = false;
 
 	//Don't forget to set the username to something before we begin.
@@ -75,6 +72,8 @@ public class ChatActivity extends AppCompatActivity {
 	private String target_type;
 	private String target_id;
 	private String chatTitle;
+	private boolean isCategory = false;
+	private ArrayList<ECSubchat> subchats;
 
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,30 +81,63 @@ public class ChatActivity extends AppCompatActivity {
 		socketSetup();
 		setContentView(R.layout.chat_layout);
 		ButterKnife.bind(this);
+		//update chat room with token. Make GET request.
+
 		ECObject passedObject = getIntent().getParcelableExtra("PARCEL");
+
 		if(passedObject instanceof ECCategory) {
 			ECCategory cat = (ECCategory) passedObject;
 			chatTitle = cat.getName();
 			target_id = Integer.toString(cat.getObjectIdentifier());
 			target_type = cat.getTypeOfCategory().getCategoryString();
+			isCategory = true;
+			subchats = cat.getSubchannels();
 		}
 		if(passedObject instanceof ECUser){
 			ECUser user = (ECUser) passedObject;
 			chatTitle = user.getFullName();
 			target_id = Integer.toString(user.getObjectIdentifier());
 			target_type = "user";
-
 		}
+		updateChatRoom(target_type, target_id, ECUser.getUserToken());
 		mAdapter = new MessageAdapter(this, mMessages);
 		mMessagesView.setLayoutManager(new LinearLayoutManager(this));
 		mMessagesView.setAdapter(mAdapter);
 
 		setSupportActionBar(toolbar);
-		actionBarTextView.setText(chatTitle);
+
+		//if it's a user chat, just use the main
+		ArrayList<String> nameOfSubChats = new ArrayList<>();
+		if(subchats == null){
+			nameOfSubChats.add(chatTitle);
+			subChatSpinner.setEnabled(false);
+			Log.d("Subchats", "subchats is null");
+		}
+		else{
+			nameOfSubChats.add(chatTitle);
+			Log.d("Subchats", "subchats is not null");
+			if(subchats.size()!=0){
+				for(int i = 0; i<subchats.size(); i++)
+				{
+					nameOfSubChats.add(subchats.get(i).getName());
+
+				}
+			}
+
+		}
+
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item_list, nameOfSubChats);
+		subChatSpinner.setAdapter(adapter);
+
+
+
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		//Configure the activity to end once user clicks back button.
+		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v){
+			public void onClick(View v) {
 				finish();
 			}
 		});
@@ -114,10 +146,6 @@ public class ChatActivity extends AppCompatActivity {
 
 
 
-
-
-		//update chat room with token. Make GET request.
-		updateChatRoom(target_type, target_id, ECUser.getUserToken());
 		//handle edittext functions here.
 		mInputMessageView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
