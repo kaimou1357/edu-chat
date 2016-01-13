@@ -3,6 +3,7 @@ package urlinq.android.com.edu_chat.controller;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -74,8 +75,10 @@ public class ChatFragment extends Fragment {
     private MessageAdapter mAdapter;
     private String target_type;
     private String target_id;
+    private String subchannel_name;
     private String chatTitle;
     private ArrayList<ECSubchat> subchats;
+    private boolean isSubChannel = false;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.chat_layout, container, false);
@@ -105,6 +108,9 @@ public class ChatFragment extends Fragment {
             chatTitle = subchat.getName();
             target_id = Integer.toString(subchat.getObjectIdentifier());
             target_type = "subchannel";
+            subchannel_name = chatTitle;
+            isSubChannel = true;
+            Log.d("subchat", "ECSUBCHAT Processed!");
         }
         updateChatRoom(target_type, target_id, ECUser.getUserToken());
         mAdapter = new MessageAdapter(getActivity(), mMessages);
@@ -128,6 +134,9 @@ public class ChatFragment extends Fragment {
         else{
             nameOfSubChats.add(chatTitle);
             Log.d("Subchats", "subchats is not null");
+            if(subchats.size() == 0){
+                subChatSpinner.setEnabled(false);
+            }
             if(subchats.size()!=0){
                 for(int i = 0; i<subchats.size(); i++)
                 {
@@ -135,10 +144,24 @@ public class ChatFragment extends Fragment {
                 }
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item_list, nameOfSubChats);
+            //Do not modify this order. The setSelection following setAdapter makes sure Spinner doesn't fire off before user selection.
             subChatSpinner.setAdapter(adapter);
+            subChatSpinner.setSelection(0, false);
             subChatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if(subchats.size() !=0){
+                        ECSubchat chat = (ECSubchat)subchats.get(position);
+                        Log.d("Subchats", "Index Selected" + position);
+                        Bundle b = new Bundle();
+                        b.putParcelable("PARCEL", chat);
+                        ChatFragment frag = new ChatFragment();
+                        frag.setArguments(b);
+                        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                        ft.add(R.id.layoutExternal, frag);
+                        ft.commit();
+                    }
+                    Log.d("subchats", "Item Selected" + position);
 
                 }
                 @Override
@@ -154,7 +177,6 @@ public class ChatFragment extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO Going back to MainActivity from Fragment.
                 getActivity().getSupportFragmentManager().popBackStack();
 
             }
@@ -285,6 +307,9 @@ public class ChatFragment extends Fragment {
 
     private void updateChatRoom(String targetType, String targetID, String token) {
         RequestParams params = new RequestParams();
+        if(isSubChannel){
+            params.add("subchannel_name", subchannel_name);
+        }
         params.add("target_type", targetType);
         params.add("target_id", targetID);
         params.add("token", token);
