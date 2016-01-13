@@ -38,10 +38,10 @@ public class LoginBackground extends Fragment {
 		if (prefs.getBoolean("saveLogin", false)) {
 			userEmail.setText(prefs.getString("email", ""));
 			userPass.setText(prefs.getString("pass", ""));
-			ParseConfig config = ParseConfig.getCurrentConfig();
-			if (config.getBoolean(getString(R.string.PARSE_CONFIG_AUTO_LOGIN), false)) {
-				attemptLogin();
-			}
+//			ParseConfig config = ParseConfig.getCurrentConfig();
+//			if (config.getBoolean(getString(R.string.PARSE_CONFIG_AUTO_LOGIN), false)) {
+//				attemptLogin();
+//			}
 		}
 		logInBlue.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {

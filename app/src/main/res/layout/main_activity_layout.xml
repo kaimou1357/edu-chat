@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutExternal"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <LinearLayout
+
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background = "@color/background"
+        android:orientation="vertical" >
+        <include
+            android:id="@+id/tool_bar"
+            layout="@layout/main_toolbar"
+            ></include>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:id = "@+id/currentUserFrame"
+            android:background = "@color/profileDark"
+            android:layout_height="100dp">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop = "20dp"
+                android:layout_marginLeft = "20dp"
+                android:id="@+id/userProfilePicture" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/White"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_toEndOf="@id/userProfilePicture"
+                android:id="@+id/userFullName" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/White"
+                android:layout_marginLeft="20dp"
+                android:layout_below = "@id/userFullName"
+                android:layout_toEndOf="@id/userProfilePicture"
+                android:id="@+id/userSchool" />
+
+        </RelativeLayout>
+
+
+        <ScrollView
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background = "@color/background"
+
+            android:id = "@+id/mainMenuContainer">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background = "@color/background"
+                android:paddingRight = "16dp"
+
+                android:orientation="vertical">
+
+
+                <Button style = "@style/loginbutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:background="@drawable/primary_round"
+                    android:id="@+id/chatsUnreadButton"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="CLASSES"
+                    android:layout_marginLeft ="16dp"
+                    android:id="@+id/classesText"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id = "@+id/classList">
+                </android.support.v7.widget.RecyclerView>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="GROUPS"
+                    android:layout_marginLeft = "16dp"
+                    android:id="@+id/groupText"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id = "@+id/groupList">
+                </android.support.v7.widget.RecyclerView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="DEPARTMENTS"
+                    android:layout_marginLeft = "16dp"
+                    android:id="@+id/departmentText"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id = "@+id/departmentList">
+                </android.support.v7.widget.RecyclerView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="PEOPLE"
+                    android:layout_marginLeft = "16dp"
+                    android:id="@+id/peopleText"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id = "@+id/peopleList">
+                </android.support.v7.widget.RecyclerView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="LABS"
+                    android:layout_marginLeft = "16dp"
+                    android:id="@+id/labText"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id = "@+id/labList">
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</FrameLayout>

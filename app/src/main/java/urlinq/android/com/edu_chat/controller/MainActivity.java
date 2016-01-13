@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.main_activity_container);
+		setContentView(R.layout.main_activity_layout);
 		ButterKnife.bind(this);
 		loadCurrentUserText();
 		getChatLoadOut();
@@ -76,6 +76,11 @@ public class MainActivity extends AppCompatActivity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_menu, menu);
 		return true;
+	}
+	@Override
+	public void onPause(){
+		super.onPause();
+		
 	}
 
 	@Override

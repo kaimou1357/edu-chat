@@ -1,12 +1,11 @@
 package urlinq.android.com.edu_chat.controller.adapter;
 
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +13,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.urlinq.edu_chat.R;
-import urlinq.android.com.edu_chat.controller.ChatActivity;
+
+import urlinq.android.com.edu_chat.controller.ChatFragment;
 import urlinq.android.com.edu_chat.model.ECCategory;
 import urlinq.android.com.edu_chat.model.ECObject;
 import urlinq.android.com.edu_chat.model.ECUser;
 import urlinq.android.com.edu_chat.model.constants.Constants;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 
 /**
@@ -32,9 +30,9 @@ import java.util.TimeZone;
  */
 public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAdapter.CategoryViewHolder> {
 	private final List<ECObject> mECObjects;
-	private final Activity activity;
+	private final AppCompatActivity activity;
 
-	public MainScreenListAdapter(Activity activity, List<ECObject> mECObjects) {
+	public MainScreenListAdapter(AppCompatActivity activity, List<ECObject> mECObjects) {
 		this.mECObjects = mECObjects;
 		this.activity = activity;
 	}
@@ -147,9 +145,21 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 
 		@Override
 		public void onClick(View v) {
-			Intent i = new Intent(activity, ChatActivity.class);
-			i.putExtra("PARCEL", ecObject);
-			activity.startActivity(i);
+//			Intent i = new Intent(activity, ChatActivity.class);
+//			i.putExtra("PARCEL", ecObject);
+//			activity.startActivity(i);
+			//Trying something.
+
+			ChatFragment chat = new ChatFragment();
+			Bundle b = new Bundle();
+			b.putParcelable("PARCEL", ecObject);
+			chat.setArguments(b);
+			FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+			ft.add(R.id.layoutExternal, chat);
+			ft.addToBackStack(null);
+			ft.commit();
+
+
 		}
 
 

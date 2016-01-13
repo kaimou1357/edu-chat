@@ -193,27 +193,33 @@ public class ECApiManager {
 
         @Override
         public void onFinishGlobal() {
-
-            try {
+            try{
                 ECUser.setCurrentUser(new ECUser(getObj().getJSONObject("user")));
                 ECUser.setUserToken(getObj().getString("token"));
                 ECUser.setCurrentUserSchool(getObj().getJSONObject("user").getJSONObject("school").getString("school_name"));
-
-                ParseInstallation install = ParseInstallation.getCurrentInstallation();
-                install.put("ID", Integer.toString(ECUser.getCurrentUser().getObjectIdentifier()));
-                install.put("First", ECUser.getCurrentUser().getFirstName());
-                install.put("Last", ECUser.getCurrentUser().getLastName());
-                install.save();
-
-                ParseObject login = new ParseObject("Logins");
-                login.put("useridnum", ECUser.getCurrentUser().getObjectIdentifier());
-                login.put("OS", "Android");
-                login.put("Install", install);
-                login.save();
-
-            } catch (ParseException | JSONException | com.parse.ParseException e) {
+            }catch(JSONException | ParseException e){
                 e.printStackTrace();
             }
+
+
+//            try {
+
+//
+//                ParseInstallation install = ParseInstallation.getCurrentInstallation();
+//                install.put("ID", Integer.toString(ECUser.getCurrentUser().getObjectIdentifier()));
+//                install.put("First", ECUser.getCurrentUser().getFirstName());
+//                install.put("Last", ECUser.getCurrentUser().getLastName());
+//                install.save();
+//
+//                ParseObject login = new ParseObject("Logins");
+//                login.put("useridnum", ECUser.getCurrentUser().getObjectIdentifier());
+//                login.put("OS", "Android");
+//                login.put("Install", install);
+//                login.save();
+//
+//            } catch (ParseException | JSONException | com.parse.ParseException e) {
+//                e.printStackTrace();
+//            }
 
 
         }
