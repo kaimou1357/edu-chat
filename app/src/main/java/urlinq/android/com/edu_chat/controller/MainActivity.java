@@ -1,12 +1,14 @@
 package urlinq.android.com.edu_chat.controller;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -44,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
 	private List<ECObject> ECCategoryGroupList = new ArrayList<>();
 	private List<ECObject> ECCategoryClassList = new ArrayList<>();
 	private List<ECObject> ECCategoryDepartmentList = new ArrayList<>();
+	private List<ECObject> ECCategoryLabList = new ArrayList<>();
 	private List<ECObject> recentList = new ArrayList<>();
 	private int totalNumOfChats;
 
-	@Bind(R.id.classList)
-	EmptyRecyclerView classList;
+	@Bind(R.id.classList) EmptyRecyclerView classList;
 	@Bind(R.id.groupList) EmptyRecyclerView groupList;
 	@Bind(R.id.departmentList) EmptyRecyclerView departmentList;
 	@Bind(R.id.labList) EmptyRecyclerView labList;
@@ -185,22 +187,31 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void populateRecyclerView() {
+		View v = findViewById(R.id.emptyGroupView);
 
 		MainScreenListAdapter groupAdapter = new MainScreenListAdapter(this, ECCategoryGroupList);
 		groupList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
+		groupList.setEmptyView(v);
 		groupList.setAdapter(groupAdapter);
 
 		MainScreenListAdapter classAdapter = new MainScreenListAdapter(this, ECCategoryClassList);
 		classList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
+		classList.setEmptyView(v);
 		classList.setAdapter(classAdapter);
 
 		MainScreenListAdapter departmentAdapter = new MainScreenListAdapter(this, ECCategoryDepartmentList);
-		departmentList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
+		departmentList.setLayoutManager(new LinearLayoutManager(this));
 		departmentList.setAdapter(departmentAdapter);
 
 		MainScreenListAdapter peopleAdapter = new MainScreenListAdapter(this, recentList);
 		peopleList.setLayoutManager(new LinearLayoutManager(this));
+		peopleList.setEmptyView(v);
 		peopleList.setAdapter(peopleAdapter);
+
+		MainScreenListAdapter labAdapter = new MainScreenListAdapter(this, ECCategoryLabList);
+		labList.setLayoutManager(new LinearLayoutManager(this));
+		labList.setAdapter(labAdapter);
+
 
 
 	}

@@ -3,6 +3,7 @@ package urlinq.android.com.edu_chat.model;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 public class EmptyRecyclerView extends RecyclerView {
@@ -41,6 +42,7 @@ public class EmptyRecyclerView extends RecyclerView {
             final boolean emptyViewVisible = getAdapter().getItemCount() == 0;
             emptyView.setVisibility(emptyViewVisible ? VISIBLE : GONE);
             setVisibility(emptyViewVisible ? GONE : VISIBLE);
+            Log.d("Empty View", "Adapter Item Count" +  getAdapter().getItemCount());
         }
     }
 

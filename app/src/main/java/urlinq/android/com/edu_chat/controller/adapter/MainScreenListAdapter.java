@@ -31,6 +31,7 @@ import java.util.List;
 public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAdapter.CategoryViewHolder> {
 	private final List<ECObject> mECObjects;
 	private final AppCompatActivity activity;
+	private static final int EMPTY_VIEW = 10;
 
 	public MainScreenListAdapter(AppCompatActivity activity, List<ECObject> mECObjects) {
 		this.mECObjects = mECObjects;
@@ -39,28 +40,26 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 
 	@Override
 	public CategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewCase) {
-		int layout;
-		switch(viewCase){
-			case 0:{
-				layout = R.layout.empty_category;
-				View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-				return new CategoryViewHolder(v);
-			}
-			default:{
-				layout = R.layout.main_list_scroll_item;
-				View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-				return new CategoryViewHolder(v);
-			}
+		View v;
+		if(viewCase == EMPTY_VIEW){
+			v = LayoutInflater.from(parent.getContext()).inflate(R.layout.empty_group_view, parent, false);
+			CategoryViewHolder ctg = new CategoryViewHolder(v);
+			return ctg;
+
 		}
+		int layout = R.layout.main_list_scroll_item;
+		v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
+		return new CategoryViewHolder(v);
+
+
 	}
 	@Override
 	public int getItemViewType(int position){
 		//Swaps RecyclerViews between 0 and 1 here.
-		//TODO Implement View if one of the categories is null.
-		if(mECObjects == null){
-			return 0;
+		if(mECObjects.size() == 0){
+			return EMPTY_VIEW;
 		}
-		return 1;
+		return super.getItemViewType(position);
 	}
 
 	@Override
