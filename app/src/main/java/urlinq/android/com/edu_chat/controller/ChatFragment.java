@@ -34,6 +34,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,9 @@ import io.socket.IOAcknowledge;
 import io.socket.IOCallback;
 import io.socket.SocketIO;
 import io.socket.SocketIOException;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 import urlinq.android.com.edu_chat.controller.adapter.MessageAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.ECCategory;
@@ -79,11 +84,11 @@ public class ChatFragment extends Fragment {
     private String chatTitle;
     private ArrayList<ECSubchat> subchats;
     private boolean isSubChannel = false;
+    private boolean isUserChat = false;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.chat_layout, container, false);
         v.setBackgroundColor(Color.WHITE);
-        socketSetup(target_type, target_id);
         ButterKnife.bind(this, v);
         /**
          * Handle Passed Object in this section of the code.
@@ -104,6 +109,7 @@ public class ChatFragment extends Fragment {
 
             target_id = Integer.toString(user.getObjectIdentifier());
             target_type = "user";
+            isUserChat = true;
         }
         if(passedObject instanceof ECSubchat){
             ECSubchat subchat = (ECSubchat) passedObject;
@@ -115,10 +121,17 @@ public class ChatFragment extends Fragment {
             isSubChannel = true;
             Log.d("subchat", "ECSUBCHAT Processed!");
         }
-        updateChatRoom(target_type, target_id,null, ECUser.getUserToken());
+        updateChatRoom(target_type, target_id, null, ECUser.getUserToken());
         mAdapter = new MessageAdapter(getActivity(), mMessages);
         mMessagesView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mMessagesView.setAdapter(mAdapter);
+        if(isUserChat){
+            socketSetup(target_type, Integer.toString(ECUser.getCurrentUser().getObjectIdentifier()));
+        }
+        else{
+            socketSetup(target_type, target_id);
+        }
+
 
         /**
          * Handle ToolBar setup in this section of the code.
@@ -227,7 +240,9 @@ public class ChatFragment extends Fragment {
     /**
      * Method to setup socket to listen on specific channel.
      */
-    private void socketSetup(String target_type, String target_id){
+    private void socketSetup(final String target_type, final String target_id){
+
+
         final String type = target_type;
         final String id = target_id;
         try{
@@ -260,40 +275,22 @@ public class ChatFragment extends Fragment {
 
                 @Override
                 public void on(String event, IOAcknowledge ack, Object... args) {
-                    Log.d("Socket", type + "_" + id);
-                    if(event.equals("user_"+ECUser.getCurrentUser().getObjectIdentifier())){
-                        try{
-                            JSONObject message_json = new JSONObject(args[0].toString());
-                            if(message_json.getString("type").equals("text") && message_json.getString("user_id").equals(id)){
-                                final ECMessage message = new ECMessage(message_json);
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        addMessage(message);
-                                    }
-                                });
-                            }
-                            //Reenable in the future to see Socket JSON output.
-                            //Log.d("Socket", "Socket IO JSON: " + message_json.toString());
-                        }catch(Exception e){
-                            Log.d("Socket", e.getMessage());
+                    try{
+                        JSONObject serverJSON = new JSONObject(args[0].toString());
+                        String currentChat = type+ "_" + id;
+                        if(event.equals(currentChat) && serverJSON.getString("type").equals("text")){
+                            final ECMessage message = new ECMessage(serverJSON);
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    addMessage(message);
+                                }
+                            });
                         }
+                    }catch(JSONException | ParseException e){
+                        e.printStackTrace();
                     }
-                    if(event.equals(type+"_" + id)){
-                        try{
-                            JSONObject message_json = new JSONObject(args[0].toString());
-                            if(message_json.getString("type").equals("text")){
-                                final ECMessage message = new ECMessage(message_json);
-                                getActivity().runOnUiThread(new Runnable() {
-                                    public void run() {
-                                        addMessage(message);
-                                    }
-                                });
-                            }
-                        }catch(Exception e){
-                            Log.d("Socket", e.getMessage());
-                        }
-                    }
+
                 }
             });
         }catch(Exception e){
@@ -301,10 +298,9 @@ public class ChatFragment extends Fragment {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return true;
-    }
+
+
+
 
     private void updateChatRoom(String targetType, String targetID, String subchannel_id, String token) {
         RequestParams params = new RequestParams();
@@ -353,7 +349,7 @@ public class ChatFragment extends Fragment {
     }
 
     private void updateRecyclerView() {
-        mAdapter.notifyItemInserted(mMessages.size()-1);
+        mAdapter.notifyItemInserted(mMessages.size() - 1);
         scrollToBottom();
     }
     /**
@@ -380,6 +376,14 @@ public class ChatFragment extends Fragment {
             @Override
             public void onFinishGlobal() {
                 super.onFinishGlobal();
+                if(isUserChat){
+                    try {
+                        addMessage(new ECMessage(super.getObj().getJSONObject("message")));
+                    } catch (JSONException | ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
 
             @Override

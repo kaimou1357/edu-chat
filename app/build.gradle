@@ -53,6 +53,10 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.parse:parse-android:1.+'
+    compile ('io.socket:socket.io-client:0.6.3') {
+        // excluding org.json which is provided by Android
+        exclude group: 'org.json', module: 'json'
+    }
     compile 'com.instabug.library:instabugsupport:1.7.1'
     //compile 'lib/socketio.jar'
     compile files('libs/socketio.jar')
