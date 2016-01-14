@@ -14,12 +14,18 @@ import java.util.Arrays;
 public class ECSubchat extends ECObject {
     private final String name;
     private final int privacy;
+    private final int origin_id;
+    private final int subchannel_id;
+    private final String origin_type;
     private final String description;
 
     public ECSubchat(JSONObject subchat) throws JSONException{
         super(subchat.getInt("id"), null, null);
         this.name = subchat.getString("name");
         this.privacy = subchat.getInt("privacy");
+        this.subchannel_id = subchat.getInt("id");
+        this.origin_id = subchat.getInt("origin_id");
+        this.origin_type = subchat.getString("origin_type");
         this.description = subchat.getString("description");
         Log.d("Subchat Creation", name + privacy + description);
 
@@ -34,6 +40,17 @@ public class ECSubchat extends ECObject {
     public String getName(){
         return this.name;
     }
+    public int getOrigin_id(){
+        return this.origin_id;
+    }
+    public String getOrigin_type(){
+        return this.origin_type;
+    }
+
+    public int getSubchannel_id(){
+        return this.subchannel_id;
+    }
+
 
     @Override
     public int describeContents() {
@@ -44,15 +61,21 @@ public class ECSubchat extends ECObject {
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeInt(this.privacy);
+        dest.writeInt(this.origin_id);
         dest.writeString(this.name);
         dest.writeString(this.description);
+        dest.writeInt(this.subchannel_id);
+        dest.writeString(this.origin_type);
     }
 
     protected ECSubchat(Parcel in) {
         super(in);
         this.privacy = in.readInt();
+        this.origin_id = in.readInt();
         this.name = in.readString();
+        this.subchannel_id = in.readInt();
         this.description = in.readString();
+        this.origin_type = in.readString();
     }
     public static final Creator<ECSubchat> CREATOR = new Creator<ECSubchat>() {
         public ECSubchat createFromParcel(Parcel source) {

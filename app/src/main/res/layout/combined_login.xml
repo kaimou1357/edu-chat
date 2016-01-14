@@ -45,49 +45,14 @@
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
-        <ImageButton
-            android:id="@+id/signUpToggle"
-            android:layout_width="125dp"
-            android:layout_height="45dp"
-            android:paddingLeft = "16dp"
-            android:background="@drawable/signuptoggle" />
-
         <Button style = "@style/loginbutton"
             android:id="@+id/logInBlue"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_alignEnd="@+id/linearLayout"
             android:text = "LOGIN"
             android:background="@drawable/primary_round"
             android:layout_alignParentBottom="true" />
 
-
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="125dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:paddingRight = "16dp"
-            android:layout_alignParentTop="true"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:id="@+id/loginBtn"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:paddingRight = "16dp"
-				android:background="@drawable/logintoggleactive" />
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/togglediamond" />
-
-
-        </LinearLayout>
 
     </RelativeLayout>
 
