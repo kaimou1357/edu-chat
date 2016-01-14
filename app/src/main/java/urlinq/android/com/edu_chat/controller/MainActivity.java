@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.ECCategory;
 import urlinq.android.com.edu_chat.model.ECObject;
 import urlinq.android.com.edu_chat.model.ECUser;
+import urlinq.android.com.edu_chat.model.EmptyRecyclerView;
 import urlinq.android.com.edu_chat.model.constants.Constants;
 import urlinq.android.com.edu_chat.model.enums.ECCategoryType;
 
@@ -45,11 +47,12 @@ public class MainActivity extends AppCompatActivity {
 	private List<ECObject> recentList = new ArrayList<>();
 	private int totalNumOfChats;
 
-	@Bind(R.id.classList) RecyclerView classList;
-	@Bind(R.id.groupList) RecyclerView groupList;
-	@Bind(R.id.departmentList) RecyclerView departmentList;
-	@Bind(R.id.labList) RecyclerView labList;
-	@Bind(R.id.peopleList) RecyclerView peopleList;
+	@Bind(R.id.classList)
+	EmptyRecyclerView classList;
+	@Bind(R.id.groupList) EmptyRecyclerView groupList;
+	@Bind(R.id.departmentList) EmptyRecyclerView departmentList;
+	@Bind(R.id.labList) EmptyRecyclerView labList;
+	@Bind(R.id.peopleList) EmptyRecyclerView peopleList;
 
 	@Bind(R.id.userFullName) TextView userFullName;
 	@Bind(R.id.userSchool) TextView userSchoolName;
@@ -66,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
 		loadCurrentUserText();
 		getChatLoadOut();
 		setSupportActionBar(toolbar);
+
+
 
 
 	}
@@ -196,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
 		MainScreenListAdapter peopleAdapter = new MainScreenListAdapter(this, recentList);
 		peopleList.setLayoutManager(new LinearLayoutManager(this));
 		peopleList.setAdapter(peopleAdapter);
+
 
 	}
 

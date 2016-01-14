@@ -366,6 +366,7 @@ public class ChatFragment extends Fragment {
         params.add("text", message);
         params.add("target_id", target_id);
         params.add("target_type", target_type);
+        Log.d("subchat sending", target_id + target_type + " ");
         params.add("token", ECUser.getUserToken());
         final ECApiManager.SendMessageObject sendMessageObject = new ECApiManager.SendMessageObject(params) {
             @Override

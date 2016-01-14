@@ -61,18 +61,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background = "@color/background"
-                android:paddingRight = "16dp"
-
+                android:paddingRight="16dp"
                 android:orientation="vertical">
 
 
                 <Button style = "@style/loginbutton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="97dp"
                     android:layout_height="25dp"
                     android:background="@drawable/primary_round"
-                    android:id="@+id/chatsUnreadButton"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true" />
+                    android:id="@+id/chatsUnreadButton" />
 
                 <TextView
                     android:layout_width="wrap_content"
