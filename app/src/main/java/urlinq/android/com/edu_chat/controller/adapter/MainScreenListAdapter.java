@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
@@ -28,7 +30,7 @@ import java.util.List;
 /**
  * Created by Kai on 10/28/2015.
  */
-public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAdapter.CategoryViewHolder> {
+public class MainScreenListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 	private final List<ECObject> mECObjects;
 	private final AppCompatActivity activity;
 	private static final int EMPTY_VIEW = 10;
@@ -39,64 +41,98 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 	}
 
 	@Override
-	public CategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewCase) {
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewCase) {
 		View v;
-		if(viewCase == EMPTY_VIEW){
-			v = LayoutInflater.from(parent.getContext()).inflate(R.layout.empty_group_view, parent, false);
-			CategoryViewHolder ctg = new CategoryViewHolder(v);
-			return ctg;
+        int layout;
+        if(viewCase == EMPTY_VIEW){
+            layout = R.layout.empty_group_view;
+            v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
+            return new EmptyViewHolder(v);
 
-		}
-		int layout = R.layout.main_list_scroll_item;
-		v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-		return new CategoryViewHolder(v);
+        }
+        else{
+            layout = R.layout.main_list_scroll_item;
+            v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
+            return new CategoryViewHolder(v);
+            //Log.d("empty view", "Default View Case Loaded");
+        }
+
+
+
 
 
 	}
 	@Override
 	public int getItemViewType(int position){
-		//Swaps RecyclerViews between 0 and 1 here.
 		if(mECObjects.size() == 0){
 			return EMPTY_VIEW;
 		}
 		return super.getItemViewType(position);
 	}
 
-	@Override
-	public void onBindViewHolder(final CategoryViewHolder viewHolder, int position) {
-		ECObject currObj = mECObjects.get(position);
-		viewHolder.setECObject(currObj);
-		String fileURL = null;
 
-		if (currObj instanceof ECUser) {
-			//Cast currObj to ECUser and then fill in headers.
-			ECUser user = (ECUser) currObj;
-			viewHolder.setRowHeader(user.getFullName());
-			viewHolder.setUserText(user.getFirstName());
+	public void onBindViewHolder(RecyclerView.ViewHolder viewHolderCase, int position) {
+        switch(viewHolderCase.getItemViewType()){
+            case EMPTY_VIEW: {
+                EmptyViewHolder emptyViewHolder = (EmptyViewHolder)viewHolderCase;
+                break;
+            }
+            default:
+                CategoryViewHolder categoryViewHolder = (CategoryViewHolder)viewHolderCase;
+                ECObject currObj = mECObjects.get(position);
+                categoryViewHolder.setECObject(currObj);
+                String fileURL = null;
 
-			if (user.getMostRecentMessage() != null) {
-				viewHolder.setMessageText(user.getMostRecentMessage().getMessageTitle());
-			}
-			fileURL = Constants.bitmapURL + user.getFileURL();
-		}
-		if (currObj instanceof ECCategory) {
-			ECCategory category = (ECCategory) currObj;
-			viewHolder.setRowHeader(category.getName());
-			if (category.getMostRecentMessage() != null) {
-				viewHolder.setLastActivityTextView(category.getMostRecentMessage().getMessageDate(), category.getColor());
-				viewHolder.setUserText(category.getMostRecentMessage().getAuthor().getFullName());
-				viewHolder.setMessageText(category.getMostRecentMessage().getMessageTitle());
-			}
-			fileURL = Constants.bitmapURL + category.getFileURL();
-		}
-		Picasso.with(activity).load(fileURL).resize(Constants.globalImageSize, Constants.globalImageSize)
-				.centerInside().into(viewHolder.img);
+                if (currObj instanceof ECUser) {
+                    //Cast currObj to ECUser and then fill in headers.
+                    ECUser user = (ECUser) currObj;
+                    categoryViewHolder.setRowHeader(user.getFullName());
+                    categoryViewHolder.setUserText(user.getFirstName());
+
+                    if (user.getMostRecentMessage() != null) {
+                        categoryViewHolder.setMessageText(user.getMostRecentMessage().getMessageTitle());
+                    }
+                    fileURL = Constants.bitmapURL + user.getFileURL();
+                }
+                if (currObj instanceof ECCategory) {
+                    ECCategory category = (ECCategory) currObj;
+                    categoryViewHolder.setRowHeader(category.getName());
+                    if (category.getMostRecentMessage() != null) {
+                        categoryViewHolder.setLastActivityTextView(category.getMostRecentMessage().getMessageDate(), category.getColor());
+                        categoryViewHolder.setUserText(category.getMostRecentMessage().getAuthor().getFullName());
+                        categoryViewHolder.setMessageText(category.getMostRecentMessage().getMessageTitle());
+                    }
+                    fileURL = Constants.bitmapURL + category.getFileURL();
+                }
+                Picasso.with(activity).load(fileURL).resize(Constants.globalImageSize, Constants.globalImageSize)
+                        .centerInside().into(categoryViewHolder.img);
+
+        }
+
+
+
+
 	}
 
 	@Override
 	public int getItemCount() {
-		return mECObjects.size();
+        return mECObjects.size() > 0 ? mECObjects.size() : 1;
 	}
+    public class EmptyViewHolder extends RecyclerView.ViewHolder{
+        private final Button browseButton;
+
+        public EmptyViewHolder(View view){
+            super(view);
+            browseButton = (Button)view.findViewById(R.id.browseGroupsButton);
+            browseButton.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v){
+                    Log.d("RecyclerView Button", "Button Pressed!");
+                }
+            });
+        }
+
+
+    }
 
 
 	public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -144,10 +180,6 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
 
 		@Override
 		public void onClick(View v) {
-//			Intent i = new Intent(activity, ChatActivity.class);
-//			i.putExtra("PARCEL", ecObject);
-//			activity.startActivity(i);
-			//Trying something.
 
 			ChatFragment chat = new ChatFragment();
 			Bundle b = new Bundle();

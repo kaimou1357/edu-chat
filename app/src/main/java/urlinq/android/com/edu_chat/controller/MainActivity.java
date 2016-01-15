@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -165,8 +166,8 @@ public class MainActivity extends AppCompatActivity {
 		//Create each ECCategory object. Fill into RecyclerView later.
 		try {
 			//Add for classes, departments, people, groups.
-			ECCategoryGroupList = ECCategory.buildManyWithJSON(response.getJSONArray("groups"), ECCategoryType.ECGroupCategoryType);
-			ECCategoryClassList = ECCategory.buildManyWithJSON(response.getJSONArray("classes"), ECCategoryType.ECClassCategoryType);
+            ECCategoryClassList = ECCategory.buildManyWithJSON(response.getJSONArray("classes"), ECCategoryType.ECClassCategoryType);
+            ECCategoryGroupList = ECCategory.buildManyWithJSON(response.getJSONArray("groups"), ECCategoryType.ECGroupCategoryType);
 			ECCategoryDepartmentList = ECCategory.buildManyWithJSON(response.getJSONArray("departments"), ECCategoryType.ECDepartmentCategoryType);
 			recentList = ECUser.buildManyWithJSON(response.getJSONArray("recent"));
 			totalNumOfChats = recentList.size() + ECCategoryClassList.size() + ECCategoryDepartmentList.size() + ECCategoryGroupList.size();
@@ -187,16 +188,14 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void populateRecyclerView() {
-		View v = findViewById(R.id.emptyGroupView);
+        View v = getLayoutInflater().inflate(R.layout.empty_group_view, null, false);
 
 		MainScreenListAdapter groupAdapter = new MainScreenListAdapter(this, ECCategoryGroupList);
 		groupList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
-		groupList.setEmptyView(v);
 		groupList.setAdapter(groupAdapter);
 
 		MainScreenListAdapter classAdapter = new MainScreenListAdapter(this, ECCategoryClassList);
 		classList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
-		classList.setEmptyView(v);
 		classList.setAdapter(classAdapter);
 
 		MainScreenListAdapter departmentAdapter = new MainScreenListAdapter(this, ECCategoryDepartmentList);
@@ -205,12 +204,13 @@ public class MainActivity extends AppCompatActivity {
 
 		MainScreenListAdapter peopleAdapter = new MainScreenListAdapter(this, recentList);
 		peopleList.setLayoutManager(new LinearLayoutManager(this));
-		peopleList.setEmptyView(v);
-		peopleList.setAdapter(peopleAdapter);
+        peopleList.setAdapter(peopleAdapter);
 
 		MainScreenListAdapter labAdapter = new MainScreenListAdapter(this, ECCategoryLabList);
-		labList.setLayoutManager(new LinearLayoutManager(this));
-		labList.setAdapter(labAdapter);
+        labList.setLayoutManager(new LinearLayoutManager(this));
+        labList.setAdapter(labAdapter);
+
+
 
 
 

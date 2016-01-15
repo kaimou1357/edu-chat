@@ -98,15 +98,14 @@ public class ChatFragment extends Fragment {
         if(passedObject instanceof ECCategory) {
             ECCategory cat = (ECCategory) passedObject;
             chatTitle = cat.getName();
-
             target_id = Integer.toString(cat.getObjectIdentifier());
             target_type = cat.getTypeOfCategory().getCategoryString();
             subchats = cat.getSubchannels();
+            isUserChat = false;
         }
         if(passedObject instanceof ECUser){
             ECUser user = (ECUser) passedObject;
             chatTitle = user.getFullName();
-
             target_id = Integer.toString(user.getObjectIdentifier());
             target_type = "user";
             isUserChat = true;
@@ -114,7 +113,6 @@ public class ChatFragment extends Fragment {
         if(passedObject instanceof ECSubchat){
             ECSubchat subchat = (ECSubchat) passedObject;
             chatTitle = subchat.getName();
-
             target_id = Integer.toString(subchat.getOrigin_id());
             target_type = subchat.getOrigin_type();
             subchannel_id = Integer.toString(subchat.getSubchannel_id());
@@ -167,14 +165,22 @@ public class ChatFragment extends Fragment {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if(subchats.size() !=0){
-
-                        ECSubchat chat = (ECSubchat) subchats.get(position-1);
-                        mMessages.clear();
-                        updateChatRoom(chat.getOrigin_type(), Integer.toString(chat.getOrigin_id()), Integer.toString(chat.getSubchannel_id()), ECUser.getUserToken());
-                        mAdapter.notifyDataSetChanged();
-                        socketSetup(chat.getOrigin_type(), Integer.toString(chat.getSubchannel_id()));
-                        target_id = Integer.toString(chat.getSubchannel_id());
-                        target_type = "subchannel";
+                        if(position == 0){
+                            ECCategory cat = (ECCategory) passedObject;
+                            mMessages.clear();
+                            updateChatRoom(cat.getTypeOfCategory().getCategoryString(), Integer.toString(cat.getObjectIdentifier()), null, ECUser.getCurrentUser().getUserToken());
+                            mAdapter.notifyDataSetChanged();
+                            isSubChannel = false;
+                            socketSetup(cat.getTypeOfCategory().getCategoryString(), Integer.toString(cat.getObjectIdentifier()));
+                        }
+                        else{
+                            ECSubchat chat = (ECSubchat) subchats.get(position-1);
+                            Log.d("subchat position", position + "");
+                            mMessages.clear();
+                            updateChatRoom(chat.getOrigin_type(), Integer.toString(chat.getOrigin_id()), Integer.toString(chat.getSubchannel_id()), ECUser.getUserToken());
+                            mAdapter.notifyDataSetChanged();
+                            socketSetup("subchannel", Integer.toString(chat.getSubchannel_id()));
+                        }
 
                     }
                     Log.d("subchats", "Item Selected" + position);
@@ -366,6 +372,9 @@ public class ChatFragment extends Fragment {
         params.add("text", message);
         params.add("target_id", target_id);
         params.add("target_type", target_type);
+        if(isSubChannel){
+            params.add("subchannel_id", subchannel_id );
+        }
         Log.d("subchat sending", target_id + target_type + " ");
         params.add("token", ECUser.getUserToken());
         final ECApiManager.SendMessageObject sendMessageObject = new ECApiManager.SendMessageObject(params) {
