@@ -79,11 +79,11 @@
                     android:layout_marginLeft ="16dp"
                     android:id="@+id/classesText"/>
 
-                <urlinq.android.com.edu_chat.model.EmptyRecyclerView
+                <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id = "@+id/classList">
-                </urlinq.android.com.edu_chat.model.EmptyRecyclerView>
+                </android.support.v7.widget.RecyclerView>
 
 
                 <TextView
@@ -94,11 +94,11 @@
                     android:layout_marginLeft = "16dp"
                     android:id="@+id/groupText"/>
 
-                <urlinq.android.com.edu_chat.model.EmptyRecyclerView
+                <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id = "@+id/groupList">
-                </urlinq.android.com.edu_chat.model.EmptyRecyclerView>
+                </android.support.v7.widget.RecyclerView>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -108,11 +108,11 @@
                     android:layout_marginLeft = "16dp"
                     android:id="@+id/departmentText"/>
 
-                <urlinq.android.com.edu_chat.model.EmptyRecyclerView
+                <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id = "@+id/departmentList">
-                </urlinq.android.com.edu_chat.model.EmptyRecyclerView>
+                </android.support.v7.widget.RecyclerView>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -122,11 +122,11 @@
                     android:layout_marginLeft = "16dp"
                     android:id="@+id/peopleText"/>
 
-                <urlinq.android.com.edu_chat.model.EmptyRecyclerView
+                <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id = "@+id/peopleList">
-                </urlinq.android.com.edu_chat.model.EmptyRecyclerView>
+                </android.support.v7.widget.RecyclerView>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -136,11 +136,11 @@
                     android:layout_marginLeft = "16dp"
                     android:id="@+id/labText"/>
 
-                <urlinq.android.com.edu_chat.model.EmptyRecyclerView
+                <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id = "@+id/labList">
-                </urlinq.android.com.edu_chat.model.EmptyRecyclerView>
+                </android.support.v7.widget.RecyclerView>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
