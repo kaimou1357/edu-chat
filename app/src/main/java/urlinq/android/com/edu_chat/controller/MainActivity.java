@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 	@Bind(R.id.userFullName) TextView userFullName;
 	@Bind(R.id.userSchool) TextView userSchoolName;
 	@Bind(R.id.userProfilePicture) ImageView userProfilePicture;
-	@Bind(R.id.chatsUnreadButton)Button chatsUnreadButton;
+	@Bind(R.id.chatsUnreadText)TextView chatsUnreadButton;
 	@Bind(R.id.tool_bar)Toolbar toolbar;
 
 	@Override
