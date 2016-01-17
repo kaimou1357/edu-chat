@@ -158,7 +158,7 @@ public class ECUser extends ECObject {
 		dest.writeString(this.department);
 	}
 
-	protected ECUser(Parcel in) {
+	ECUser(Parcel in) {
 		super(in);
 		this.firstName = in.readString();
 		this.lastName = in.readString();

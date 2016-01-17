@@ -2,17 +2,11 @@ package urlinq.android.com.edu_chat.controller.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import com.instabug.library.Instabug;
 import com.instabug.wrapper.support.activity.InstabugAppCompatActivity;
-import com.parse.ConfigCallback;
-import com.parse.Parse;
-import com.parse.ParseConfig;
-import com.parse.ParseException;
 import com.urlinq.edu_chat.R;
-
 import urlinq.android.com.edu_chat.controller.MainActivity;
 
 public class LoginActivity extends InstabugAppCompatActivity implements LoginBackground.OnLoginListener {

@@ -2,22 +2,13 @@ package urlinq.android.com.edu_chat.manager;
 
 import android.os.Looper;
 import android.util.Log;
-
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.SyncHttpClient;
-import com.parse.ParseInstallation;
-import com.parse.ParseObject;
-
+import com.loopj.android.http.*;
+import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
+import urlinq.android.com.edu_chat.model.ECUser;
 
 import java.text.ParseException;
-
-import cz.msebera.android.httpclient.Header;
-import urlinq.android.com.edu_chat.model.ECUser;
 
 
 /**
@@ -25,181 +16,181 @@ import urlinq.android.com.edu_chat.model.ECUser;
  */
 public class ECApiManager {
 
-    public static final String loginAPI = "https://edu.chat/api/login/";
-    public static final String loadoutAPI = "https://edu.chat/message/loadout";
-    public static final String sendMessageURL = "https://edu.chat/message/send/";
-    public static final String loadChatRoomURL = "https://edu.chat/message/load_chat";
-    public static final String logoutURL = "https://edu.chat/api/logout/";
+	private static final String loginAPI = "https://edu.chat/api/login/";
+	private static final String loadoutAPI = "https://edu.chat/message/loadout";
+	private static final String sendMessageURL = "https://edu.chat/message/send/";
+	private static final String loadChatRoomURL = "https://edu.chat/message/load_chat";
+	private static final String logoutURL = "https://edu.chat/api/logout/";
 
-    private static final AsyncHttpClient syncHttpClient = new SyncHttpClient();
-    private static final AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+	private static final AsyncHttpClient syncHttpClient = new SyncHttpClient();
+	private static final AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
 
-    public static void setCookieStore(PersistentCookieStore cookieStore) {
-        getClient().setCookieStore(cookieStore);
-    }
-
-
-    public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        getClient().get(url, params, responseHandler);
-    }
-
-    public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        getClient().post(url, params, responseHandler);
-    }
-
-    /**
-     * @return an async client when calling from the main thread, otherwise a sync client.
-     */
-    private static AsyncHttpClient getClient() {
-        // Return the synchronous HTTP client when the thread is not prepared
-        if (Looper.myLooper() == null)
-            return syncHttpClient;
-        return asyncHttpClient;
-    }
-
-    public interface AllECApiCallsInterface {
-        void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody);
-
-        void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error);
-
-        void onFinishGlobal();
-    }
-
-    private static class AllECApiCalls {
-        private String url;
-        private RequestParams params;
-        private JSONObject obj;
-        private AllECApiCallsInterface adapter;
-        private String userHash;
-
-        public void setUserHash(String userHash) {
-            this.userHash = userHash;
-        }
-
-        public String getUserHash() {
-            return userHash;
-        }
-
-        public void setAdapter(AllECApiCallsInterface adapter) {
-            this.adapter = adapter;
-        }
-
-        public JSONObject getObj() {
-            return obj;
-        }
-
-        public void invokePost() {
-            ECApiManager.post(url, params, new AsyncHttpResponseHandler() {
-
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    adapter.onSuccessGlobal(statusCode, headers, responseBody);
-                }
+	public static void setCookieStore(PersistentCookieStore cookieStore) {
+		getClient().setCookieStore(cookieStore);
+	}
 
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    error.printStackTrace();
-                    Log.e(ECApiManager.class.getSimpleName(), "^ ^ ^ An ECApiManager call has failed!!");
-                    adapter.onFailureGlobal(statusCode, headers, responseBody, error);
-                }
+	private static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+		getClient().get(url, params, responseHandler);
+	}
 
-                @Override
-                public void onFinish() {
-                    adapter.onFinishGlobal();
-                }
-            });
-        }
+	private static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+		getClient().post(url, params, responseHandler);
+	}
 
-        public void invokeGet() {
-            ECApiManager.get(url, params, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    adapter.onSuccessGlobal(statusCode, headers, responseBody);
-                }
+	/**
+	 * @return an async client when calling from the main thread, otherwise a sync client.
+	 */
+	private static AsyncHttpClient getClient() {
+		// Return the synchronous HTTP client when the thread is not prepared
+		if (Looper.myLooper() == null)
+			return syncHttpClient;
+		return asyncHttpClient;
+	}
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    error.printStackTrace();
-                    Log.e(ECApiManager.class.getSimpleName(), "^ ^ ^ An ECApiManager call has failed!!");
-                    adapter.onFailureGlobal(statusCode, headers, responseBody, error);
-                }
+	public interface AllECApiCallsInterface {
+		void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody);
 
-                @Override
-                public void onFinish() {
-                    adapter.onFinishGlobal();
-                }
-            });
-        }
+		void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error);
 
-    }
+		void onFinishGlobal();
+	}
+
+	private static class AllECApiCalls {
+		private String url;
+		private RequestParams params;
+		private JSONObject obj;
+		private AllECApiCallsInterface adapter;
+		private String userHash;
+
+		public void setUserHash(String userHash) {
+			this.userHash = userHash;
+		}
+
+		public String getUserHash() {
+			return userHash;
+		}
+
+		public void setAdapter(AllECApiCallsInterface adapter) {
+			this.adapter = adapter;
+		}
+
+		public JSONObject getObj() {
+			return obj;
+		}
+
+		public void invokePost() {
+			ECApiManager.post(url, params, new AsyncHttpResponseHandler() {
+
+				@Override
+				public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+					adapter.onSuccessGlobal(statusCode, headers, responseBody);
+				}
 
 
-    /**
-     * This class will load update the chatroom with new messages as soon as the user enters the chat room.
-     */
-    public static class LoadChatMessageObject extends AllECApiCalls implements AllECApiCallsInterface {
+				@Override
+				public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+					error.printStackTrace();
+					Log.e(ECApiManager.class.getSimpleName(), "^ ^ ^ An ECApiManager call has failed!!");
+					adapter.onFailureGlobal(statusCode, headers, responseBody, error);
+				}
 
-        public LoadChatMessageObject(RequestParams params) {
-            super.setAdapter(this);
-            super.params = params;
-            super.url = loadChatRoomURL;
-        }
+				@Override
+				public void onFinish() {
+					adapter.onFinishGlobal();
+				}
+			});
+		}
 
-        @Override
-        public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
-            super.setUserHash(new String(responseBody));
-            try {
-                super.obj = new JSONObject(super.getUserHash());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+		public void invokeGet() {
+			ECApiManager.get(url, params, new AsyncHttpResponseHandler() {
+				@Override
+				public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+					adapter.onSuccessGlobal(statusCode, headers, responseBody);
+				}
 
-        @Override
-        public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-        }
+				@Override
+				public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+					error.printStackTrace();
+					Log.e(ECApiManager.class.getSimpleName(), "^ ^ ^ An ECApiManager call has failed!!");
+					adapter.onFailureGlobal(statusCode, headers, responseBody, error);
+				}
 
-        @Override
-        public void onFinishGlobal() {
-        }
-    }
+				@Override
+				public void onFinish() {
+					adapter.onFinishGlobal();
+				}
+			});
+		}
 
-    /**
-     * This class will set current user token, school, and will login the current user in.
-     */
-    public static class LoginObject extends AllECApiCalls implements AllECApiCallsInterface {
+	}
 
-        public LoginObject(RequestParams params) {
-            super.setAdapter(this);
-            super.params = params;
-            super.url = loginAPI;
-        }
 
-        @Override
-        public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
-            super.setUserHash(new String(responseBody));
-            Log.d("login", super.userHash);
-            try {
-                super.obj = new JSONObject(super.getUserHash());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+	/**
+	 * This class will load update the chatroom with new messages as soon as the user enters the chat room.
+	 */
+	public static class LoadChatMessageObject extends AllECApiCalls implements AllECApiCallsInterface {
 
-        @Override
-        public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-        }
+		public LoadChatMessageObject(RequestParams params) {
+			super.setAdapter(this);
+			super.params = params;
+			super.url = loadChatRoomURL;
+		}
 
-        @Override
-        public void onFinishGlobal() {
-            try{
-                ECUser.setCurrentUser(new ECUser(getObj().getJSONObject("user")));
-                ECUser.setUserToken(getObj().getString("token"));
-                ECUser.setCurrentUserSchool(getObj().getJSONObject("user").getJSONObject("school").getString("school_name"));
-            }catch(JSONException | ParseException e){
-                e.printStackTrace();
-            }
+		@Override
+		public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
+			super.setUserHash(new String(responseBody));
+			try {
+				super.obj = new JSONObject(super.getUserHash());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+		}
+
+		@Override
+		public void onFinishGlobal() {
+		}
+	}
+
+	/**
+	 * This class will set current user token, school, and will login the current user in.
+	 */
+	public static class LoginObject extends AllECApiCalls implements AllECApiCallsInterface {
+
+		public LoginObject(RequestParams params) {
+			super.setAdapter(this);
+			super.params = params;
+			super.url = loginAPI;
+		}
+
+		@Override
+		public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
+			super.setUserHash(new String(responseBody));
+			Log.d("login", super.userHash);
+			try {
+				super.obj = new JSONObject(super.getUserHash());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+		}
+
+		@Override
+		public void onFinishGlobal() {
+			try {
+				ECUser.setCurrentUser(new ECUser(getObj().getJSONObject("user")));
+				ECUser.setUserToken(getObj().getString("token"));
+				ECUser.setCurrentUserSchool(getObj().getJSONObject("user").getJSONObject("school").getString("school_name"));
+			} catch (JSONException | ParseException e) {
+				e.printStackTrace();
+			}
 
 
 //            try {
@@ -222,100 +213,100 @@ public class ECApiManager {
 //            }
 
 
-        }
-    }
+		}
+	}
 
-    /**
-     * This class will build and populate each Recyclerview in the application's MainActivity.
-     */
-    public static class MainLoadOutObject extends AllECApiCalls implements AllECApiCallsInterface {
+	/**
+	 * This class will build and populate each Recyclerview in the application's MainActivity.
+	 */
+	public static class MainLoadOutObject extends AllECApiCalls implements AllECApiCallsInterface {
 
-        public MainLoadOutObject(RequestParams params) {
-            super.setAdapter(this);
-            super.params = params;
-            super.url = loadoutAPI;
-        }
+		public MainLoadOutObject(RequestParams params) {
+			super.setAdapter(this);
+			super.params = params;
+			super.url = loadoutAPI;
+		}
 
-        @Override
-        public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
-            super.setUserHash(new String(responseBody));
-            try {
-                super.obj = new JSONObject(super.getUserHash());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+		@Override
+		public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
+			super.setUserHash(new String(responseBody));
+			try {
+				super.obj = new JSONObject(super.getUserHash());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 
-        @Override
-        public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-        }
+		@Override
+		public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+		}
 
-        @Override
-        public void onFinishGlobal() {
-        }
+		@Override
+		public void onFinishGlobal() {
+		}
 
-    }
+	}
 
-    /**
-     * This class will log the user out.
-     */
-    public static class LogoutObject extends AllECApiCalls implements AllECApiCallsInterface {
+	/**
+	 * This class will log the user out.
+	 */
+	public static class LogoutObject extends AllECApiCalls implements AllECApiCallsInterface {
 
-        public LogoutObject(RequestParams params) {
-            super.setAdapter(this);
-            super.params = params;
-            super.url = logoutURL;
-        }
+		public LogoutObject(RequestParams params) {
+			super.setAdapter(this);
+			super.params = params;
+			super.url = logoutURL;
+		}
 
-        @Override
-        public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
-            super.setUserHash(new String(responseBody));
-            try {
-                super.obj = new JSONObject(super.getUserHash());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+		@Override
+		public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
+			super.setUserHash(new String(responseBody));
+			try {
+				super.obj = new JSONObject(super.getUserHash());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 
-        @Override
-        public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-        }
+		@Override
+		public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+		}
 
-        @Override
-        public void onFinishGlobal() {
-        }
+		@Override
+		public void onFinishGlobal() {
+		}
 
-    }
+	}
 
-    /**
-     * This class will send messages for the user.
-     */
-    public static class SendMessageObject extends AllECApiCalls implements AllECApiCallsInterface {
+	/**
+	 * This class will send messages for the user.
+	 */
+	public static class SendMessageObject extends AllECApiCalls implements AllECApiCallsInterface {
 
-        public SendMessageObject(RequestParams params) {
-            super.setAdapter(this);
-            super.params = params;
-            super.url = sendMessageURL;
-        }
+		public SendMessageObject(RequestParams params) {
+			super.setAdapter(this);
+			super.params = params;
+			super.url = sendMessageURL;
+		}
 
-        @Override
-        public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
-            super.setUserHash(new String(responseBody));
-            try {
-                super.obj = new JSONObject(super.getUserHash());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+		@Override
+		public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
+			super.setUserHash(new String(responseBody));
+			try {
+				super.obj = new JSONObject(super.getUserHash());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 
-        @Override
-        public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-        }
+		@Override
+		public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+		}
 
-        @Override
-        public void onFinishGlobal() {
-        }
-    }
+		@Override
+		public void onFinishGlobal() {
+		}
+	}
 
 }
 

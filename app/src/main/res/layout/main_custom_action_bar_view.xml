@@ -11,7 +11,7 @@
         android:layout_height="30dp"
         android:clickable="false"
         android:focusable="false"
-        android:layout_marginLeft = "10dp"
+        android:layout_marginStart= "10dp"
         android:longClickable="false"
         android:src="@drawable/educhat" />
 

@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:id = "@+id/actionBarTextView"
         android:textColor="@color/White"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:layout_gravity = "center"/>
 

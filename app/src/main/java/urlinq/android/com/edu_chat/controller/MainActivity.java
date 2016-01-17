@@ -10,8 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.Bind;
@@ -44,26 +42,26 @@ public class MainActivity extends AppCompatActivity {
 	private List<ECObject> ECCategoryGroupList = new ArrayList<>();
 	private List<ECObject> ECCategoryClassList = new ArrayList<>();
 	private List<ECObject> ECCategoryDepartmentList = new ArrayList<>();
-	private List<ECObject> ECCategoryLabList = new ArrayList<>();
+	private final List<ECObject> ECCategoryLabList = new ArrayList<>();
 	private List<ECObject> recentList = new ArrayList<>();
 	private int totalNumOfChats;
 
 	@Bind(R.id.classList)
-    RecyclerView classList;
+	RecyclerView classList;
 	@Bind(R.id.groupList)
-    RecyclerView groupList;
+	RecyclerView groupList;
 	@Bind(R.id.departmentList)
-    RecyclerView departmentList;
+	RecyclerView departmentList;
 	@Bind(R.id.labList)
-    RecyclerView labList;
+	RecyclerView labList;
 	@Bind(R.id.peopleList)
-    RecyclerView peopleList;
+	RecyclerView peopleList;
 
 	@Bind(R.id.userFullName) TextView userFullName;
 	@Bind(R.id.userSchool) TextView userSchoolName;
 	@Bind(R.id.userProfilePicture) ImageView userProfilePicture;
-	@Bind(R.id.chatsUnreadText)TextView chatsUnreadButton;
-	@Bind(R.id.tool_bar)Toolbar toolbar;
+	@Bind(R.id.chatsUnreadText) TextView chatsUnreadButton;
+	@Bind(R.id.tool_bar) Toolbar toolbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +75,6 @@ public class MainActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 
 
-
-
 	}
 
 	@Override
@@ -88,10 +84,11 @@ public class MainActivity extends AppCompatActivity {
 		inflater.inflate(R.menu.main_menu, menu);
 		return true;
 	}
+
 	@Override
-	public void onPause(){
+	public void onPause() {
 		super.onPause();
-		
+
 	}
 
 	@Override
@@ -117,12 +114,14 @@ public class MainActivity extends AppCompatActivity {
 			public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
 				super.onSuccessGlobal(statusCode, headers, responseBody);
 			}
+
 			@Override
 			public void onFinishGlobal() {
 				super.onFinishGlobal();
 				//Once done, return back to LoginActivity.
 				finish();
 			}
+
 			@Override
 			public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				super.onFailureGlobal(statusCode, headers, responseBody, error);
@@ -130,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
 		};
 		logoutObject.invokePost();
 	}
+
 	/**
 	 * This method will populate ecUserList with the users loaded in from the login call.
 	 */
@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
 				super.onSuccessGlobal(statusCode, headers, responseBody);
 				makeObjectListsFromResponse(super.getObj());
 			}
+
 			@Override
 			public void onFinishGlobal() {
 				super.onFinishGlobal();
@@ -150,10 +151,11 @@ public class MainActivity extends AppCompatActivity {
 					@Override
 					public void run() {
 						populateRecyclerView();
-						chatsUnreadButton.setText("CHATS (" + totalNumOfChats + ")");
+						chatsUnreadButton.setText(String.format(getString(R.string.ChatsUnreadString), totalNumOfChats));
 					}
 				});
 			}
+
 			@Override
 			public void onFailureGlobal(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 				super.onFailureGlobal(statusCode, headers, responseBody, error);
@@ -169,8 +171,8 @@ public class MainActivity extends AppCompatActivity {
 		//Create each ECCategory object. Fill into RecyclerView later.
 		try {
 			//Add for classes, departments, people, groups.
-            ECCategoryClassList = ECCategory.buildManyWithJSON(response.getJSONArray("classes"), ECCategoryType.ECClassCategoryType);
-            ECCategoryGroupList = ECCategory.buildManyWithJSON(response.getJSONArray("groups"), ECCategoryType.ECGroupCategoryType);
+			ECCategoryClassList = ECCategory.buildManyWithJSON(response.getJSONArray("classes"), ECCategoryType.ECClassCategoryType);
+			ECCategoryGroupList = ECCategory.buildManyWithJSON(response.getJSONArray("groups"), ECCategoryType.ECGroupCategoryType);
 			ECCategoryDepartmentList = ECCategory.buildManyWithJSON(response.getJSONArray("departments"), ECCategoryType.ECDepartmentCategoryType);
 			recentList = ECUser.buildManyWithJSON(response.getJSONArray("recent"));
 			totalNumOfChats = recentList.size() + ECCategoryClassList.size() + ECCategoryDepartmentList.size() + ECCategoryGroupList.size();
@@ -190,9 +192,9 @@ public class MainActivity extends AppCompatActivity {
 
 	}
 
-	public void populateRecyclerView() {
-        classList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
-        classList.setHasFixedSize(true);
+	private void populateRecyclerView() {
+		classList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+		classList.setHasFixedSize(true);
 
 		MainScreenListAdapter groupAdapter = new MainScreenListAdapter(this, ECCategoryGroupList);
 		groupList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
@@ -200,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
 
 		MainScreenListAdapter classAdapter = new MainScreenListAdapter(this, ECCategoryClassList);
 		classList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
-        classList.setItemAnimator(new DefaultItemAnimator());
+		classList.setItemAnimator(new DefaultItemAnimator());
 		classList.setAdapter(classAdapter);
 
 		MainScreenListAdapter departmentAdapter = new MainScreenListAdapter(this, ECCategoryDepartmentList);
@@ -209,14 +211,11 @@ public class MainActivity extends AppCompatActivity {
 
 		MainScreenListAdapter peopleAdapter = new MainScreenListAdapter(this, recentList);
 		peopleList.setLayoutManager(new LinearLayoutManager(this));
-        peopleList.setAdapter(peopleAdapter);
+		peopleList.setAdapter(peopleAdapter);
 
 		MainScreenListAdapter labAdapter = new MainScreenListAdapter(this, ECCategoryLabList);
-        labList.setLayoutManager(new LinearLayoutManager(this));
-        labList.setAdapter(labAdapter);
-
-
-
+		labList.setLayoutManager(new LinearLayoutManager(this));
+		labList.setAdapter(labAdapter);
 
 
 	}

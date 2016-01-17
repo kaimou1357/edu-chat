@@ -21,7 +21,6 @@ public class ECMessage extends ECObject {
 	private final Date messageDate;
 	private final ECUser author;
 	private final ECMessageType messageType;
-	private final int subchannelID = 0;
 	private final String subchannelName = null;
 
 	public ECMessage(JSONObject recentMessage) throws JSONException, ParseException {
@@ -69,7 +68,7 @@ public class ECMessage extends ECObject {
 		dest.writeInt(this.messageType == null ? -1 : this.messageType.ordinal());
 	}
 
-	protected ECMessage(Parcel in) {
+	ECMessage(Parcel in) {
 		super(in);
 		this.messageTitle = in.readString();
 		long tmpMessageDate = in.readLong();
@@ -91,6 +90,7 @@ public class ECMessage extends ECObject {
 
 	@Override
 	public String toString() {
+		int subchannelID = 0;
 		return "ECMessage{" +
 				"author='" + author + '\'' +
 				", messageTitle='" + messageTitle + '\'' +

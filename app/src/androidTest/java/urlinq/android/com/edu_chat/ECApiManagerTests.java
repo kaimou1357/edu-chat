@@ -2,33 +2,18 @@ package urlinq.android.com.edu_chat;
 
 import android.test.InstrumentationTestCase;
 
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
-import urlinq.android.com.edu_chat.manager.ECApiManager;
-
 /**
  * Created by Kai on 9/30/2015.
  */
 public class ECApiManagerTests extends InstrumentationTestCase {
-    private final String userEmail = "km2743@nyu.edu";
-    private final String passWord = "adventure";
-    private final String loginAPI = "https://edu.chat/api/login/";
-    private final String refreshUserAPI = "https://edu.chat/api/user";
-    String userToken;
-    String userID;
-    static String getResponse;
-    static String postResponse;
-
+	private final String userEmail = "km2743@nyu.edu";
+	private final String passWord = "adventure";
+	private final String loginAPI = "https://edu.chat/api/login/";
+	private final String refreshUserAPI = "https://edu.chat/api/user";
+	String userToken;
+	String userID;
+	static String getResponse;
+	static String postResponse;
 
 
 //    public void testPOSTnGET() throws Throwable {

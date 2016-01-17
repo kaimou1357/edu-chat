@@ -5,17 +5,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.widget.Button;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.loopj.android.http.RequestParams;
-import com.parse.ParseConfig;
 import com.urlinq.edu_chat.R;
-
 import cz.msebera.android.httpclient.Header;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.ECUser;
@@ -30,6 +27,7 @@ public class LoginBackground extends Fragment {
 	@Bind(R.id.logInBlue) Button logInBlue;
 	@Bind(R.id.emailTextView) EditText userEmail;
 	@Bind(R.id.passwordTextView) EditText userPass;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.combined_login, container, false);

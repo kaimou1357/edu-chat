@@ -14,7 +14,7 @@ public class ECObject implements Parcelable {
 	private final String fileURL;
 	private final String color;
 
-	public ECObject(int objectIdentifier, String fileURL, String color) {
+	ECObject(int objectIdentifier, String fileURL, String color) {
 		this.color = color;
 		this.objectIdentifier = objectIdentifier;
 		if (fileURL == null) {
@@ -48,7 +48,7 @@ public class ECObject implements Parcelable {
 		dest.writeString(this.color);
 	}
 
-	protected ECObject(Parcel in) {
+	ECObject(Parcel in) {
 		this.objectIdentifier = in.readInt();
 		this.fileURL = in.readString();
 		this.color = in.readString();

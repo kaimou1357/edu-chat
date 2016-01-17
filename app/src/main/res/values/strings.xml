@@ -13,5 +13,10 @@
 	<string name="user_profile_picture_content_description">the user\'s profile picture</string>
     <string name="logout_string">Logout</string>
     <string name = "enter_message_hint">Type a Message Here</string>
+	<string name="ChatsUnreadString">CHATS (%d)</string>
+	<string name="none_joined_yet">None joined yet...</string>
+	<string name="browse">Browse</string>
+	<string name="typing">Typing</string>
+	<string name="send">Send</string>
 
 </resources>

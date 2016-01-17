@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
-        android:text="None joined yet..."
+        android:text="@string/none_joined_yet"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal" />
 
@@ -17,7 +17,7 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/empty_button"
         android:layout_height="30dp"
-        android:text = "Browse"
+        android:text = "@string/browse"
         android:textColor="@color/loginbuttoncolor"
         android:id="@+id/browseGroupsButton"
         android:layout_gravity="center_horizontal" />
