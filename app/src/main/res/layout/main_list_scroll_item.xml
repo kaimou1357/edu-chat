@@ -19,6 +19,7 @@
         android:layout_toRightOf="@id/profilePicture"
 		android:layout_toLeftOf="@+id/lastActivityTextView"
 		android:paddingEnd = "7dp"
+		android:paddingStart="10dp"
 		android:layout_alignTop="@id/profilePicture"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:id="@+id/rowHeader"

@@ -1,8 +1,31 @@
 <resources>
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/profileDark</item>
+        <item name = "android:icon">@drawable/educhat</item>
+        <item name="colorPrimaryDark">@color/profileDark</item>
     </style>
+    <style name="AppTheme.NoActionBar" parent = "Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/toolbarBlack</item>
+        <item name="colorPrimaryDark">@color/toolbarBlack</item>
+    </style>
+
+    <style name = "loginbutton">
+        <item name="android:textColor">@color/White</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:minWidth">88dp</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:elevation">1dp</item>
+        <item name="android:translationZ">1dp</item>
+    </style>
+
+
+
+
+
+
+
 </resources>

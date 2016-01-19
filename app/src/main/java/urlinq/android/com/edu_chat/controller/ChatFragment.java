@@ -60,6 +60,7 @@ public class ChatFragment extends Fragment {
 	private ArrayList<ECSubchat> subchats;
 	private boolean isSubChannel = false;
 	private boolean isUserChat = false;
+	private SocketIO socket;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.chat_layout, container, false);
@@ -77,6 +78,7 @@ public class ChatFragment extends Fragment {
 			target_type = cat.getTypeOfCategory().getCategoryString();
 			subchats = cat.getSubchannels();
 			isUserChat = false;
+			socketSetup(target_type, target_id);
 		}
 		if (passedObject instanceof ECUser) {
 			ECUser user = (ECUser) passedObject;
@@ -84,25 +86,14 @@ public class ChatFragment extends Fragment {
 			target_id = Integer.toString(user.getObjectIdentifier());
 			target_type = "user";
 			isUserChat = true;
+			socketSetup(target_type, Integer.toString(ECUser.getCurrentUser().getObjectIdentifier()));
 		}
-		if (passedObject instanceof ECSubchat) {
-			ECSubchat subchat = (ECSubchat) passedObject;
-			chatTitle = subchat.getName();
-			target_id = Integer.toString(subchat.getOrigin_id());
-			target_type = subchat.getOrigin_type();
-			subchannel_id = Integer.toString(subchat.getSubchannel_id());
-			isSubChannel = true;
-			Log.d("subchat", "ECSUBCHAT Processed!");
-		}
+
 		updateChatRoom(target_type, target_id, null, ECUser.getUserToken());
 		mAdapter = new MessageAdapter(getActivity(), mMessages);
 		mMessagesView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		mMessagesView.setAdapter(mAdapter);
-		if (isUserChat) {
-			socketSetup(target_type, Integer.toString(ECUser.getCurrentUser().getObjectIdentifier()));
-		} else {
-			socketSetup(target_type, target_id);
-		}
+
 
 
 		/**
@@ -143,14 +134,16 @@ public class ChatFragment extends Fragment {
 							updateChatRoom(cat.getTypeOfCategory().getCategoryString(), Integer.toString(cat.getObjectIdentifier()), null, ECUser.getUserToken());
 							mAdapter.notifyDataSetChanged();
 							isSubChannel = false;
-							socketSetup(cat.getTypeOfCategory().getCategoryString(), Integer.toString(cat.getObjectIdentifier()));
+
 						} else {
 							ECSubchat chat = subchats.get(position - 1);
+							isSubChannel = true;
+							subchannel_id = Integer.toString(chat.getSubchannel_id());
 							Log.d("subchat position", position + "");
 							mMessages.clear();
 							updateChatRoom(chat.getOrigin_type(), Integer.toString(chat.getOrigin_id()), Integer.toString(chat.getSubchannel_id()), ECUser.getUserToken());
 							mAdapter.notifyDataSetChanged();
-							socketSetup("subchannel", Integer.toString(chat.getSubchannel_id()));
+
 						}
 
 					}
@@ -215,6 +208,13 @@ public class ChatFragment extends Fragment {
 	}
 
 	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		socket.disconnect();
+
+	}
+
+	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.main_menu, menu);
 	}
@@ -222,12 +222,12 @@ public class ChatFragment extends Fragment {
 	/**
 	 * Method to setup socket to listen on specific channel.
 	 */
-	private void socketSetup(final String target_type, final String target_id) {
+	private void socketSetup(final String socketTargetType, final String socketTargetID) {
 
 
 		try {
 			SocketIO.setDefaultSSLSocketFactory(SSLContext.getInstance("Default"));
-			SocketIO socket = new SocketIO("https://edu.chat/");
+			socket = new SocketIO("https://edu.chat/");
 			socket.connect(new IOCallback() {
 				@Override
 				public void onMessage(JSONObject json, IOAcknowledge ack) {
@@ -252,22 +252,49 @@ public class ChatFragment extends Fragment {
 				@Override
 				public void onConnect() {
 					Log.d("Socket", "Connection Established");
+					Log.d("Socket", socketTargetType + socketTargetID);
 				}
 
 				@Override
 				public void on(String event, IOAcknowledge ack, Object... args) {
 					try {
 						JSONObject serverJSON = new JSONObject(args[0].toString());
-						String currentChat = target_type + "_" + target_id;
-						if (event.equals(currentChat) && serverJSON.getString("type").equals("text")) {
+						String currentChat = socketTargetType + "_" + socketTargetID;
+
+						if (event.equals(currentChat) && serverJSON.getString("type").equals("text"))
+						{
+							Log.d("socket", "First stage entered");
+
 							final ECMessage message = new ECMessage(serverJSON);
-							getActivity().runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									addMessage(message);
+							String subchannelText = serverJSON.getString("subchannel_id");
+							Log.d("socket", subchannelText);
+
+							if(isSubChannel){
+								if(subchannelText!=null && serverJSON.getString("subchannel_id").equals(subchannel_id)){
+									getActivity().runOnUiThread(new Runnable() {
+										@Override
+										public void run() {
+											addMessage(message);
+										}
+									});
+									Log.d("subchannel", "Subchannel Case Handled");
 								}
-							});
+							}
+							else if(subchannelText.equals("null")){
+								getActivity().runOnUiThread(new Runnable() {
+									@Override
+									public void run() {
+										addMessage(message);
+									}
+								});
+								Log.d("subchannel", "regular case handled");
+							}
+
+
+
+
 						}
+
 					} catch (JSONException | ParseException e) {
 						e.printStackTrace();
 					}
@@ -350,7 +377,6 @@ public class ChatFragment extends Fragment {
 		if (isSubChannel) {
 			params.add("subchannel_id", subchannel_id);
 		}
-		Log.d("subchat sending", target_id + target_type + " ");
 		params.add("token", ECUser.getUserToken());
 		final ECApiManager.SendMessageObject sendMessageObject = new ECApiManager.SendMessageObject(params) {
 			@Override
