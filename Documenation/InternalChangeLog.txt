@@ -38,3 +38,11 @@ Version 0.5 (2)
 	1/9/2016 @Kai
 	-Fixed some layout issues with the chat.
 	- Fixed time zones so now properly displays time of messages.
+	1/12/2016 @Kai
+	-Material Design ToolBar
+	-Added v21 layouts for different layouts.
+	-KitKat supported via Cardview.
+
+	1/19/2016 @Kai
+	-Subchannels working.
+	-Socket onDestroy called to make sure only one instance of socket is running at a time.
