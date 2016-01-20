@@ -1,7 +1,9 @@
 package urlinq.android.com.edu_chat.controller;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 	@Bind(R.id.userProfilePicture) ImageView userProfilePicture;
 	@Bind(R.id.chatsUnreadText) TextView chatsUnreadButton;
 	@Bind(R.id.tool_bar) Toolbar toolbar;
+	ProgressDialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +74,11 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.main_activity_layout);
         ButterKnife.bind(this);
 
+
 		loadCurrentUserText();
 		getChatLoadOut();
 		setSupportActionBar(toolbar);
+
 
 
 	}
@@ -153,8 +158,22 @@ public class MainActivity extends AppCompatActivity {
 					public void run() {
 						populateRecyclerView();
 						chatsUnreadButton.setText(String.format(getString(R.string.ChatsUnreadString), totalNumOfChats));
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								dialog = ProgressDialog.show(MainActivity.this, "", "Loading, Please Wait");
+							}
+						});
+
+
 					}
 				});
+				Handler handler = new Handler();
+				handler.postDelayed(new Runnable() {
+					public void run() {
+						dialog.dismiss();
+					}
+				}, Constants.loadingAnimationTime);
 			}
 
 			@Override

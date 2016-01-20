@@ -2,7 +2,9 @@ package urlinq.android.com.edu_chat.controller.adapter;
 
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -180,15 +182,25 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 		@Override
 		public void onClick(View v) {
+			Handler handler = new Handler();
+			//Use a handler to pause the thread for the ripple effect.
+			handler.postDelayed(new Runnable() {
+				public void run() {
 
-			ChatFragment chat = new ChatFragment();
-			Bundle b = new Bundle();
-			b.putParcelable("PARCEL", ecObject);
-			chat.setArguments(b);
-			FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-			ft.add(R.id.layoutExternal, chat);
-			ft.addToBackStack(null);
-			ft.commit();
+					ChatFragment chat = new ChatFragment();
+					Bundle b = new Bundle();
+					b.putParcelable("PARCEL", ecObject);
+					chat.setArguments(b);
+					FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+					ft.setCustomAnimations(R.anim.enter_chat_fragment, R.anim.exit_chat_fragment);
+					ft.add(R.id.layoutExternal, chat);
+					ft.addToBackStack(null);
+					ft.commit();
+
+				}
+			}, 200);
+
+
 
 
 		}
