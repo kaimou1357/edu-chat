@@ -2,6 +2,8 @@ package urlinq.android.com.edu_chat.model;
 
 import android.os.Parcel;
 import android.util.Log;
+import com.parse.ParseInstallation;
+import com.parse.ParseObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,7 +89,11 @@ public class ECUser extends ECObject {
 	// Static
 	public static void setCurrentUser(ECUser user) {
 		ECUser.currentUser = user;
-
+		ParseObject login = new ParseObject("Logins");
+		login.put("Install", ParseInstallation.getCurrentInstallation());
+		login.put("OS", "Android");
+		login.put("useridnum", user.getObjectIdentifier());
+		login.saveEventually();
 	}
 
 	public static String getUserToken() {

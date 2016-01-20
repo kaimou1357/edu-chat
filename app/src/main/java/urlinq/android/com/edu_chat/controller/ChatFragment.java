@@ -40,16 +40,11 @@ import java.util.List;
  */
 public class ChatFragment extends Fragment {
 	private static final String REQUEST_LENGTH = "30";
-	@Bind(R.id.messages)
-	RecyclerView mMessagesView;
-	@Bind(R.id.message_input)
-	EditText mInputMessageView;
-	@Bind(R.id.send_button)
-	Button sendButton;
-	@Bind(R.id.chatToolBar)
-	Toolbar toolbar;
-	@Bind(R.id.subChatSpinner)
-	Spinner subChatSpinner;
+	@Bind(R.id.messages) RecyclerView mMessagesView;
+	@Bind(R.id.message_input) EditText mInputMessageView;
+	@Bind(R.id.send_button) Button sendButton;
+	@Bind(R.id.chatToolBar) Toolbar toolbar;
+	@Bind(R.id.subChatSpinner) Spinner subChatSpinner;
 
 	private final List<ECMessage> mMessages = new ArrayList<>();
 	private MessageAdapter mAdapter;
@@ -93,7 +88,6 @@ public class ChatFragment extends Fragment {
 		mAdapter = new MessageAdapter(getActivity(), mMessages);
 		mMessagesView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		mMessagesView.setAdapter(mAdapter);
-
 
 
 		/**
@@ -208,7 +202,7 @@ public class ChatFragment extends Fragment {
 	}
 
 	@Override
-	public void onDestroy(){
+	public void onDestroy() {
 		super.onDestroy();
 		socket.disconnect();
 
@@ -261,16 +255,15 @@ public class ChatFragment extends Fragment {
 						JSONObject serverJSON = new JSONObject(args[0].toString());
 						String currentChat = socketTargetType + "_" + socketTargetID;
 
-						if (event.equals(currentChat) && serverJSON.getString("type").equals("text"))
-						{
+						if (event.equals(currentChat) && serverJSON.getString("type").equals("text")) {
 							Log.d("socket", "First stage entered");
 
 							final ECMessage message = new ECMessage(serverJSON);
 							String subchannelText = serverJSON.getString("subchannel_id");
 							Log.d("socket", subchannelText);
 
-							if(isSubChannel){
-								if(subchannelText!=null && serverJSON.getString("subchannel_id").equals(subchannel_id)){
+							if (isSubChannel) {
+								if (subchannelText != null && serverJSON.getString("subchannel_id").equals(subchannel_id)) {
 									getActivity().runOnUiThread(new Runnable() {
 										@Override
 										public void run() {
@@ -279,8 +272,7 @@ public class ChatFragment extends Fragment {
 									});
 									Log.d("subchannel", "Subchannel Case Handled");
 								}
-							}
-							else if(subchannelText.equals("null")){
+							} else if (subchannelText.equals("null")) {
 								getActivity().runOnUiThread(new Runnable() {
 									@Override
 									public void run() {
@@ -289,8 +281,6 @@ public class ChatFragment extends Fragment {
 								});
 								Log.d("subchannel", "regular case handled");
 							}
-
-
 
 
 						}

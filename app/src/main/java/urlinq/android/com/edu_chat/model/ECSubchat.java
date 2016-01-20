@@ -89,12 +89,15 @@ public class ECSubchat extends ECObject {
 		}
 	};
 
+	@Override
 	public String toString() {
-
-		return "ECSubChat{" +
-				" name='" + name + '\'' +
-				" privacysetting='" + privacy + '\'' +
-				" subchat description='" + description + '\'' +
+		return "ECSubchat{" +
+				"description='" + description + '\'' +
+				", name='" + name + '\'' +
+				", privacy=" + privacy +
+				", origin_id=" + origin_id +
+				", subchannel_id=" + subchannel_id +
+				", origin_type='" + origin_type + '\'' +
 				'}' + super.toString();
 	}
 }

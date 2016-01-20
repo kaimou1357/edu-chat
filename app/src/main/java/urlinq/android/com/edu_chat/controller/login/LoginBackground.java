@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,9 @@ import android.widget.EditText;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.loopj.android.http.RequestParams;
+import com.parse.ConfigCallback;
+import com.parse.ParseConfig;
+import com.parse.ParseException;
 import com.urlinq.edu_chat.R;
 import cz.msebera.android.httpclient.Header;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
@@ -36,10 +40,16 @@ public class LoginBackground extends Fragment {
 		if (prefs.getBoolean("saveLogin", false)) {
 			userEmail.setText(prefs.getString("email", ""));
 			userPass.setText(prefs.getString("pass", ""));
-//			ParseConfig config = ParseConfig.getCurrentConfig();
-//			if (config.getBoolean(getString(R.string.PARSE_CONFIG_AUTO_LOGIN), false)) {
-//				attemptLogin();
-//			}
+			ParseConfig.getInBackground(new ConfigCallback() {
+				@Override
+				public void done(ParseConfig config, ParseException e) {
+					if (config.getBoolean(getString(R.string.PARSE_CONFIG_AUTO_LOGIN), false)) {
+						attemptLogin();
+					} else {
+						Log.v(getClass().getSimpleName(), "Do not auto login");
+					}
+				}
+			});
 		}
 		logInBlue.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {

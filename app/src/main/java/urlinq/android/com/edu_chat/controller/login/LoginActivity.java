@@ -6,6 +6,7 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import com.instabug.library.Instabug;
 import com.instabug.wrapper.support.activity.InstabugAppCompatActivity;
+import com.parse.Parse;
 import com.urlinq.edu_chat.R;
 import urlinq.android.com.edu_chat.controller.MainActivity;
 
@@ -15,19 +16,8 @@ public class LoginActivity extends InstabugAppCompatActivity implements LoginBac
 	protected void onCreate(Bundle savedInstanceState) {
 		Instabug.initialize(getApplication(), "4719bf1a7d10635f7c1520989f084d4c");
 		super.onCreate(savedInstanceState);
-//		Parse.enableLocalDatastore(this);
-//		Parse.initialize(this, "8HRtau0wTVMAJCL6QAb0qVi1iI661qsdy7CT9xnN", "Bd4rgDMBk5OIHbYB9wdlyA75Ys2QckhhtQpZmvxO");
-//		ParseConfig.getInBackground(new ConfigCallback() {
-//			@Override
-//			public void done(ParseConfig config, ParseException e) {
-//				if (e == null) {
-//					Log.d(LoginActivity.this.getClass().getSimpleName(), "Yay! Config was fetched from the server.");
-//				} else {
-//					Log.e("TAG", "Failed to fetch. Using Cached Config.");
-////					config = ParseConfig.getCurrentConfig();
-//				}
-//			}
-//		});
+		Parse.enableLocalDatastore(this);
+		Parse.initialize(this, "8HRtau0wTVMAJCL6QAb0qVi1iI661qsdy7CT9xnN", "Bd4rgDMBk5OIHbYB9wdlyA75Ys2QckhhtQpZmvxO");
 		setContentView(R.layout.content_main);
 		ButterKnife.bind(this);
 

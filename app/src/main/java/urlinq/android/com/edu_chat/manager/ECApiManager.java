@@ -3,6 +3,8 @@ package urlinq.android.com.edu_chat.manager;
 import android.os.Looper;
 import android.util.Log;
 import com.loopj.android.http.*;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +27,23 @@ public class ECApiManager {
 	private static final AsyncHttpClient syncHttpClient = new SyncHttpClient();
 	private static final AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
 
+	public static void LogToServer(String message, String logLevel) {
+		ParseObject login = new ParseObject("Logs");
+		login.put("platform", "Android");
+		login.put("message", message);
+		login.put("loglevel", logLevel);
+		login.put("token", ECUser.getUserToken());
+		login.put("UserIDNum", ECUser.getCurrentUser().getObjectIdentifier());
+		login.saveInBackground(new SaveCallback() {
+			@Override
+			public void done(com.parse.ParseException e) {
+				if (e != null) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
 	public static void setCookieStore(PersistentCookieStore cookieStore) {
 		getClient().setCookieStore(cookieStore);
 	}
@@ -37,6 +56,7 @@ public class ECApiManager {
 	private static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 		getClient().post(url, params, responseHandler);
 	}
+
 
 	/**
 	 * @return an async client when calling from the main thread, otherwise a sync client.
