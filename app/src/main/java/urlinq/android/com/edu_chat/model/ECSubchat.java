@@ -24,7 +24,7 @@ public class ECSubchat extends ECObject {
 		this.origin_id = subchat.getInt("origin_id");
 		this.origin_type = subchat.getString("origin_type");
 		this.description = subchat.getString("description");
-		Log.d("Subchat Creation", name + privacy + description);
+		Log.d("Subchat Creation", origin_type + origin_id);
 
 	}
 

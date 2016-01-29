@@ -16,8 +16,6 @@ public class LoginActivity extends InstabugAppCompatActivity implements LoginBac
 	protected void onCreate(Bundle savedInstanceState) {
 		Instabug.initialize(getApplication(), "4719bf1a7d10635f7c1520989f084d4c");
 		super.onCreate(savedInstanceState);
-		Parse.enableLocalDatastore(this);
-		Parse.initialize(this, "8HRtau0wTVMAJCL6QAb0qVi1iI661qsdy7CT9xnN", "Bd4rgDMBk5OIHbYB9wdlyA75Ys2QckhhtQpZmvxO");
 		setContentView(R.layout.content_main);
 		ButterKnife.bind(this);
 

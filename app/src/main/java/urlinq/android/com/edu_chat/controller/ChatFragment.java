@@ -1,6 +1,8 @@
 package urlinq.android.com.edu_chat.controller;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.hardware.input.InputManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -88,6 +91,7 @@ public class ChatFragment extends Fragment {
 		mAdapter = new MessageAdapter(getActivity(), mMessages);
 		mMessagesView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		mMessagesView.setAdapter(mAdapter);
+		sendButton.setVisibility(View.GONE);
 
 
 		/**
@@ -135,7 +139,8 @@ public class ChatFragment extends Fragment {
 							subchannel_id = Integer.toString(chat.getSubchannel_id());
 							Log.d("subchat position", position + "");
 							mMessages.clear();
-							updateChatRoom(chat.getOrigin_type(), Integer.toString(chat.getOrigin_id()), Integer.toString(chat.getSubchannel_id()), ECUser.getUserToken());
+							updateChatRoom(chat.getOrigin_type(), Integer.toString(chat.getOrigin_id()), Integer.toString(chat.getSubchannel_id()), ECUser.getUserToken());;
+							socketSetup(target_type, target_id);
 							mAdapter.notifyDataSetChanged();
 
 						}
@@ -180,10 +185,12 @@ public class ChatFragment extends Fragment {
 		mInputMessageView.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				sendButton.setVisibility(View.VISIBLE);
 			}
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
+
 			}
 
 			@Override
@@ -194,6 +201,9 @@ public class ChatFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				attemptSend();
+				sendButton.setVisibility(View.GONE);
+				InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 			}
 		});
 
@@ -212,6 +222,7 @@ public class ChatFragment extends Fragment {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.main_menu, menu);
 	}
+
 
 	/**
 	 * Method to setup socket to listen on specific channel.
@@ -254,6 +265,7 @@ public class ChatFragment extends Fragment {
 					try {
 						JSONObject serverJSON = new JSONObject(args[0].toString());
 						String currentChat = socketTargetType + "_" + socketTargetID;
+						Log.d("socket", serverJSON.toString());
 
 						if (event.equals(currentChat) && serverJSON.getString("type").equals("text")) {
 							Log.d("socket", "First stage entered");
@@ -299,7 +311,10 @@ public class ChatFragment extends Fragment {
 
 	private void updateChatRoom(String targetType, String targetID, String subchannel_id, String token) {
 		RequestParams params = new RequestParams();
-		params.add("subchannel_id", subchannel_id);
+		if(isSubChannel){
+			params.add("subchannel_id", subchannel_id);
+		}
+
 		params.add("target_type", targetType);
 		params.add("target_id", targetID);
 		params.add("token", token);
@@ -338,6 +353,7 @@ public class ChatFragment extends Fragment {
 		try {
 			for (int i = 0; i < obj.length(); i++) {
 				JSONObject singleMessage = obj.getJSONObject(i);
+				Log.d("message debug", singleMessage.toString());
 				mMessages.add(new ECMessage(singleMessage));
 			}
 		} catch (JSONException | ParseException e) {
@@ -380,6 +396,7 @@ public class ChatFragment extends Fragment {
 				if (isUserChat) {
 					try {
 						addMessage(new ECMessage(super.getObj().getJSONObject("message")));
+						Log.d("message debug", super.getObj().getJSONObject("message").toString());
 					} catch (JSONException | ParseException e) {
 						e.printStackTrace();
 					}
