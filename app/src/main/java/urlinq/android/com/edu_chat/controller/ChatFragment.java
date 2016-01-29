@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
 import com.loopj.android.http.RequestParams;
 import com.urlinq.edu_chat.R;
 import cz.msebera.android.httpclient.Header;
@@ -29,11 +30,18 @@ import io.socket.SocketIOException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 import urlinq.android.com.edu_chat.controller.adapter.MessageAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.*;
 
 import javax.net.ssl.SSLContext;
+
+import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +71,7 @@ public class ChatFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.chat_layout, container, false);
 		v.setBackgroundColor(Color.WHITE);
+
 		ButterKnife.bind(this, v);
 		/**
 		 * Handle Passed Object in this section of the code.
@@ -135,12 +144,13 @@ public class ChatFragment extends Fragment {
 
 						} else {
 							ECSubchat chat = subchats.get(position - 1);
+							socket.disconnect();
 							isSubChannel = true;
 							subchannel_id = Integer.toString(chat.getSubchannel_id());
 							Log.d("subchat position", position + "");
 							mMessages.clear();
+							socketSetup(chat.getOrigin_type(),Integer.toString(chat.getOrigin_id()));
 							updateChatRoom(chat.getOrigin_type(), Integer.toString(chat.getOrigin_id()), Integer.toString(chat.getSubchannel_id()), ECUser.getUserToken());;
-							socketSetup(target_type, target_id);
 							mAdapter.notifyDataSetChanged();
 
 						}
@@ -230,8 +240,11 @@ public class ChatFragment extends Fragment {
 	private void socketSetup(final String socketTargetType, final String socketTargetID) {
 
 
-		try {
-			SocketIO.setDefaultSSLSocketFactory(SSLContext.getInstance("Default"));
+
+		try{
+			SSLContext sslContext = SSLContext.getInstance("TLS", "AndroidOpenSSL");
+			sslContext.init(null, null,null);
+			SocketIO.setDefaultSSLSocketFactory(sslContext);
 			socket = new SocketIO("https://edu.chat/");
 			socket.connect(new IOCallback() {
 				@Override
@@ -304,8 +317,36 @@ public class ChatFragment extends Fragment {
 				}
 			});
 		} catch (Exception e) {
-			Log.d("Socket", e.getMessage());
-		}
+			Log.d("Socket", e.getMessage());}
+
+
+//		try{
+//
+//			IO.Options opts = new IO.Options();
+//			opts.sslContext = SSLContext.getDefault();
+//
+//			socket = IO.socket("https://edu.chat", opts);
+//
+//			socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+//				@Override
+//				public void call(Object... args) {
+//					Log.d("socket", "Successfully COnnected!");
+//				}
+//			}).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
+//				@Override
+//				public void call(Object... args) {
+//					Log.d("socket", "Failed Connection");
+//				}
+//			});
+//			socket.connect();
+//		}catch(URISyntaxException | NoSuchAlgorithmException e){e.printStackTrace();}
+
+
+
+
+
+
+
 	}
 
 
@@ -353,7 +394,6 @@ public class ChatFragment extends Fragment {
 		try {
 			for (int i = 0; i < obj.length(); i++) {
 				JSONObject singleMessage = obj.getJSONObject(i);
-				Log.d("message debug", singleMessage.toString());
 				mMessages.add(new ECMessage(singleMessage));
 			}
 		} catch (JSONException | ParseException e) {

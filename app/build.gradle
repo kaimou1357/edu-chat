@@ -55,6 +55,10 @@ dependencies {
     compile 'com.parse.bolts:bolts-android:1.4.0'
     compile 'com.parse:parse-android:1.12.0'
     compile 'com.instabug.library:instabugsupport:1.7.4'
+    compile ('io.socket:socket.io-client:0.6.3') {
+        // excluding org.json which is provided by Android
+        exclude group: 'org.json', module: 'json'
+    }
     compile files('libs/socketio.jar')
 }
 
