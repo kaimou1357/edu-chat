@@ -24,6 +24,12 @@ public class ECApiManager {
 	private static final String loadChatRoomURL = "https://edu.chat/message/load_chat";
 	private static final String logoutURL = "https://edu.chat/api/logout/";
 
+//	private static final String loginAPI = "https://api.edu.chat/v1/login";
+//	private static final String loadoutAPI = "https://api.edu.chat/v1/loadout";
+//	private static final String sendMessageURL = "https://api.edu.chat/v1/send";
+//	private static final String loadChatRoomURL = "https://api.edu.chat/v1/load_chat";
+//	private static final String logoutURL = "https://api.edu.chat/v1/logout";
+
 	private static final AsyncHttpClient syncHttpClient = new SyncHttpClient();
 	private static final AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
 
