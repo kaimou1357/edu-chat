@@ -1,12 +1,18 @@
 package urlinq.android.com.edu_chat.controller.login;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.instabug.library.Instabug;
 import com.instabug.wrapper.support.activity.InstabugAppCompatActivity;
 import com.parse.Parse;
+import com.urlinq.edu_chat.BuildConfig;
 import com.urlinq.edu_chat.R;
 import urlinq.android.com.edu_chat.controller.MainActivity;
 

@@ -18,6 +18,5 @@
 	<string name="browse">Browse</string>
 	<string name="typing">Typing</string>
 	<string name="send">Send</string>
-    <string name = "app_version">Version 0.5.1(4)</string>
 
 </resources>
