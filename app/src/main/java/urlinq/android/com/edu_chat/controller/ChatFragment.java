@@ -224,6 +224,8 @@ public class ChatFragment extends Fragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 		socket.disconnect();
 
 	}
