@@ -211,6 +211,15 @@ public class MainActivity extends AppCompatActivity {
 		classList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
 		classList.setHasFixedSize(true);
 
+		groupList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+		groupList.setHasFixedSize(true);
+
+		departmentList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+		departmentList.setHasFixedSize(true);
+
+		peopleList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+		peopleList.setHasFixedSize(true);
+
 		MainScreenListAdapter groupAdapter = new MainScreenListAdapter(this, ECCategoryGroupList);
 		groupList.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(this));
 		groupList.setAdapter(groupAdapter);

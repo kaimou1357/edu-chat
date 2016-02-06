@@ -55,7 +55,7 @@
         </RelativeLayout>
 
 
-        <ScrollView
+        <urlinq.android.com.edu_chat.view.FastScrollView
             android:orientation="vertical" android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background = "@color/background"
@@ -163,7 +163,7 @@
                     android:id = "@+id/labList">
                 </android.support.v7.widget.RecyclerView>
             </LinearLayout>
-        </ScrollView>
+        </urlinq.android.com.edu_chat.view.FastScrollView>
     </LinearLayout>
 
 
