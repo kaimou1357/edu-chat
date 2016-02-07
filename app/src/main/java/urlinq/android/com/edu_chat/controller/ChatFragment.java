@@ -45,6 +45,7 @@ import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -58,7 +59,7 @@ public class ChatFragment extends Fragment {
 	@Bind(R.id.chatToolBar) Toolbar toolbar;
 	@Bind(R.id.subChatSpinner) Spinner subChatSpinner;
 
-	private final List<ECMessage> mMessages = new ArrayList<>();
+	private final List<Object> mMessages = new LinkedList<>();
 	private MessageAdapter mAdapter;
 	private String target_type;
 	private String target_id;
@@ -361,16 +362,18 @@ public class ChatFragment extends Fragment {
 			@Override
 			public void onSuccessGlobal(int statusCode, Header[] headers, byte[] responseBody) {
 				super.onSuccessGlobal(statusCode, headers, responseBody);
+				try {
+					makeObjects(getObj().getJSONArray("messages"));
+					//Insert date objects into the message list here.
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 			}
 
 			@Override
 			public void onFinishGlobal() {
 				super.onFinishGlobal();
-				try {
-					makeObjects(getObj().getJSONArray("messages"));
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+
 				getActivity().runOnUiThread(new Runnable() {
 					@Override
 					public void run() {

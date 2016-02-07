@@ -24,10 +24,10 @@ import urlinq.android.com.edu_chat.model.constants.Constants;
  * Created by Kai on 10/26/2015.
  */
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
-	private final List<ECMessage> mMessages;
+	private final List<Object> mMessages;
 	private final Activity activity;
 
-	public MessageAdapter (Activity activity, List<ECMessage> messages) {
+	public MessageAdapter (Activity activity, List<Object> messages) {
 		mMessages = messages;
 		this.activity = activity;
 
@@ -42,15 +42,24 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
 	@Override
 	public void onBindViewHolder (ViewHolder viewHolder, int position) {
-		ECMessage message = mMessages.get(position);
-		viewHolder.setMessage(message.getMessageTitle());
-		viewHolder.setUsername(message.getAuthor().getFullName());
-        //parse the time and return the time as a String.
+		ECMessage message = null;
+		Date date;
+		if(mMessages.get(position) instanceof ECMessage){
+			message = (ECMessage)mMessages.get(position);
+			viewHolder.setMessage(message.getMessageTitle());
+			viewHolder.setUsername(message.getAuthor().getFullName());
+			//parse the time and return the time as a String.
 
-        viewHolder.setMessageDateView(message.getMessageDate());
-		String path = Constants.bitmapURL + message.getAuthor().getFileURL();
-        Picasso.with(activity).load(path).resize(Constants.globalImageSize, Constants.globalImageSize)
-				.centerInside().into(viewHolder.userProfilePicture);
+			viewHolder.setMessageDateView(message.getMessageDate());
+			String path = Constants.bitmapURL + message.getAuthor().getFileURL();
+			Picasso.with(activity).load(path).resize(Constants.globalImageSize, Constants.globalImageSize)
+					.centerInside().into(viewHolder.userProfilePicture);
+		}
+		else{
+			date = (Date)mMessages.get(position);
+			//TODO Implement the view inflater for a date object.
+		}
+
 
 
 	}
@@ -68,7 +77,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
 	@Override
 	public int getItemViewType (int position) {
-		return mMessages.get(position).getMessageType().getValue();
+		if(mMessages.get(position) instanceof ECMessage){
+			return ((ECMessage) mMessages.get(position)).getMessageType().getValue();
+		}
+		else{
+			return 10;
+			//TODO Implement a date View type.
+		}
 	}
 
 

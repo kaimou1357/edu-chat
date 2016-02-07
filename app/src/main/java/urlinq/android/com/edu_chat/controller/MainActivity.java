@@ -246,12 +246,6 @@ public class MainActivity extends AppCompatActivity {
 
 	}
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState){
-		super.onSaveInstanceState(outState);
-		getSupportFragmentManager().putFragment(outState, "mChat", mChat);
-		Log.d("ChatFragment", "saved Instance State Called");
-	}
 
 
 }
