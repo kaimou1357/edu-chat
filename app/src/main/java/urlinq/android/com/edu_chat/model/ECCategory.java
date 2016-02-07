@@ -26,6 +26,7 @@ public class ECCategory extends ECObject {
 	private final ECCategoryType typeOfCategory;
 	private final ArrayList<ECSubchat> subchannels = new ArrayList<>();
 
+
 	private ECCategory(JSONObject obj, ECCategoryType groupType) throws JSONException, ParseException {
 		super(obj.getInt("id"), obj.getJSONObject("picture_file").getString("file_url"), obj.getString("color"));
 		switch (groupType) {

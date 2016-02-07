@@ -22,6 +22,7 @@ public class ECMessage extends ECObject {
 	private final ECUser author;
 	private final ECMessageType messageType;
 	private final String subchannelName = null;
+	private String userEditTextString;
 
 	public ECMessage(JSONObject recentMessage) throws JSONException, ParseException {
 		super(recentMessage.getInt("id"), null, null);
@@ -49,6 +50,8 @@ public class ECMessage extends ECObject {
 	public ECMessageType getMessageType() {
 		return messageType;
 	}
+
+
 
 	/**
 	 * Handle Parcelable Stuff under here.

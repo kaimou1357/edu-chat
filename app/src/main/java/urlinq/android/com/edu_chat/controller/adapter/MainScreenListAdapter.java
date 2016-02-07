@@ -58,11 +58,6 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             return new CategoryViewHolder(v);
             //Log.d("empty view", "Default View Case Loaded");
         }
-
-
-
-
-
 	}
 	@Override
 	public int getItemViewType(int position){

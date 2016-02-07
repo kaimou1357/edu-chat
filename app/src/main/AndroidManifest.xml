@@ -25,6 +25,7 @@
 		<activity
 			android:name="urlinq.android.com.edu_chat.controller.MainActivity"
 			android:screenOrientation = "portrait"
+			android:label = ""
 			android:windowSoftInputMode="adjustPan"
 			android:theme="@style/AppTheme.NoActionBar" />
 

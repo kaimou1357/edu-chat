@@ -60,12 +60,14 @@ public class MainActivity extends AppCompatActivity {
 	@Bind(R.id.chatsUnreadText) TextView chatsUnreadButton;
 	@Bind(R.id.tool_bar) Toolbar toolbar;
 	ProgressDialog dialog;
+	ChatFragment mChat;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-
+		if(savedInstanceState!= null){
+			mChat = (ChatFragment)getSupportFragmentManager().getFragment(savedInstanceState, "mChat");
+		}
 		setContentView(R.layout.main_activity_layout);
 		ButterKnife.bind(this);
 
@@ -242,6 +244,13 @@ public class MainActivity extends AppCompatActivity {
 		labList.setAdapter(labAdapter);
 
 
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		getSupportFragmentManager().putFragment(outState, "mChat", mChat);
+		Log.d("ChatFragment", "saved Instance State Called");
 	}
 
 

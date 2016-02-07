@@ -1,6 +1,7 @@
 package urlinq.android.com.edu_chat.controller;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.hardware.input.InputManager;
 import android.os.Bundle;
@@ -67,17 +68,14 @@ public class ChatFragment extends Fragment {
 	private boolean isSubChannel = false;
 	private boolean isUserChat = false;
 	private SocketIO socket;
+	ECObject passedObject;
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.chat_layout, container, false);
-		v.setBackgroundColor(Color.WHITE);
-
-		ButterKnife.bind(this, v);
-		/**
-		 * Handle Passed Object in this section of the code.
-		 */
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		Log.d("ChatFragment", "onCreate Called");
 		Bundle b = this.getArguments();
-		final ECObject passedObject = b.getParcelable("PARCEL");
+		passedObject = b.getParcelable("PARCEL");
 		if (passedObject instanceof ECCategory) {
 			ECCategory cat = (ECCategory) passedObject;
 			chatTitle = cat.getName();
@@ -96,6 +94,22 @@ public class ChatFragment extends Fragment {
 			socketSetup(target_type, Integer.toString(ECUser.getCurrentUser().getObjectIdentifier()));
 		}
 
+
+
+	}
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View v = inflater.inflate(R.layout.chat_layout, container, false);
+		v.setBackgroundColor(Color.WHITE);
+
+		ButterKnife.bind(this, v);
+		Log.d("ChatFragment", "onCreateView Called");
+		/**
+		 * Handle Passed Object in this section of the code.
+		 */
+		SharedPreferences sp = getActivity().getSharedPreferences(Integer.toString(passedObject.getObjectIdentifier()), 0);
+
+		mInputMessageView.setText(sp.getString(Integer.toString(passedObject.getObjectIdentifier()), ""));
 		updateChatRoom(target_type, target_id, null, ECUser.getUserToken());
 		mAdapter = new MessageAdapter(getActivity(), mMessages);
 		mMessagesView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -224,8 +238,15 @@ public class ChatFragment extends Fragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		Log.d("ChatFragment", "onDestroy Called");
 		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+		imm.hideSoftInputFromWindow(new View(getContext()).getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+		SharedPreferences sp = getActivity().getSharedPreferences(Integer.toString(passedObject.getObjectIdentifier()), 0);
+		SharedPreferences.Editor editor = sp.edit();
+		editor.putString(Integer.toString(passedObject.getObjectIdentifier()),mInputMessageView.getText().toString());
+		editor.commit();
+
 		socket.disconnect();
 
 	}
@@ -234,6 +255,7 @@ public class ChatFragment extends Fragment {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.main_menu, menu);
 	}
+
 
 
 	/**
@@ -320,33 +342,6 @@ public class ChatFragment extends Fragment {
 			});
 		} catch (Exception e) {
 			Log.d("Socket", e.getMessage());}
-
-
-//		try{
-//
-//			IO.Options opts = new IO.Options();
-//			opts.sslContext = SSLContext.getDefault();
-//
-//			socket = IO.socket("https://edu.chat", opts);
-//
-//			socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-//				@Override
-//				public void call(Object... args) {
-//					Log.d("socket", "Successfully COnnected!");
-//				}
-//			}).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
-//				@Override
-//				public void call(Object... args) {
-//					Log.d("socket", "Failed Connection");
-//				}
-//			});
-//			socket.connect();
-//		}catch(URISyntaxException | NoSuchAlgorithmException e){e.printStackTrace();}
-
-
-
-
-
 
 
 	}
