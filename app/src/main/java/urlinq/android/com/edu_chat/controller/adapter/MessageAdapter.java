@@ -23,7 +23,7 @@ import urlinq.android.com.edu_chat.model.constants.Constants;
 /**
  * Created by Kai on 10/26/2015.
  */
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
+public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 	private final List<Object> mMessages;
 	private final Activity activity;
 
@@ -34,36 +34,52 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 	}
 
 	@Override
-	public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
-		int layout = R.layout.item_message;
-		View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-		return new ViewHolder(v);
+	public RecyclerView.ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
+		int layout;
+		View v;
+		switch(viewType){
+			case Constants.MESSAGE_DATE:{
+				layout = R.layout.chat_message_date;
+				v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
+				return new DateHolder(v);
+			}
+			default:{
+				layout = R.layout.item_message;
+				v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
+				return new MessageHolder(v);
+
+			}
+		}
+
+
 	}
 
 	@Override
-	public void onBindViewHolder (ViewHolder viewHolder, int position) {
+	public void onBindViewHolder (RecyclerView.ViewHolder viewHolderCase, int position) {
 		ECMessage message = null;
 		Date date;
 		if(mMessages.get(position) instanceof ECMessage){
+			MessageHolder messageHolder = (MessageHolder) viewHolderCase;
 			message = (ECMessage)mMessages.get(position);
-			viewHolder.setMessage(message.getMessageTitle());
-			viewHolder.setUsername(message.getAuthor().getFullName());
+			messageHolder.setMessage(message.getMessageTitle());
+			messageHolder.setUsername(message.getAuthor().getFullName());
 			//parse the time and return the time as a String.
 
-			viewHolder.setMessageDateView(message.getMessageDate());
+			messageHolder.setMessageDateView(message.getMessageDate());
 			String path = Constants.bitmapURL + message.getAuthor().getFileURL();
 			Picasso.with(activity).load(path).resize(Constants.globalImageSize, Constants.globalImageSize)
-					.centerInside().into(viewHolder.userProfilePicture);
+					.centerInside().into(messageHolder.userProfilePicture);
 		}
 		else{
 			date = (Date)mMessages.get(position);
-			//TODO Implement the view inflater for a date object.
+			DateHolder dateHolder = (DateHolder) viewHolderCase;
+			dateHolder.setDate(date);
+
 		}
 
 
 
 	}
-
 	@Override
 	public int getItemCount () {
 		return mMessages.size();
@@ -81,19 +97,32 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 			return ((ECMessage) mMessages.get(position)).getMessageType().getValue();
 		}
 		else{
-			return 10;
-			//TODO Implement a date View type.
+			return Constants.MESSAGE_DATE;
 		}
 	}
 
 
-	public class ViewHolder extends RecyclerView.ViewHolder {
+	public class DateHolder extends RecyclerView.ViewHolder{
+		private final TextView mDateTextView;
+		public DateHolder(View itemView){
+			super(itemView);
+			mDateTextView = (TextView)itemView.findViewById(R.id.message_date_textview);
+		}
+		public void setDate(Date messageDate){
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE");
+			String dayOfWeek = simpleDateFormat.format(messageDate);
+			mDateTextView.setText(dayOfWeek);
+
+		}
+	}
+
+	public class MessageHolder extends RecyclerView.ViewHolder {
 		private final TextView mUserNameView;
 		private final TextView mMessageView;
         private final TextView mMessageDateView;
 		private final ImageView userProfilePicture;
 
-		public ViewHolder (View itemView) {
+		public MessageHolder(View itemView) {
 			super(itemView);
 			mUserNameView = (TextView) itemView.findViewById(R.id.username);
             mMessageDateView = (TextView) itemView.findViewById(R.id.messageDate);

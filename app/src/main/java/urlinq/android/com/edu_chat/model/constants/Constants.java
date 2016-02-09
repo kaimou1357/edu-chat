@@ -8,6 +8,7 @@ public class Constants {
 
 	public static final String bitmapURL = "https://edu.chat/static";
 	public static final int globalImageSize = 256;
+	public static final int MESSAGE_DATE = 10;
 	public static final int loadingAnimationTime = 1500;
 	//double to account for half hour time zone differences.
 

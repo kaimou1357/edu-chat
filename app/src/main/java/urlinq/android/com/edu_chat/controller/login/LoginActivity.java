@@ -15,11 +15,11 @@ public class LoginActivity extends AppCompatActivity implements LoginBackground.
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		new Instabug.Builder(this.getApplication(), "4719bf1a7d10635f7c1520989f084d4c")
-				.setInvocationEvent(IBGInvocationEvent.IBGInvocationEventShake)
-				.setDebugEnabled(true)
-				.setInstabugLogState(Feature.State.ENABLED)
-				.build();
+//		new Instabug.Builder(this.getApplication(), "4719bf1a7d10635f7c1520989f084d4c")
+//				.setInvocationEvent(IBGInvocationEvent.IBGInvocationEventShake)
+//				.setDebugEnabled(true)
+//				.setInstabugLogState(Feature.State.ENABLED)
+//				.build();
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.content_main);
