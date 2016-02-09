@@ -11,6 +11,7 @@
     <color name = "nav">#333333</color>
     <color name = "profileDark">#252525</color>
     <color name = "blueRow">#408bc1</color>
+    <color name = "rectangleMessageTextView">#EBEBEB</color>
     <color name = "loginbuttoncolor">#2196f3</color>
     <color name = "loginbuttonpressed">#21f3e7</color>
     <color name="White">#FFFFFF</color>

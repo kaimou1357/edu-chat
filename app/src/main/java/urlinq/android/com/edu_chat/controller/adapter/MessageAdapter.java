@@ -109,7 +109,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 			mDateTextView = (TextView)itemView.findViewById(R.id.message_date_textview);
 		}
 		public void setDate(Date messageDate){
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE");
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE, MMMM dd");
 			String dayOfWeek = simpleDateFormat.format(messageDate);
 			mDateTextView.setText(dayOfWeek);
 

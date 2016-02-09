@@ -44,7 +44,9 @@ import javax.net.ssl.SSLContext;
 import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -391,11 +393,29 @@ public class ChatFragment extends Fragment {
 	}
 
 	private void makeObjects(JSONArray obj) {
+
+
 		try {
-			for (int i = 0; i < obj.length(); i++) {
+			SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
+
+			//adds the first message date before the message is added.
+			for (int i = 1; i < obj.length(); i++) {
 				JSONObject singleMessage = obj.getJSONObject(i);
 				mMessages.add(new ECMessage(singleMessage));
 			}
+
+			for(int i = 1; i<mMessages.size(); i+=2){
+				ECMessage firstMessage = (ECMessage)mMessages.get(i-1);
+				ECMessage secondMessage = (ECMessage)mMessages.get(i);
+
+				if(!fmt.format(firstMessage.getMessageDate()).equals(fmt.format(secondMessage.getMessageDate()))){
+					mMessages.add(i, secondMessage.getMessageDate());
+				}
+
+			}
+			//don't forget to add in the first date at the very beginning.
+			ECMessage first = (ECMessage) mMessages.get(0);
+			mMessages.add(0, first.getMessageDate());
 		} catch (JSONException | ParseException e) {
 			e.printStackTrace();
 		}
@@ -456,6 +476,15 @@ public class ChatFragment extends Fragment {
 	 * Adds message to the recyclerview.
 	 */
 	private void addMessage(ECMessage message) {
+
+		ECMessage lastMessage = (ECMessage)mMessages.get(mMessages.size()-1);
+		//TODO Should really write a comparator for ECMessage Object...
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
+
+		if(!fmt.format(message.getMessageDate()).equals(fmt.format(lastMessage.getMessageDate()))){
+			mMessages.add(mMessages.size(), message.getMessageDate());
+		}
+
 		mMessages.add(message);
 		mAdapter.notifyItemInserted(mMessages.size() - 1);
 		scrollToBottom();
