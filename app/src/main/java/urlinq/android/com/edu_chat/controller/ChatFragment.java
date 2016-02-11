@@ -414,8 +414,12 @@ public class ChatFragment extends Fragment {
 
 			}
 			//don't forget to add in the first date at the very beginning.
-			ECMessage first = (ECMessage) mMessages.get(0);
-			mMessages.add(0, first.getMessageDate());
+
+			if(mMessages.size()!=0){
+				ECMessage first = (ECMessage)mMessages.get(0);
+				mMessages.add(0, first.getMessageDate());
+			}
+
 		} catch (JSONException | ParseException e) {
 			e.printStackTrace();
 		}
@@ -476,14 +480,17 @@ public class ChatFragment extends Fragment {
 	 * Adds message to the recyclerview.
 	 */
 	private void addMessage(ECMessage message) {
+		if(mMessages.size()!=0){
+			ECMessage lastMessage = (ECMessage)mMessages.get(mMessages.size()-1);
+			//TODO Should really write a comparator for ECMessage Object...
+			SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
 
-		ECMessage lastMessage = (ECMessage)mMessages.get(mMessages.size()-1);
-		//TODO Should really write a comparator for ECMessage Object...
-		SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
-
-		if(!fmt.format(message.getMessageDate()).equals(fmt.format(lastMessage.getMessageDate()))){
-			mMessages.add(mMessages.size(), message.getMessageDate());
+			if(!fmt.format(message.getMessageDate()).equals(fmt.format(lastMessage.getMessageDate()))){
+				mMessages.add(mMessages.size(), message.getMessageDate());
+			}
 		}
+
+
 
 		mMessages.add(message);
 		mAdapter.notifyItemInserted(mMessages.size() - 1);
