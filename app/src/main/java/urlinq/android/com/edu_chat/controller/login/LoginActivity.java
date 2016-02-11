@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 import butterknife.ButterKnife;
-import com.instabug.library.Feature;
 import com.instabug.library.IBGInvocationEvent;
 import com.instabug.library.Instabug;
 import com.urlinq.edu_chat.R;
@@ -15,11 +14,9 @@ public class LoginActivity extends AppCompatActivity implements LoginBackground.
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-//		new Instabug.Builder(this.getApplication(), "4719bf1a7d10635f7c1520989f084d4c")
-//				.setInvocationEvent(IBGInvocationEvent.IBGInvocationEventShake)
-//				.setDebugEnabled(true)
-//				.setInstabugLogState(Feature.State.ENABLED)
-//				.build();
+		new Instabug.Builder(this.getApplication(), "4719bf1a7d10635f7c1520989f084d4c")
+				.setInvocationEvent(IBGInvocationEvent.IBGInvocationEventShake)
+				.build();
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.content_main);
