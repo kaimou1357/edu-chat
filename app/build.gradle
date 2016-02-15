@@ -48,7 +48,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.loopj.android:android-async-http:1.4.9'
-    compile 'com.instabug.library:instabug:2.1'
+    compile 'com.instabug.library:instabug:2.1.1'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'org.solovyev.android.views:linear-layout-manager:0.5@aar'
