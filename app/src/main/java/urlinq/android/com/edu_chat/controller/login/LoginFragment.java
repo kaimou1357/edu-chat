@@ -7,12 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.urlinq.edu_chat.BuildConfig;
-import com.urlinq.edu_chat.R;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.urlinq.edu_chat.BuildConfig;
+import com.urlinq.edu_chat.R;
 
 /**
  * Created by Kai on 9/4/2015.
@@ -27,8 +25,8 @@ public class LoginFragment extends Fragment {
 	 * @return
 	 */
 
-	@Bind(R.id.buildVersionText)
-	TextView buildVersion;
+	@Bind(R.id.buildVersionText) TextView buildVersion;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		//initialize viewpager object.
@@ -39,7 +37,7 @@ public class LoginFragment extends Fragment {
 		String versionName = BuildConfig.VERSION_NAME;
 		int version = BuildConfig.VERSION_CODE;
 
-		buildVersion.setText(versionName + " (" + version + ")");
+		buildVersion.setText(String.format("%s (%d)", versionName, version));
 		return v;
 	}
 

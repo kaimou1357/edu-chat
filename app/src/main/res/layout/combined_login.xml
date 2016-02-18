@@ -62,7 +62,7 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
 				android:background="@color/loginbuttoncolor"
-				android:text="LOGIN"
+				android:text="@string/login"
 				android:textColor="@color/White" />
 		</android.support.v7.widget.CardView>
 

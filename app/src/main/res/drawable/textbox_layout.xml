@@ -3,11 +3,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-
-    <item
-        android:drawable="@color/White"
-        android:left="50dp">
-        <shape android:shape="rectangle"></shape>
-    </item>
+	<item
+		android:drawable="@color/White"
+		android:left="50dp">
+		<shape android:shape="rectangle" />
+	</item>
 
 </layer-list>

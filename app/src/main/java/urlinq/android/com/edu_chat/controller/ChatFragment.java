@@ -3,7 +3,6 @@ package urlinq.android.com.edu_chat.controller;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.hardware.input.InputManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +19,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
 import com.loopj.android.http.RequestParams;
 import com.urlinq.edu_chat.R;
 import cz.msebera.android.httpclient.Header;
@@ -31,22 +29,14 @@ import io.socket.SocketIOException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
 import urlinq.android.com.edu_chat.controller.adapter.MessageAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.*;
 
 import javax.net.ssl.SSLContext;
-
-import java.net.URISyntaxException;
-import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -71,10 +61,10 @@ public class ChatFragment extends Fragment {
 	private boolean isSubChannel = false;
 	private boolean isUserChat = false;
 	private SocketIO socket;
-	ECObject passedObject;
+	private ECObject passedObject;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d("ChatFragment", "onCreate Called");
 		Bundle b = this.getArguments();
@@ -98,8 +88,8 @@ public class ChatFragment extends Fragment {
 		}
 
 
-
 	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.chat_layout, container, false);
@@ -166,8 +156,8 @@ public class ChatFragment extends Fragment {
 							subchannel_id = Integer.toString(chat.getSubchannel_id());
 							Log.d("subchat position", position + "");
 							mMessages.clear();
-							socketSetup(chat.getOrigin_type(),Integer.toString(chat.getOrigin_id()));
-							updateChatRoom(chat.getOrigin_type(), Integer.toString(chat.getOrigin_id()), Integer.toString(chat.getSubchannel_id()), ECUser.getUserToken());;
+							socketSetup(chat.getOrigin_type(), Integer.toString(chat.getOrigin_id()));
+							updateChatRoom(chat.getOrigin_type(), Integer.toString(chat.getOrigin_id()), Integer.toString(chat.getSubchannel_id()), ECUser.getUserToken());
 							mAdapter.notifyDataSetChanged();
 
 						}
@@ -229,7 +219,7 @@ public class ChatFragment extends Fragment {
 			public void onClick(View v) {
 				attemptSend();
 				sendButton.setVisibility(View.GONE);
-				InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+				InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 			}
 		});
@@ -242,12 +232,12 @@ public class ChatFragment extends Fragment {
 	public void onDestroy() {
 		super.onDestroy();
 		Log.d("ChatFragment", "onDestroy Called");
-		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(new View(getContext()).getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
 		SharedPreferences sp = getActivity().getSharedPreferences(Integer.toString(passedObject.getObjectIdentifier()), 0);
 		SharedPreferences.Editor editor = sp.edit();
-		editor.putString(Integer.toString(passedObject.getObjectIdentifier()),mInputMessageView.getText().toString());
+		editor.putString(Integer.toString(passedObject.getObjectIdentifier()), mInputMessageView.getText().toString());
 		editor.commit();
 
 		socket.disconnect();
@@ -260,17 +250,15 @@ public class ChatFragment extends Fragment {
 	}
 
 
-
 	/**
 	 * Method to setup socket to listen on specific channel.
 	 */
 	private void socketSetup(final String socketTargetType, final String socketTargetID) {
 
 
-
-		try{
+		try {
 			SSLContext sslContext = SSLContext.getInstance("TLS", "AndroidOpenSSL");
-			sslContext.init(null, null,null);
+			sslContext.init(null, null, null);
 			SocketIO.setDefaultSSLSocketFactory(sslContext);
 			socket = new SocketIO("https://edu.chat/");
 			socket.connect(new IOCallback() {
@@ -344,7 +332,8 @@ public class ChatFragment extends Fragment {
 				}
 			});
 		} catch (Exception e) {
-			Log.d("Socket", e.getMessage());}
+			Log.d("Socket", e.getMessage());
+		}
 
 
 	}
@@ -352,7 +341,7 @@ public class ChatFragment extends Fragment {
 
 	private void updateChatRoom(String targetType, String targetID, String subchannel_id, String token) {
 		RequestParams params = new RequestParams();
-		if(isSubChannel){
+		if (isSubChannel) {
 			params.add("subchannel_id", subchannel_id);
 		}
 
@@ -404,19 +393,19 @@ public class ChatFragment extends Fragment {
 				mMessages.add(new ECMessage(singleMessage));
 			}
 
-			for(int i = 1; i<mMessages.size(); i+=2){
-				ECMessage firstMessage = (ECMessage)mMessages.get(i-1);
-				ECMessage secondMessage = (ECMessage)mMessages.get(i);
+			for (int i = 1; i < mMessages.size(); i += 2) {
+				ECMessage firstMessage = (ECMessage) mMessages.get(i - 1);
+				ECMessage secondMessage = (ECMessage) mMessages.get(i);
 
-				if(!fmt.format(firstMessage.getMessageDate()).equals(fmt.format(secondMessage.getMessageDate()))){
+				if (!fmt.format(firstMessage.getMessageDate()).equals(fmt.format(secondMessage.getMessageDate()))) {
 					mMessages.add(i, secondMessage.getMessageDate());
 				}
 
 			}
 			//don't forget to add in the first date at the very beginning.
 
-			if(mMessages.size()!=0){
-				ECMessage first = (ECMessage)mMessages.get(0);
+			if (mMessages.size() != 0) {
+				ECMessage first = (ECMessage) mMessages.get(0);
 				mMessages.add(0, first.getMessageDate());
 			}
 
@@ -480,16 +469,15 @@ public class ChatFragment extends Fragment {
 	 * Adds message to the recyclerview.
 	 */
 	private void addMessage(ECMessage message) {
-		if(mMessages.size()!=0){
-			ECMessage lastMessage = (ECMessage)mMessages.get(mMessages.size()-1);
+		if (mMessages.size() != 0) {
+			ECMessage lastMessage = (ECMessage) mMessages.get(mMessages.size() - 1);
 			//TODO Should really write a comparator for ECMessage Object...
 			SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
 
-			if(!fmt.format(message.getMessageDate()).equals(fmt.format(lastMessage.getMessageDate()))){
+			if (!fmt.format(message.getMessageDate()).equals(fmt.format(lastMessage.getMessageDate()))) {
 				mMessages.add(mMessages.size(), message.getMessageDate());
 			}
 		}
-
 
 
 		mMessages.add(message);

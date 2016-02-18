@@ -9,7 +9,8 @@
 		android:name = "urlinq.android.com.edu_chat.controller.login.ParseApplication"
 		android:allowBackup="true"
 		android:icon="@drawable/educhat"
-		android:label="@string/app_name">
+		android:label="@string/app_name"
+		android:supportsRtl="true">
 		<activity
 			android:name="urlinq.android.com.edu_chat.controller.login.LoginActivity"
 			android:label="@string/app_name"

@@ -56,7 +56,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 	@Override
 	public void onBindViewHolder (RecyclerView.ViewHolder viewHolderCase, int position) {
-		ECMessage message = null;
+		ECMessage message;
 		Date date;
 		if(mMessages.get(position) instanceof ECMessage){
 			MessageHolder messageHolder = (MessageHolder) viewHolderCase;

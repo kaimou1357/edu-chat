@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
 	@Bind(R.id.userProfilePicture) ImageView userProfilePicture;
 	@Bind(R.id.chatsUnreadText) TextView chatsUnreadButton;
 	@Bind(R.id.tool_bar) Toolbar toolbar;
-	ProgressDialog dialog;
-	ChatFragment mChat;
+	private ProgressDialog dialog;
+	private ChatFragment mChat;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -210,16 +210,16 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void populateRecyclerView() {
-		classList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+		classList.addItemDecoration(new DividerItemDecoration(this));
 		classList.setHasFixedSize(true);
 
-		groupList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+		groupList.addItemDecoration(new DividerItemDecoration(this));
 		groupList.setHasFixedSize(true);
 
-		departmentList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+		departmentList.addItemDecoration(new DividerItemDecoration(this));
 		departmentList.setHasFixedSize(true);
 
-		peopleList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+		peopleList.addItemDecoration(new DividerItemDecoration(this));
 		peopleList.setHasFixedSize(true);
 
 		MainScreenListAdapter groupAdapter = new MainScreenListAdapter(this, ECCategoryGroupList);

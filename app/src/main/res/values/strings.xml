@@ -18,5 +18,11 @@
 	<string name="browse">Browse</string>
 	<string name="typing">Typing</string>
 	<string name="send">Send</string>
+	<string name="login">LOGIN</string>
+	<string name="classes">CLASSES</string>
+	<string name="groups">GROUPS</string>
+	<string name="departments">DEPARTMENTS</string>
+	<string name="people">PEOPLE</string>
+	<string name="labs">LABS</string>
 
 </resources>

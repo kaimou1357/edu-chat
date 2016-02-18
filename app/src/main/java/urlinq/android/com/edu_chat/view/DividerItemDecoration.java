@@ -39,11 +39,11 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private int mOrientation;
 
-    public DividerItemDecoration(Context context, int orientation) {
+    public DividerItemDecoration(Context context) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
         mDivider = a.getDrawable(0);
         a.recycle();
-        setOrientation(orientation);
+        setOrientation(DividerItemDecoration.VERTICAL_LIST);
     }
 
     private void setOrientation(int orientation) {

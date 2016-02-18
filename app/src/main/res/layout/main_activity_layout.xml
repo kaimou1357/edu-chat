@@ -1,170 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layoutExternal"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout android:id="@+id/layoutExternal"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/background"
+	android:orientation="vertical">
 
-    <LinearLayout
-
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background = "@color/background"
-        android:orientation="vertical" >
-        <include
-            android:id="@+id/tool_bar"
-            layout="@layout/main_toolbar"
-            ></include>
+	<include
+		android:id="@+id/tool_bar"
+		layout="@layout/main_toolbar"/>
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:id = "@+id/currentUserFrame"
-            android:background = "@color/profileDark"
-            android:layout_height="100dp">
+	<RelativeLayout
+		android:id="@+id/currentUserFrame"
+		android:layout_width="match_parent"
+		android:layout_height="100dp"
+		android:background="@color/profileDark">
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop = "20dp"
-                android:layout_marginLeft = "20dp"
-                android:id="@+id/userProfilePicture" />
+		<ImageView
+			android:id="@+id/userProfilePicture"
+			android:layout_width="60dp"
+			android:layout_height="60dp"
+			android:layout_marginLeft="20dp"
+			android:layout_marginTop="20dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/White"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="25dp"
-                android:layout_toEndOf="@id/userProfilePicture"
-                android:id="@+id/userFullName" />
+		<TextView
+			android:id="@+id/userFullName"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="20dp"
+			android:layout_marginTop="25dp"
+			android:layout_toEndOf="@id/userProfilePicture"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:textColor="@color/White" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/White"
-                android:layout_marginLeft="20dp"
-                android:layout_below = "@id/userFullName"
-                android:layout_toEndOf="@id/userProfilePicture"
-                android:id="@+id/userSchool" />
-
-
+		<TextView
+			android:id="@+id/userSchool"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/userFullName"
+			android:layout_marginLeft="20dp"
+			android:layout_toEndOf="@id/userProfilePicture"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:textColor="@color/White" />
 
 
-
-        </RelativeLayout>
-
-
-        <urlinq.android.com.edu_chat.view.FastScrollView
-            android:orientation="vertical" android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background = "@color/background"
-
-            android:id = "@+id/mainMenuContainer">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background = "@color/background"
-                android:paddingRight="16dp"
-                android:orientation="vertical">
-
-                <android.support.v7.widget.CardView
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    card_view:cardBackgroundColor="@color/loginbuttoncolor"
-                    card_view:cardCornerRadius="2dp"
-                    android:layout_margin="6dp"
-                    card_view:cardElevation="6dp">
-
-                    <TextView android:id="@+id/chatsUnreadText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="5dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:paddingBottom="5dp"
-                        android:textColor="@color/White"
-                        android:fontFamily="sans-serif-medium" />
-
-                </android.support.v7.widget.CardView>
+	</RelativeLayout>
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="CLASSES"
-                    android:layout_marginLeft ="16dp"
-                    android:id="@+id/classesText"/>
+	<urlinq.android.com.edu_chat.view.FastScrollView
+		android:id="@+id/mainMenuContainer"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@color/background"
 
-                <android.support.v7.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id = "@+id/classList">
-                </android.support.v7.widget.RecyclerView>
+		android:orientation="vertical">
 
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/background"
+			android:orientation="vertical"
+			android:paddingRight="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="GROUPS"
-                    android:layout_marginLeft = "16dp"
-                    android:id="@+id/groupText"/>
+			<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+				xmlns:card_view="http://schemas.android.com/apk/res-auto"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_margin="6dp"
+				card_view:cardBackgroundColor="@color/loginbuttoncolor"
+				card_view:cardCornerRadius="2dp"
+				card_view:cardElevation="6dp">
 
-                <android.support.v7.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id = "@+id/groupList">
-                </android.support.v7.widget.RecyclerView>
+				<TextView
+					android:id="@+id/chatsUnreadText"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="sans-serif-medium"
+					android:paddingBottom="5dp"
+					android:paddingLeft="10dp"
+					android:paddingRight="10dp"
+					android:paddingTop="5dp"
+					android:textColor="@color/White" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="DEPARTMENTS"
-                    android:layout_marginLeft = "16dp"
-                    android:id="@+id/departmentText"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id = "@+id/departmentList">
-                </android.support.v7.widget.RecyclerView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="PEOPLE"
-                    android:layout_marginLeft = "16dp"
-                    android:id="@+id/peopleText"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id = "@+id/peopleList">
-                </android.support.v7.widget.RecyclerView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="LABS"
-                    android:layout_marginLeft = "16dp"
-                    android:id="@+id/labText"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id = "@+id/labList">
-                </android.support.v7.widget.RecyclerView>
-            </LinearLayout>
-        </urlinq.android.com.edu_chat.view.FastScrollView>
-    </LinearLayout>
+			</android.support.v7.widget.CardView>
 
 
-</FrameLayout>
+			<TextView
+				android:id="@+id/classesText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="16dp"
+				android:text="@string/classes"
+				android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			<android.support.v7.widget.RecyclerView
+				android:id="@+id/classList"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+
+
+			<TextView
+				android:id="@+id/groupText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="16dp"
+				android:text="@string/groups"
+				android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			<android.support.v7.widget.RecyclerView
+				android:id="@+id/groupList"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+
+			<TextView
+				android:id="@+id/departmentText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="16dp"
+				android:text="@string/departments"
+				android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			<android.support.v7.widget.RecyclerView
+				android:id="@+id/departmentList"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+
+			<TextView
+				android:id="@+id/peopleText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="16dp"
+				android:text="@string/people"
+				android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			<android.support.v7.widget.RecyclerView
+				android:id="@+id/peopleList"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+
+			<TextView
+				android:id="@+id/labText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="16dp"
+				android:text="@string/labs"
+				android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			<android.support.v7.widget.RecyclerView
+				android:id="@+id/labList"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+		</LinearLayout>
+	</urlinq.android.com.edu_chat.view.FastScrollView>
+</LinearLayout>
