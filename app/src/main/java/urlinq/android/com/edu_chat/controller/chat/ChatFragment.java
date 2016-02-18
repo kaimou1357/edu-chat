@@ -1,4 +1,4 @@
-package urlinq.android.com.edu_chat.controller;
+package urlinq.android.com.edu_chat.controller.chat;
 
 import android.content.Context;
 import android.content.SharedPreferences;

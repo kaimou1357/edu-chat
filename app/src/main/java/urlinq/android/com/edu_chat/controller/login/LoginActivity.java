@@ -5,18 +5,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 import butterknife.ButterKnife;
-import com.instabug.library.IBGInvocationEvent;
-import com.instabug.library.Instabug;
 import com.urlinq.edu_chat.R;
-import urlinq.android.com.edu_chat.controller.MainActivity;
+import urlinq.android.com.edu_chat.controller.Main.MainActivity;
 
 public class LoginActivity extends AppCompatActivity implements LoginBackground.OnLoginListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		new Instabug.Builder(this.getApplication(), "4719bf1a7d10635f7c1520989f084d4c")
-				.setInvocationEvent(IBGInvocationEvent.IBGInvocationEventFloatingButton)
-				.build();
+
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.content_main);

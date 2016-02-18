@@ -1,4 +1,4 @@
-package urlinq.android.com.edu_chat.controller;
+package urlinq.android.com.edu_chat.controller.Main;
 
 
 import android.app.ProgressDialog;
@@ -23,6 +23,7 @@ import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.solovyev.android.views.llm.LinearLayoutManager;
+import urlinq.android.com.edu_chat.controller.chat.ChatFragment;
 import urlinq.android.com.edu_chat.controller.adapter.MainScreenListAdapter;
 import urlinq.android.com.edu_chat.manager.ECApiManager;
 import urlinq.android.com.edu_chat.model.ECCategory;

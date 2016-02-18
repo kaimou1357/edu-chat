@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.urlinq.edu_chat.R;
-import urlinq.android.com.edu_chat.controller.ChatFragment;
+import urlinq.android.com.edu_chat.controller.chat.ChatFragment;
 import urlinq.android.com.edu_chat.model.ECCategory;
 import urlinq.android.com.edu_chat.model.ECObject;
 import urlinq.android.com.edu_chat.model.ECUser;
