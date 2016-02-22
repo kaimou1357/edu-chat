@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import com.urlinq.edu_chat.R;
-import urlinq.android.com.edu_chat.controller.Main.MainActivity;
+import urlinq.android.com.edu_chat.controller.main.MainActivity;
 
 public class LoginActivity extends AppCompatActivity implements LoginBackground.OnLoginListener {
 

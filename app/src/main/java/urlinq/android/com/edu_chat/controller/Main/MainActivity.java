@@ -1,4 +1,4 @@
-package urlinq.android.com.edu_chat.controller.Main;
+package urlinq.android.com.edu_chat.controller.main;
 
 
 import android.app.ProgressDialog;
