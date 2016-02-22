@@ -2,23 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="350dp"
     android:id = "@+id/emptyGroupView"
-    android:layout_height="100dp">
+    android:layout_height="75dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
+        android:layout_marginTop="20dp"
         android:text="@string/none_joined_yet"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal" />
 
-    <Button
-        android:layout_width="125dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/empty_button"
-        android:layout_height="30dp"
-        android:text = "@string/browse"
-        android:textColor="@color/loginbuttoncolor"
-        android:id="@+id/browseGroupsButton"
-        android:layout_gravity="center_horizontal" />
 </LinearLayout>

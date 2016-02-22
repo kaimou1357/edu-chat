@@ -30,10 +30,10 @@
 		android:id="@+id/eduChatLogo"
 		android:layout_width="150dp"
 		android:layout_height="65dp"
-		android:layout_alignParentTop="true"
-		android:layout_centerHorizontal="true"
-		android:layout_marginTop="20dp"
-		android:background="@drawable/chatlogo" />
+		android:layout_marginTop="40dp"
+		android:background="@drawable/chatlogo"
+		android:layout_below="@+id/buildVersionText"
+		android:layout_centerHorizontal="true" />
 
 
 

@@ -3,6 +3,11 @@ package urlinq.android.com.edu_chat.controller.adapter;
 import android.app.Activity;
 import android.support.annotation.UiThread;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -143,6 +148,36 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 		public void setMessage (String message) {
 			if (mMessageView == null) return;
 			mMessageView.setText(message);
+		}
+
+		/**
+		 * These two functions will help make links clickable in the chat messages.
+		 * @param strBuilder
+		 * @param span
+		 */
+		protected void makeLinkClickable(SpannableStringBuilder strBuilder, final URLSpan span)
+		{
+			int start = strBuilder.getSpanStart(span);
+			int end = strBuilder.getSpanEnd(span);
+			int flags = strBuilder.getSpanFlags(span);
+			ClickableSpan clickable = new ClickableSpan() {
+				public void onClick(View view) {
+					// Do something with span.getURL() to handle the link click...
+				}
+			};
+			strBuilder.setSpan(clickable, start, end, flags);
+			strBuilder.removeSpan(span);
+		}
+
+		protected void setTextViewHTML(TextView text, String html)
+		{
+			CharSequence sequence = Html.fromHtml(html);
+			SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
+			URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
+			for(URLSpan span : urls) {
+				makeLinkClickable(strBuilder, span);
+			}
+			text.setText(strBuilder);
 		}
 
 	}

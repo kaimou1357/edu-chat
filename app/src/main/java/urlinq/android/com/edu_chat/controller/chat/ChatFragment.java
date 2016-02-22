@@ -50,6 +50,7 @@ public class ChatFragment extends Fragment {
 	@Bind(R.id.send_button) Button sendButton;
 	@Bind(R.id.chatToolBar) Toolbar toolbar;
 	@Bind(R.id.subChatSpinner) Spinner subChatSpinner;
+	@Bind(R.id.isTypingTextView)TextView isTypingTextView;
 
 	private final List<Object> mMessages = new LinkedList<>();
 	private MessageAdapter mAdapter;
@@ -114,7 +115,9 @@ public class ChatFragment extends Fragment {
 		 * Handle ToolBar setup in this section of the code.
 		 */
 		AppCompatActivity activity = (AppCompatActivity) getActivity();
-		activity.setSupportActionBar(toolbar);
+		toolbar.inflateMenu(R.menu.chat_menu);
+
+
 		ArrayList<String> nameOfSubChats = new ArrayList<>();
 		//If subchats = null, no need for a drop down spinner button, so disable the spinner.
 		if (subchats == null) {
@@ -244,10 +247,6 @@ public class ChatFragment extends Fragment {
 
 	}
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.main_menu, menu);
-	}
 
 
 	/**
@@ -291,7 +290,7 @@ public class ChatFragment extends Fragment {
 				@Override
 				public void on(String event, IOAcknowledge ack, Object... args) {
 					try {
-						JSONObject serverJSON = new JSONObject(args[0].toString());
+						final JSONObject serverJSON = new JSONObject(args[0].toString());
 						String currentChat = socketTargetType + "_" + socketTargetID;
 						Log.d("socket", serverJSON.toString());
 
@@ -322,6 +321,35 @@ public class ChatFragment extends Fragment {
 								Log.d("subchannel", "regular case handled");
 							}
 
+
+						}
+						/**
+						 * Handle some stuff when user is typing/not typing
+						 */
+						if (event.equals(currentChat) && serverJSON.getString("type").equals("typing")) {
+
+							getActivity().runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									String userFirstName = null;
+									try{
+										userFirstName = serverJSON.getJSONObject("user").getString("firstname");
+									}catch(JSONException e){
+										Log.e("ChatFragment", "User JSON String not found!");
+									}
+
+									isTypingTextView.setText(userFirstName + " is typing...");
+								}
+							});
+
+						}
+						if (event.equals(currentChat) && serverJSON.getString("type").equals("stop_typing")) {
+							getActivity().runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									isTypingTextView.setText("");
+								}
+							});
 
 						}
 

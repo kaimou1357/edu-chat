@@ -9,8 +9,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_gravity="center_vertical"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/drawable_rectangle_textview"
-        android:textSize="10sp"
+        android:textSize="14sp"
         android:textColor = "@color/middleText"
         android:clickable="false"
         android:id="@+id/message_date_textview" />

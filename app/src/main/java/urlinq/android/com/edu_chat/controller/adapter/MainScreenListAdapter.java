@@ -113,16 +113,9 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	}
 
 	public class EmptyViewHolder extends RecyclerView.ViewHolder {
-		private final Button browseButton;
 
 		public EmptyViewHolder(View view) {
 			super(view);
-			browseButton = (Button) view.findViewById(R.id.browseGroupsButton);
-			browseButton.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v) {
-					Log.d("RecyclerView Button", "Button Pressed!");
-				}
-			});
 		}
 
 
@@ -185,7 +178,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 					chat.setArguments(b);
 					FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
 					ft.setCustomAnimations(R.anim.enter_chat_fragment, R.anim.exit_chat_fragment);
-					ft.add(R.id.layoutExternal, chat);
+					ft.replace(R.id.layoutExternal, chat);
 					ft.addToBackStack(null);
 					ft.commit();
 
